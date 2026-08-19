@@ -4,41 +4,45 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-<title>MY VISION OOH</title>
+<title>My Vision OOH</title>
 
+<!-- Leaflet Map -->
 <link rel="stylesheet"
-href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css"/>
+href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css">
 
 <style>
-*{box-sizing:border-box}
+
+*{
+    box-sizing:border-box;
+}
 
 body{
     margin:0;
     font-family:Arial,Helvetica,sans-serif;
-    background:#f4f6f8;
+    background:#f3f5f8;
     color:#172033;
 }
 
 header{
-    height:62px;
-    background:#111827;
+    height:64px;
+    background:#101827;
     color:white;
     display:flex;
     align-items:center;
     padding:0 18px;
-    gap:15px;
+    gap:20px;
 }
 
 .logo{
-    font-size:21px;
+    font-size:22px;
     font-weight:800;
 }
 
 .logo span{
-    color:#22b5f2;
+    color:#20aef3;
 }
 
-.header-buttons{
+.header-actions{
     margin-left:auto;
     display:flex;
     gap:8px;
@@ -47,42 +51,50 @@ header{
 button{
     border:0;
     border-radius:7px;
-    padding:10px 14px;
-    font-weight:bold;
+    padding:10px 13px;
     cursor:pointer;
+    font-weight:bold;
 }
 
-.blue{
+button:hover{
+    opacity:.9;
+}
+
+.btn-blue{
     background:#0787c8;
     color:white;
 }
 
-.green{
+.btn-green{
     background:#16a34a;
     color:white;
 }
 
-.red{
+.btn-red{
     background:#dc2626;
     color:white;
 }
 
-.gray{
+.btn-gray{
     background:#e5e7eb;
     color:#111827;
 }
 
-.layout{
+.main{
     display:grid;
-    grid-template-columns:370px 1fr;
-    height:calc(100vh - 62px);
+    grid-template-columns:380px 1fr;
+    height:calc(100vh - 64px);
 }
 
 .sidebar{
     background:white;
     border-right:1px solid #ddd;
-    padding:12px;
     overflow-y:auto;
+    padding:12px;
+}
+
+.map-container{
+    position:relative;
 }
 
 #map{
@@ -98,8 +110,8 @@ button{
     margin-bottom:12px;
 }
 
-h2,h3{
-    margin:3px 0 12px;
+.card h3{
+    margin:0 0 12px;
 }
 
 label{
@@ -109,34 +121,30 @@ label{
     margin:8px 0 4px;
 }
 
-input,select,textarea{
+input,
+select,
+textarea{
     width:100%;
-    padding:9px;
     border:1px solid #cbd5e1;
     border-radius:6px;
+    padding:9px;
     font-size:14px;
-    background:white;
 }
 
 textarea{
-    height:70px;
     resize:vertical;
+    min-height:70px;
 }
 
 .row{
     display:grid;
     grid-template-columns:1fr 1fr;
-    gap:7px;
+    gap:8px;
 }
 
-.search-buttons{
-    display:flex;
-    gap:7px;
+.full{
+    width:100%;
     margin-top:8px;
-}
-
-.search-buttons button{
-    flex:1;
 }
 
 .stats{
@@ -147,39 +155,50 @@ textarea{
 }
 
 .stat{
-    background:#f3f6f9;
-    border-radius:7px;
+    background:#f1f5f9;
     padding:10px;
+    border-radius:8px;
 }
 
-.stat b{
+.stat strong{
     display:block;
-    font-size:21px;
+    font-size:22px;
     margin-top:3px;
+}
+
+.location-result{
+    background:#eff6ff;
+    border:1px solid #bfdbfe;
+    border-radius:7px;
+    padding:9px;
+    margin-top:9px;
+    font-size:12px;
+    display:none;
 }
 
 .site{
     border:1px solid #d8dee6;
     border-radius:8px;
-    padding:9px;
+    padding:10px;
     margin-top:8px;
 }
 
-.site-title{
-    font-size:14px;
+.site-name{
     font-weight:bold;
+    font-size:14px;
 }
 
-.small{
+.site-info{
     font-size:11px;
-    color:#667085;
-    margin-top:3px;
+    color:#64748b;
+    margin-top:4px;
+    line-height:1.5;
 }
 
 .site-buttons{
     display:flex;
-    gap:5px;
     flex-wrap:wrap;
+    gap:5px;
     margin-top:8px;
 }
 
@@ -189,16 +208,17 @@ textarea{
 }
 
 .photo-preview{
-    display:none;
     max-width:100%;
-    max-height:140px;
+    max-height:150px;
     border-radius:7px;
     margin-top:7px;
+    display:none;
 }
 
 #message{
     position:fixed;
-    bottom:20px;
+    z-index:99999;
+    bottom:22px;
     left:50%;
     transform:translateX(-50%);
     background:#111827;
@@ -206,35 +226,31 @@ textarea{
     padding:11px 18px;
     border-radius:8px;
     display:none;
-    z-index:99999;
 }
 
-.location-result{
-    background:#eff6ff;
-    border:1px solid #bfdbfe;
-    border-radius:7px;
-    padding:8px;
-    margin-top:8px;
-    font-size:12px;
+.empty{
+    text-align:center;
+    color:#64748b;
+    padding:15px 5px;
+    font-size:13px;
 }
 
-@media(max-width:800px){
+@media(max-width:850px){
 
     header{
         height:auto;
-        min-height:62px;
+        min-height:64px;
         flex-wrap:wrap;
         padding:10px;
     }
 
-    .header-buttons{
+    .header-actions{
         margin-left:0;
         width:100%;
-        overflow-x:auto;
     }
 
-    .layout{
-        grid-template-columns:1fr;
+    .main{
+        display:block;
         height:auto;
     }
 
@@ -245,11 +261,15 @@ textarea{
     #map{
         height:60vh;
     }
+
 }
+
 </style>
 </head>
 
+
 <body>
+
 
 <header>
 
@@ -257,13 +277,17 @@ textarea{
 MY VISION <span>OOH</span>
 </div>
 
-<div class="header-buttons">
+<div class="header-actions">
 
-<button class="green" onclick="exportExcel()">
+<button
+class="btn-green"
+onclick="exportExcel()">
 📊 Excel
 </button>
 
-<button class="green" onclick="exportPPT()">
+<button
+class="btn-green"
+onclick="exportPPT()">
 📑 PPT
 </button>
 
@@ -272,7 +296,8 @@ MY VISION <span>OOH</span>
 </header>
 
 
-<div class="layout">
+
+<div class="main">
 
 
 <!-- SIDEBAR -->
@@ -295,17 +320,18 @@ placeholder="Client / Campaign Name"
 
 <div class="stat">
 Total Sites
-<b id="totalSites">0</b>
+<strong id="totalSites">0</strong>
 </div>
 
 <div class="stat">
 Selected
-<b id="selectedSites">0</b>
+<strong id="selectedSites">0</strong>
 </div>
 
 </div>
 
 </div>
+
 
 
 <!-- LOCATION SEARCH -->
@@ -315,7 +341,7 @@ Selected
 <h3>🔎 Search Location</h3>
 
 <label>
-Search by Location Name
+Location Name
 </label>
 
 <input
@@ -324,16 +350,14 @@ placeholder="Bandra West, Mumbai"
 >
 
 <button
-class="blue"
-style="width:100%;margin-top:8px"
-onclick="searchLocation()"
->
-🔎 SEARCH LOCATION
+class="btn-blue full"
+onclick="searchLocation()">
+SEARCH LOCATION
 </button>
 
 
 <label>
-OR Enter Latitude & Longitude
+Latitude & Longitude
 </label>
 
 <div class="row">
@@ -368,33 +392,29 @@ placeholder="72.8295"
 
 
 <button
-class="blue"
-style="width:100%;margin-top:8px"
-onclick="searchCoordinates()"
->
+class="btn-blue full"
+onclick="searchCoordinates()">
 📍 FIND COORDINATES
 </button>
 
 
 <button
-class="gray"
-style="width:100%;margin-top:7px"
-onclick="useMyLocation()"
->
+class="btn-gray full"
+onclick="useMyLocation()">
 📌 USE MY LOCATION
 </button>
 
 
 <div
 id="locationResult"
-class="location-result"
-style="display:none"
-></div>
+class="location-result">
+</div>
 
 </div>
 
 
-<!-- ADD SITE -->
+
+<!-- SITE FORM -->
 
 <div class="card">
 
@@ -407,9 +427,8 @@ id="editId"
 type="hidden"
 >
 
-<label>
-Site Name / ID
-</label>
+
+<label>Site Name / ID</label>
 
 <input
 id="siteName"
@@ -417,9 +436,7 @@ placeholder="MUM-001"
 >
 
 
-<label>
-Location
-</label>
+<label>Location</label>
 
 <input
 id="siteLocation"
@@ -536,7 +553,6 @@ value="0"
 
 </div>
 
-
 <div>
 
 <label>Status</label>
@@ -555,9 +571,7 @@ value="0"
 </div>
 
 
-<label>
-Site Photo
-</label>
+<label>Site Photo</label>
 
 <input
 id="photo"
@@ -572,43 +586,36 @@ class="photo-preview"
 >
 
 
-<label>
-Remarks
-</label>
+<label>Remarks</label>
 
 <textarea
 id="remarks"
-placeholder="Facing direction, traffic details, etc."
+placeholder="Facing direction, traffic, visibility etc."
 ></textarea>
 
 
 <button
-class="blue"
-style="width:100%;margin-top:10px"
-onclick="saveSite()"
->
+class="btn-blue full"
+onclick="saveSite()">
 💾 SAVE SITE
 </button>
 
 
 <button
-class="gray"
-style="width:100%;margin-top:7px"
-onclick="clearForm()"
->
-CLEAR
+class="btn-gray full"
+onclick="clearForm()">
+CLEAR FORM
 </button>
 
 </div>
+
 
 
 <!-- SAVED SITES -->
 
 <div class="card">
 
-<h3>
-📌 Saved OOH Sites
-</h3>
+<h3>📌 Saved Sites</h3>
 
 <input
 id="siteSearch"
@@ -626,13 +633,22 @@ oninput="renderSites()"
 
 <!-- MAP -->
 
+<div class="map-container">
+
 <div id="map"></div>
 
 </div>
 
 
+</div>
+
+
+
 <div id="message"></div>
 
+
+
+<!-- LIBRARIES -->
 
 <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
 
@@ -641,23 +657,27 @@ oninput="renderSites()"
 <script src="https://cdn.jsdelivr.net/npm/pptxgenjs@3.12.0/dist/pptxgen.bundle.js"></script>
 
 
+
 <script>
 
-/* =========================================================
+/* =====================================================
    MY VISION OOH
-   ZERO SETUP VERSION
-
-   Sites are saved in your browser using localStorage.
-   ========================================================= */
+   ===================================================== */
 
 
-let sites =
-JSON.parse(
-localStorage.getItem("MY_VISION_OOH_SITES") || "[]"
-);
+/* DATABASE */
 
-let selectedSites =
-new Set();
+const DB_NAME = "MY_VISION_OOH_DATABASE";
+
+const DB_VERSION = 1;
+
+const STORE_NAME = "sites";
+
+let db;
+
+let sites = [];
+
+let selectedSites = new Set();
 
 let map;
 
@@ -668,1743 +688,2047 @@ let searchMarker = null;
 let currentPhoto = "";
 
 
-/* =========================================================
+
+/* =====================================================
    MESSAGE
-   ========================================================= */
+   ===================================================== */
 
 function showMessage(text){
 
-const box =
-document.getElementById("message");
+    const box =
+    document.getElementById("message");
 
-box.innerText = text;
+    box.innerText = text;
 
-box.style.display = "block";
+    box.style.display = "block";
 
-setTimeout(function(){
+    setTimeout(function(){
 
-box.style.display = "none";
+        box.style.display = "none";
 
-},2500);
-
-}
-
-
-/* =========================================================
-   SAVE DATA TO BROWSER
-   ========================================================= */
-
-function saveToBrowser(){
-
-localStorage.setItem(
-"MY_VISION_OOH_SITES",
-JSON.stringify(sites)
-);
+    },2500);
 
 }
 
 
-/* =========================================================
+
+/* =====================================================
+   INDEXED DB
+   PERMANENT BROWSER STORAGE
+   ===================================================== */
+
+function openDatabase(){
+
+    return new Promise(function(resolve,reject){
+
+        const request =
+        indexedDB.open(
+            DB_NAME,
+            DB_VERSION
+        );
+
+
+        request.onupgradeneeded =
+        function(event){
+
+            const database =
+            event.target.result;
+
+            if(
+                !database.objectStoreNames.contains(
+                    STORE_NAME
+                )
+            ){
+
+                database.createObjectStore(
+                    STORE_NAME,
+                    {
+                        keyPath:"id"
+                    }
+                );
+
+            }
+
+        };
+
+
+        request.onsuccess =
+        function(event){
+
+            db =
+            event.target.result;
+
+            resolve(db);
+
+        };
+
+
+        request.onerror =
+        function(){
+
+            reject(
+                request.error
+            );
+
+        };
+
+    });
+
+}
+
+
+
+function getAllSites(){
+
+    return new Promise(function(resolve,reject){
+
+        const transaction =
+        db.transaction(
+            STORE_NAME,
+            "readonly"
+        );
+
+        const store =
+        transaction.objectStore(
+            STORE_NAME
+        );
+
+        const request =
+        store.getAll();
+
+
+        request.onsuccess =
+        function(){
+
+            resolve(
+                request.result || []
+            );
+
+        };
+
+
+        request.onerror =
+        function(){
+
+            reject(
+                request.error
+            );
+
+        };
+
+    });
+
+}
+
+
+
+function putSite(site){
+
+    return new Promise(function(resolve,reject){
+
+        const transaction =
+        db.transaction(
+            STORE_NAME,
+            "readwrite"
+        );
+
+        const store =
+        transaction.objectStore(
+            STORE_NAME
+        );
+
+        const request =
+        store.put(site);
+
+
+        request.onsuccess =
+        function(){
+
+            resolve();
+
+        };
+
+
+        request.onerror =
+        function(){
+
+            reject(
+                request.error
+            );
+
+        };
+
+    });
+
+}
+
+
+
+function removeSite(id){
+
+    return new Promise(function(resolve,reject){
+
+        const transaction =
+        db.transaction(
+            STORE_NAME,
+            "readwrite"
+        );
+
+        const store =
+        transaction.objectStore(
+            STORE_NAME
+        );
+
+        const request =
+        store.delete(id);
+
+
+        request.onsuccess =
+        function(){
+
+            resolve();
+
+        };
+
+
+        request.onerror =
+        function(){
+
+            reject(
+                request.error
+            );
+
+        };
+
+    });
+
+}
+
+
+
+/* =====================================================
    MAP
-   ========================================================= */
+   ===================================================== */
 
 function initializeMap(){
 
-map =
-L.map("map")
-.setView(
-[19.0760,72.8777],
-11
-);
+    map =
+    L.map("map")
+    .setView(
+        [19.0760,72.8777],
+        11
+    );
 
 
-L.tileLayer(
-"https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png",
-{
-maxZoom:19,
-attribution:"© OpenStreetMap contributors"
+    L.tileLayer(
+        "https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png",
+        {
+            maxZoom:19,
+            attribution:
+            "© OpenStreetMap contributors"
+        }
+    ).addTo(map);
+
+
+    map.on(
+        "click",
+        function(event){
+
+            const lat =
+            event.latlng.lat;
+
+            const lng =
+            event.latlng.lng;
+
+
+            document.getElementById(
+                "latitude"
+            ).value =
+            lat.toFixed(6);
+
+
+            document.getElementById(
+                "longitude"
+            ).value =
+            lng.toFixed(6);
+
+
+            document.getElementById(
+                "searchLat"
+            ).value =
+            lat.toFixed(6);
+
+
+            document.getElementById(
+                "searchLng"
+            ).value =
+            lng.toFixed(6);
+
+
+            placeSearchMarker(
+                lat,
+                lng,
+                "Selected Location"
+            );
+
+
+            showMessage(
+                "Location selected"
+            );
+
+        }
+    );
+
 }
-).addTo(map);
 
 
-/* CLICK MAP */
 
-map.on(
-"click",
-function(event){
-
-const lat =
-event.latlng.lat;
-
-const lng =
-event.latlng.lng;
-
-
-document.getElementById(
-"latitude"
-).value =
-lat.toFixed(6);
-
-
-document.getElementById(
-"longitude"
-).value =
-lng.toFixed(6);
-
-
-document.getElementById(
-"searchLat"
-).value =
-lat.toFixed(6);
-
-
-document.getElementById(
-"searchLng"
-).value =
-lng.toFixed(6);
-
-
-placeSearchMarker(
-lat,
-lng,
-"Selected Location"
-);
-
-
-showMessage(
-"Coordinates selected"
-);
-
-}
-);
-
-}
-
-
-/* =========================================================
-   SEARCH LOCATION NAME
-   ========================================================= */
+/* =====================================================
+   LOCATION NAME SEARCH
+   ===================================================== */
 
 async function searchLocation(){
 
-const query =
-document.getElementById(
-"locationSearch"
-).value.trim();
+    const query =
+    document.getElementById(
+        "locationSearch"
+    ).value.trim();
 
 
-if(!query){
+    if(!query){
 
-showMessage(
-"Enter a location name"
-);
+        showMessage(
+            "Enter a location name"
+        );
 
-return;
+        return;
 
-}
-
-
-showMessage(
-"Searching location..."
-);
+    }
 
 
-try{
-
-const url =
-"https://nominatim.openstreetmap.org/search?format=json&limit=1&q="+
-encodeURIComponent(query);
+    showMessage(
+        "Searching..."
+    );
 
 
-const response =
-await fetch(
-url,
-{
-headers:{
-"Accept-Language":"en"
-}
-}
-);
+    try{
+
+        const url =
+        "https://nominatim.openstreetmap.org/search"+
+        "?format=json"+
+        "&limit=1"+
+        "&q="+
+        encodeURIComponent(query);
 
 
-const data =
-await response.json();
+        const response =
+        await fetch(
+            url,
+            {
+                headers:{
+                    "Accept-Language":"en"
+                }
+            }
+        );
 
 
-if(!data.length){
-
-showMessage(
-"Location not found"
-);
-
-return;
-
-}
+        const data =
+        await response.json();
 
 
-const result =
-data[0];
+        if(!data.length){
+
+            showMessage(
+                "Location not found"
+            );
+
+            return;
+
+        }
 
 
-const lat =
-parseFloat(result.lat);
-
-const lng =
-parseFloat(result.lon);
+        const result =
+        data[0];
 
 
-showLocation(
-lat,
-lng,
-result.display_name
-);
+        showLocation(
+            parseFloat(result.lat),
+            parseFloat(result.lon),
+            result.display_name
+        );
 
+    }
+    catch(error){
 
-}
-catch(error){
+        console.error(error);
 
-showMessage(
-"Location search failed"
-);
+        showMessage(
+            "Location search failed"
+        );
 
-}
+    }
 
 }
 
 
-/* =========================================================
-   SEARCH LAT LONG
-   ========================================================= */
+
+/* =====================================================
+   LAT LONG SEARCH
+   ===================================================== */
 
 function searchCoordinates(){
 
-const lat =
-parseFloat(
-document.getElementById(
-"searchLat"
-).value
-);
+    const lat =
+    parseFloat(
+        document.getElementById(
+            "searchLat"
+        ).value
+    );
 
 
-const lng =
-parseFloat(
-document.getElementById(
-"searchLng"
-).value
-);
+    const lng =
+    parseFloat(
+        document.getElementById(
+            "searchLng"
+        ).value
+    );
 
 
-if(
-isNaN(lat) ||
-isNaN(lng)
-){
+    if(
+        isNaN(lat) ||
+        isNaN(lng)
+    ){
 
-showMessage(
-"Enter valid Latitude and Longitude"
-);
+        showMessage(
+            "Enter valid coordinates"
+        );
 
-return;
+        return;
+
+    }
+
+
+    if(
+        lat < -90 ||
+        lat > 90 ||
+        lng < -180 ||
+        lng > 180
+    ){
+
+        showMessage(
+            "Invalid coordinates"
+        );
+
+        return;
+
+    }
+
+
+    showLocation(
+        lat,
+        lng,
+        "Selected Coordinates"
+    );
 
 }
 
 
-if(
-lat < -90 ||
-lat > 90 ||
-lng < -180 ||
-lng > 180
-){
 
-showMessage(
-"Invalid coordinates"
-);
-
-return;
-
-}
-
-
-showLocation(
-lat,
-lng,
-"Selected Coordinates"
-);
-
-}
-
-
-/* =========================================================
-   SHOW LOCATION ON MAP
-   ========================================================= */
+/* =====================================================
+   SHOW LOCATION
+   ===================================================== */
 
 function showLocation(
-lat,
-lng,
-name
+    lat,
+    lng,
+    name
 ){
 
-map.setView(
-[lat,lng],
-17
-);
+    map.setView(
+        [lat,lng],
+        17
+    );
 
 
-placeSearchMarker(
-lat,
-lng,
-name
-);
+    placeSearchMarker(
+        lat,
+        lng,
+        name
+    );
 
 
-/* PUT COORDINATES IN SITE FORM */
-
-document.getElementById(
-"latitude"
-).value =
-lat.toFixed(6);
+    document.getElementById(
+        "latitude"
+    ).value =
+    lat.toFixed(6);
 
 
-document.getElementById(
-"longitude"
-).value =
-lng.toFixed(6);
+    document.getElementById(
+        "longitude"
+    ).value =
+    lng.toFixed(6);
 
 
-document.getElementById(
-"searchLat"
-).value =
-lat.toFixed(6);
+    document.getElementById(
+        "searchLat"
+    ).value =
+    lat.toFixed(6);
 
 
-document.getElementById(
-"searchLng"
-).value =
-lng.toFixed(6);
+    document.getElementById(
+        "searchLng"
+    ).value =
+    lng.toFixed(6);
 
 
-/* PUT LOCATION NAME */
+    if(
+        name !== "Selected Coordinates"
+    ){
 
-if(
-name !== "Selected Coordinates"
-){
+        document.getElementById(
+            "siteLocation"
+        ).value =
+        name;
 
-document.getElementById(
-"siteLocation"
-).value =
-name;
+    }
+
+
+    const box =
+    document.getElementById(
+        "locationResult"
+    );
+
+
+    box.style.display =
+    "block";
+
+
+    box.innerHTML =
+    "<b>📍 Location Found</b><br>"+
+    escapeHTML(name)+
+    "<br><br>"+
+    "<b>Lat:</b> "+
+    lat.toFixed(6)+
+    "<br>"+
+    "<b>Long:</b> "+
+    lng.toFixed(6);
+
+
+    showMessage(
+        "Location highlighted"
+    );
 
 }
 
 
-/* RESULT BOX */
 
-const resultBox =
-document.getElementById(
-"locationResult"
-);
-
-resultBox.style.display =
-"block";
-
-resultBox.innerHTML =
-
-"<b>📍 Location Found</b><br>"+
-escapeHTML(name)+
-"<br><br>"+
-"<b>Latitude:</b> "+
-lat.toFixed(6)+
-"<br>"+
-"<b>Longitude:</b> "+
-lng.toFixed(6);
-
-
-showMessage(
-"Location highlighted on map"
-);
-
-}
-
-
-/* =========================================================
+/* =====================================================
    SEARCH MARKER
-   ========================================================= */
+   ===================================================== */
 
 function placeSearchMarker(
-lat,
-lng,
-name
+    lat,
+    lng,
+    name
 ){
 
-if(searchMarker){
+    if(searchMarker){
 
-searchMarker.remove();
+        searchMarker.remove();
+
+    }
+
+
+    searchMarker =
+    L.marker(
+        [lat,lng]
+    )
+    .addTo(map)
+    .bindPopup(
+        "<b>📍 "+
+        escapeHTML(name)+
+        "</b><br><br>"+
+        lat.toFixed(6)+
+        ", "+
+        lng.toFixed(6)
+    )
+    .openPopup();
 
 }
 
 
-searchMarker =
-L.marker(
-[lat,lng]
-)
-.addTo(map)
-.bindPopup(
-"<b>📍 "+
-escapeHTML(name)+
-"</b><br><br>"+
-lat.toFixed(6)+
-", "+
-lng.toFixed(6)
-)
-.openPopup();
 
-}
-
-
-/* =========================================================
-   CURRENT LOCATION
-   ========================================================= */
+/* =====================================================
+   MY LOCATION
+   ===================================================== */
 
 function useMyLocation(){
 
-if(!navigator.geolocation){
+    if(
+        !navigator.geolocation
+    ){
 
-showMessage(
-"Location is not supported"
-);
+        showMessage(
+            "Geolocation not supported"
+        );
 
-return;
+        return;
 
-}
-
-
-navigator.geolocation.getCurrentPosition(
-
-function(position){
-
-const lat =
-position.coords.latitude;
-
-const lng =
-position.coords.longitude;
+    }
 
 
-showLocation(
-lat,
-lng,
-"My Current Location"
-);
+    navigator.geolocation.getCurrentPosition(
 
-},
+        function(position){
 
-function(){
+            showLocation(
+                position.coords.latitude,
+                position.coords.longitude,
+                "My Current Location"
+            );
 
-showMessage(
-"Please allow location permission"
-);
+        },
 
-}
+        function(){
 
-);
+            showMessage(
+                "Please allow location permission"
+            );
+
+        }
+
+    );
 
 }
 
 
-/* =========================================================
+
+/* =====================================================
    SAVE SITE
-   ========================================================= */
+   ===================================================== */
 
 async function saveSite(){
 
-const siteName =
-document.getElementById(
-"siteName"
-).value.trim();
+    const name =
+    document.getElementById(
+        "siteName"
+    ).value.trim();
 
 
-const location =
-document.getElementById(
-"siteLocation"
-).value.trim();
+    const location =
+    document.getElementById(
+        "siteLocation"
+    ).value.trim();
 
 
-const lat =
-parseFloat(
-document.getElementById(
-"latitude"
-).value
-);
+    const lat =
+    parseFloat(
+        document.getElementById(
+            "latitude"
+        ).value
+    );
 
 
-const lng =
-parseFloat(
-document.getElementById(
-"longitude"
-).value
-);
+    const lng =
+    parseFloat(
+        document.getElementById(
+            "longitude"
+        ).value
+    );
 
 
-if(!siteName){
+    if(!name){
 
-showMessage(
-"Enter Site Name / ID"
-);
+        showMessage(
+            "Enter Site Name / ID"
+        );
 
-return;
+        return;
 
-}
-
-
-if(
-isNaN(lat) ||
-isNaN(lng)
-){
-
-showMessage(
-"Select a location first"
-);
-
-return;
-
-}
+    }
 
 
-let photo =
-currentPhoto;
+    if(
+        isNaN(lat) ||
+        isNaN(lng)
+    ){
+
+        showMessage(
+            "Search/select a location first"
+        );
+
+        return;
+
+    }
 
 
-const file =
-document.getElementById(
-"photo"
-).files[0];
+    let photo =
+    currentPhoto;
 
 
-if(file){
-
-photo =
-await convertPhoto(file);
-
-}
+    const photoFile =
+    document.getElementById(
+        "photo"
+    ).files[0];
 
 
-const editId =
-document.getElementById(
-"editId"
-).value;
+    if(photoFile){
+
+        photo =
+        await resizePhoto(
+            photoFile
+        );
+
+    }
 
 
-const site = {
-
-id:
-editId ||
-Date.now().toString(),
-
-siteName:
-siteName,
-
-location:
-location,
-
-latitude:
-lat,
-
-longitude:
-lng,
-
-width:
-parseFloat(
-document.getElementById(
-"width"
-).value
-) || 0,
-
-height:
-parseFloat(
-document.getElementById(
-"height"
-).value
-) || 0,
-
-mediaType:
-document.getElementById(
-"mediaType"
-).value,
-
-illumination:
-document.getElementById(
-"illumination"
-).value,
-
-rate:
-parseFloat(
-document.getElementById(
-"rate"
-).value
-) || 0,
-
-status:
-document.getElementById(
-"status"
-).value,
-
-photo:
-photo,
-
-remarks:
-document.getElementById(
-"remarks"
-).value,
-
-createdAt:
-new Date().toISOString()
-
-};
+    const editId =
+    document.getElementById(
+        "editId"
+    ).value;
 
 
-if(editId){
+    const site = {
 
-const index =
-sites.findIndex(
-function(item){
+        id:
+        editId ||
+        crypto.randomUUID(),
 
-return item.id === editId;
+        siteName:
+        name,
 
-}
-);
+        location:
+        location,
+
+        latitude:
+        lat,
+
+        longitude:
+        lng,
+
+        width:
+        Number(
+            document.getElementById(
+                "width"
+            ).value
+        ) || 0,
+
+        height:
+        Number(
+            document.getElementById(
+                "height"
+            ).value
+        ) || 0,
+
+        mediaType:
+        document.getElementById(
+            "mediaType"
+        ).value,
+
+        illumination:
+        document.getElementById(
+            "illumination"
+        ).value,
+
+        rate:
+        Number(
+            document.getElementById(
+                "rate"
+            ).value
+        ) || 0,
+
+        status:
+        document.getElementById(
+            "status"
+        ).value,
+
+        photo:
+        photo || "",
+
+        remarks:
+        document.getElementById(
+            "remarks"
+        ).value,
+
+        updated:
+        new Date().toISOString()
+
+    };
 
 
-if(index !== -1){
-
-sites[index] =
-site;
-
-}
-
-showMessage(
-"Site updated"
-);
-
-}
-else{
-
-sites.unshift(site);
-
-selectedSites.add(
-site.id
-);
-
-showMessage(
-"Site saved successfully"
-);
-
-}
+    await putSite(site);
 
 
-saveToBrowser();
+    const existingIndex =
+    sites.findIndex(
+        function(item){
+            return item.id === site.id;
+        }
+    );
 
-renderSites();
 
-renderMarkers();
+    if(existingIndex >= 0){
 
-clearForm();
+        sites[existingIndex] =
+        site;
+
+        showMessage(
+            "Site updated & permanently saved"
+        );
+
+    }
+    else{
+
+        sites.unshift(site);
+
+        selectedSites.add(
+            site.id
+        );
+
+        showMessage(
+            "Site permanently saved"
+        );
+
+    }
+
+
+    renderSites();
+
+    renderMarkers();
+
+    clearForm();
 
 }
 
 
-/* =========================================================
-   CONVERT PHOTO
-   ========================================================= */
 
-function convertPhoto(file){
+/* =====================================================
+   PHOTO RESIZE
+   ===================================================== */
 
-return new Promise(
-function(resolve,reject){
+function resizePhoto(file){
 
-const reader =
-new FileReader();
+    return new Promise(function(resolve,reject){
 
-
-reader.onload =
-function(event){
-
-const image =
-new Image();
+        const reader =
+        new FileReader();
 
 
-image.onload =
-function(){
+        reader.onload =
+        function(event){
 
-const canvas =
-document.createElement(
-"canvas"
-);
+            const img =
+            new Image();
 
 
-const max =
-1200;
+            img.onload =
+            function(){
+
+                const canvas =
+                document.createElement(
+                    "canvas"
+                );
 
 
-let width =
-image.width;
-
-let height =
-image.height;
+                const max =
+                1200;
 
 
-if(width > max){
+                let width =
+                img.width;
 
-height =
-height * max / width;
+                let height =
+                img.height;
 
-width =
-max;
+
+                if(width > max){
+
+                    height =
+                    height * max / width;
+
+                    width =
+                    max;
+
+                }
+
+
+                if(height > max){
+
+                    width =
+                    width * max / height;
+
+                    height =
+                    max;
+
+                }
+
+
+                canvas.width =
+                width;
+
+                canvas.height =
+                height;
+
+
+                const ctx =
+                canvas.getContext(
+                    "2d"
+                );
+
+
+                ctx.drawImage(
+                    img,
+                    0,
+                    0,
+                    width,
+                    height
+                );
+
+
+                resolve(
+                    canvas.toDataURL(
+                        "image/jpeg",
+                        .70
+                    )
+                );
+
+            };
+
+
+            img.onerror =
+            reject;
+
+            img.src =
+            event.target.result;
+
+        };
+
+
+        reader.onerror =
+        reject;
+
+        reader.readAsDataURL(file);
+
+    });
 
 }
 
 
-if(height > max){
 
-width =
-width * max / height;
-
-height =
-max;
-
-}
-
-
-canvas.width =
-width;
-
-canvas.height =
-height;
-
-
-const ctx =
-canvas.getContext(
-"2d"
-);
-
-
-ctx.drawImage(
-image,
-0,
-0,
-width,
-height
-);
-
-
-resolve(
-canvas.toDataURL(
-"image/jpeg",
-0.72
-)
-);
-
-};
-
-
-image.src =
-event.target.result;
-
-};
-
-
-reader.onerror =
-reject;
-
-
-reader.readAsDataURL(file);
-
-}
-);
-
-}
-
-
-/* =========================================================
+/* =====================================================
    PHOTO PREVIEW
-   ========================================================= */
+   ===================================================== */
 
 function previewPhoto(event){
 
-const file =
-event.target.files[0];
+    const file =
+    event.target.files[0];
 
 
-if(!file){
+    if(!file){
 
-return;
+        return;
+
+    }
+
+
+    const reader =
+    new FileReader();
+
+
+    reader.onload =
+    function(e){
+
+        const img =
+        document.getElementById(
+            "photoPreview"
+        );
+
+
+        img.src =
+        e.target.result;
+
+        img.style.display =
+        "block";
+
+        currentPhoto =
+        e.target.result;
+
+    };
+
+
+    reader.readAsDataURL(file);
 
 }
 
 
-const reader =
-new FileReader();
 
-
-reader.onload =
-function(e){
-
-const img =
-document.getElementById(
-"photoPreview"
-);
-
-
-img.src =
-e.target.result;
-
-img.style.display =
-"block";
-
-currentPhoto =
-e.target.result;
-
-};
-
-
-reader.readAsDataURL(file);
-
-}
-
-
-/* =========================================================
-   RENDER MAP MARKERS
-   ========================================================= */
+/* =====================================================
+   MAP MARKERS
+   ===================================================== */
 
 function renderMarkers(){
 
-markers.forEach(
-function(marker){
+    markers.forEach(
+        function(marker){
+            marker.remove();
+        }
+    );
 
-marker.remove();
+
+    markers = [];
+
+
+    sites.forEach(
+        function(site){
+
+            const marker =
+            L.marker(
+                [
+                    site.latitude,
+                    site.longitude
+                ]
+            )
+            .addTo(map);
+
+
+            marker.bindPopup(
+
+                "<b>"+
+                escapeHTML(
+                    site.siteName
+                )+
+                "</b><br>"+
+
+                escapeHTML(
+                    site.location || ""
+                )+
+
+                "<br><br>"+
+
+                "Size: "+
+                site.width+
+                " × "+
+                site.height+
+                " ft<br>"+
+
+                "Media: "+
+                escapeHTML(
+                    site.mediaType
+                )+
+                "<br>"+
+
+                "Rate: ₹"+
+                Number(
+                    site.rate
+                ).toLocaleString(
+                    "en-IN"
+                )+
+                "<br>"+
+
+                "Status: "+
+                escapeHTML(
+                    site.status
+                )
+
+            );
+
+
+            marker.on(
+                "click",
+                function(){
+
+                    selectedSites.add(
+                        site.id
+                    );
+
+                    renderSites();
+
+                }
+            );
+
+
+            markers.push(
+                marker
+            );
+
+        }
+    );
 
 }
-);
 
 
-markers = [];
 
-
-sites.forEach(
-function(site){
-
-const marker =
-L.marker(
-[
-site.latitude,
-site.longitude
-]
-)
-.addTo(map);
-
-
-marker.bindPopup(
-
-"<b>"+
-escapeHTML(site.siteName)+
-"</b><br>"+
-
-escapeHTML(
-site.location || ""
-)+
-
-"<br><br>"+
-
-"Size: "+
-site.width+
-" × "+
-site.height+
-" ft<br>"+
-
-"Media: "+
-escapeHTML(site.mediaType)+
-"<br>"+
-
-"Rate: ₹"+
-Number(
-site.rate || 0
-).toLocaleString(
-"en-IN"
-)+
-
-"<br>"+
-
-"Status: "+
-escapeHTML(site.status)
-
-);
-
-
-marker.on(
-"click",
-function(){
-
-selectedSites.add(
-site.id
-);
-
-renderSites();
-
-}
-);
-
-
-markers.push(
-marker
-);
-
-}
-
-);
-
-}
-
-
-/* =========================================================
-   RENDER SAVED SITES
-   ========================================================= */
+/* =====================================================
+   RENDER SITE LIST
+   ===================================================== */
 
 function renderSites(){
 
-const list =
-document.getElementById(
-"siteList"
-);
+    const list =
+    document.getElementById(
+        "siteList"
+    );
 
 
-const search =
-document.getElementById(
-"siteSearch"
-).value
-.toLowerCase();
+    const search =
+    document.getElementById(
+        "siteSearch"
+    ).value
+    .toLowerCase();
 
 
-const filtered =
-sites.filter(
-function(site){
+    const filtered =
+    sites.filter(
+        function(site){
 
-return (
+            return (
 
-site.siteName+
-" "+
-(site.location || "")+
-" "+
-site.mediaType
+                site.siteName+
+                " "+
+                (site.location || "")+
+                " "+
+                site.mediaType
 
-)
-.toLowerCase()
-.includes(search);
+            )
+            .toLowerCase()
+            .includes(search);
+
+        }
+    );
+
+
+    list.innerHTML =
+    "";
+
+
+    if(!filtered.length){
+
+        list.innerHTML =
+        "<div class='empty'>"+
+        "No saved sites"+
+        "</div>";
+
+    }
+
+
+    filtered.forEach(
+        function(site){
+
+            const div =
+            document.createElement(
+                "div"
+            );
+
+
+            div.className =
+            "site";
+
+
+            const selected =
+            selectedSites.has(
+                site.id
+            );
+
+
+            div.innerHTML =
+
+            "<div class='site-name'>"+
+            (selected ? "☑ " : "☐ ")+
+            escapeHTML(
+                site.siteName
+            )+
+            "</div>"+
+
+            "<div class='site-info'>"+
+            escapeHTML(
+                site.location || ""
+            )+
+            "<br>"+
+            site.latitude+
+            ", "+
+            site.longitude+
+            "<br>"+
+            site.width+
+            " × "+
+            site.height+
+            " ft | ₹"+
+            Number(
+                site.rate || 0
+            ).toLocaleString(
+                "en-IN"
+            )+
+            "</div>"+
+
+            "<div class='site-buttons'>"+
+
+            "<button class='btn-blue' "+
+            "onclick=\"viewSite('"+
+            site.id+
+            "')\">MAP</button>"+
+
+            "<button class='btn-gray' "+
+            "onclick=\"selectSite('"+
+            site.id+
+            "')\">"+
+            (selected ?
+            "UNSELECT":
+            "SELECT")+
+            "</button>"+
+
+            "<button class='btn-gray' "+
+            "onclick=\"editSite('"+
+            site.id+
+            "')\">EDIT</button>"+
+
+            "<button class='btn-red' "+
+            "onclick=\"deleteSite('"+
+            site.id+
+            "')\">DELETE</button>"+
+
+            "</div>";
+
+
+            list.appendChild(
+                div
+            );
+
+        }
+    );
+
+
+    document.getElementById(
+        "totalSites"
+    ).innerText =
+    sites.length;
+
+
+    document.getElementById(
+        "selectedSites"
+    ).innerText =
+    selectedSites.size;
 
 }
-);
 
 
-list.innerHTML =
-"";
 
-
-filtered.forEach(
-function(site){
-
-const div =
-document.createElement(
-"div"
-);
-
-
-div.className =
-"site";
-
-
-const selected =
-selectedSites.has(
-site.id
-);
-
-
-div.innerHTML =
-
-"<div class='site-title'>"+
-(selected ? "☑ " : "☐ ")+
-escapeHTML(
-site.siteName
-)+
-"</div>"+
-
-"<div class='small'>"+
-escapeHTML(
-site.location || ""
-)+
-"</div>"+
-
-"<div class='small'>"+
-site.latitude+
-", "+
-site.longitude+
-"</div>"+
-
-"<div class='small'>"+
-site.width+
-" × "+
-site.height+
-" ft | ₹"+
-Number(
-site.rate || 0
-).toLocaleString(
-"en-IN"
-)+
-"</div>"+
-
-"<div class='site-buttons'>"+
-
-"<button class='blue' onclick=\"viewSite('"+
-site.id+
-"')\">MAP</button>"+
-
-"<button class='gray' onclick=\"selectSite('"+
-site.id+
-"')\">"+
-(selected ? "UNSELECT" : "SELECT")+
-"</button>"+
-
-"<button class='gray' onclick=\"editSite('"+
-site.id+
-"')\">EDIT</button>"+
-
-"<button class='red' onclick=\"deleteSite('"+
-site.id+
-"')\">DELETE</button>"+
-
-"</div>";
-
-
-list.appendChild(
-div
-);
-
-}
-);
-
-
-document.getElementById(
-"totalSites"
-).innerText =
-sites.length;
-
-
-document.getElementById(
-"selectedSites"
-).innerText =
-selectedSites.size;
-
-}
-
-
-/* =========================================================
+/* =====================================================
    SELECT
-   ========================================================= */
+   ===================================================== */
 
 function selectSite(id){
 
-if(
-selectedSites.has(id)
-){
+    if(
+        selectedSites.has(id)
+    ){
 
-selectedSites.delete(id);
+        selectedSites.delete(id);
+
+    }
+    else{
+
+        selectedSites.add(id);
+
+    }
+
+
+    renderSites();
 
 }
-else{
-
-selectedSites.add(id);
-
-}
 
 
-renderSites();
 
-}
-
-
-/* =========================================================
-   VIEW SITE
-   ========================================================= */
+/* =====================================================
+   VIEW
+   ===================================================== */
 
 function viewSite(id){
 
-const site =
-sites.find(
-function(item){
+    const site =
+    sites.find(
+        function(item){
+            return item.id === id;
+        }
+    );
 
-return item.id === id;
+
+    if(!site){
+
+        return;
+
+    }
+
+
+    map.setView(
+        [
+            site.latitude,
+            site.longitude
+        ],
+        17
+    );
+
+
+    placeSearchMarker(
+        site.latitude,
+        site.longitude,
+        site.siteName
+    );
+
+
+    selectedSites.add(
+        site.id
+    );
+
+
+    renderSites();
 
 }
-);
 
 
-if(!site){
 
-return;
-
-}
-
-
-map.setView(
-[
-site.latitude,
-site.longitude
-],
-17
-);
-
-
-placeSearchMarker(
-site.latitude,
-site.longitude,
-site.siteName
-);
-
-
-selectedSites.add(id);
-
-renderSites();
-
-}
-
-
-/* =========================================================
-   EDIT SITE
-   ========================================================= */
+/* =====================================================
+   EDIT
+   ===================================================== */
 
 function editSite(id){
 
-const site =
-sites.find(
-function(item){
-
-return item.id === id;
-
-}
-);
+    const site =
+    sites.find(
+        function(item){
+            return item.id === id;
+        }
+    );
 
 
-if(!site){
+    if(!site){
 
-return;
+        return;
 
-}
-
-
-document.getElementById(
-"editId"
-).value =
-site.id;
+    }
 
 
-document.getElementById(
-"siteName"
-).value =
-site.siteName;
+    document.getElementById(
+        "editId"
+    ).value =
+    site.id;
 
 
-document.getElementById(
-"siteLocation"
-).value =
-site.location;
+    document.getElementById(
+        "siteName"
+    ).value =
+    site.siteName;
 
 
-document.getElementById(
-"latitude"
-).value =
-site.latitude;
+    document.getElementById(
+        "siteLocation"
+    ).value =
+    site.location || "";
 
 
-document.getElementById(
-"longitude"
-).value =
-site.longitude;
+    document.getElementById(
+        "latitude"
+    ).value =
+    site.latitude;
 
 
-document.getElementById(
-"width"
-).value =
-site.width;
+    document.getElementById(
+        "longitude"
+    ).value =
+    site.longitude;
 
 
-document.getElementById(
-"height"
-).value =
-site.height;
+    document.getElementById(
+        "width"
+    ).value =
+    site.width;
 
 
-document.getElementById(
-"mediaType"
-).value =
-site.mediaType;
+    document.getElementById(
+        "height"
+    ).value =
+    site.height;
 
 
-document.getElementById(
-"illumination"
-).value =
-site.illumination;
+    document.getElementById(
+        "mediaType"
+    ).value =
+    site.mediaType;
 
 
-document.getElementById(
-"rate"
-).value =
-site.rate;
+    document.getElementById(
+        "illumination"
+    ).value =
+    site.illumination;
 
 
-document.getElementById(
-"status"
-).value =
-site.status;
+    document.getElementById(
+        "rate"
+    ).value =
+    site.rate;
 
 
-document.getElementById(
-"remarks"
-).value =
-site.remarks || "";
+    document.getElementById(
+        "status"
+    ).value =
+    site.status;
 
 
-currentPhoto =
-site.photo || "";
+    document.getElementById(
+        "remarks"
+    ).value =
+    site.remarks || "";
 
 
-if(site.photo){
-
-const image =
-document.getElementById(
-"photoPreview"
-);
-
-image.src =
-site.photo;
-
-image.style.display =
-"block";
-
-}
+    currentPhoto =
+    site.photo || "";
 
 
-document.getElementById(
-"formTitle"
-).innerText =
-"✏️ Edit OOH Site";
+    if(site.photo){
+
+        const img =
+        document.getElementById(
+            "photoPreview"
+        );
+
+        img.src =
+        site.photo;
+
+        img.style.display =
+        "block";
+
+    }
 
 
-viewSite(id);
+    document.getElementById(
+        "formTitle"
+    ).innerText =
+    "✏️ Edit OOH Site";
+
+
+    viewSite(id);
 
 }
 
 
-/* =========================================================
+
+/* =====================================================
    DELETE
-   ========================================================= */
+   ===================================================== */
 
-function deleteSite(id){
+async function deleteSite(id){
 
-if(
-!confirm(
-"Delete this site?"
-)
-){
+    const confirmed =
+    confirm(
+        "Delete this site permanently?"
+    );
 
-return;
+
+    if(!confirmed){
+
+        return;
+
+    }
+
+
+    await removeSite(id);
+
+
+    sites =
+    sites.filter(
+        function(site){
+            return site.id !== id;
+        }
+    );
+
+
+    selectedSites.delete(id);
+
+
+    renderSites();
+
+    renderMarkers();
+
+
+    showMessage(
+        "Site deleted"
+    );
 
 }
 
 
-sites =
-sites.filter(
-function(site){
 
-return site.id !== id;
-
-}
-);
-
-
-selectedSites.delete(id);
-
-saveToBrowser();
-
-renderSites();
-
-renderMarkers();
-
-showMessage(
-"Site deleted"
-);
-
-}
-
-
-/* =========================================================
-   CLEAR
-   ========================================================= */
+/* =====================================================
+   CLEAR FORM
+   ===================================================== */
 
 function clearForm(){
 
-document.getElementById(
-"editId"
-).value =
-"";
+    document.getElementById(
+        "editId"
+    ).value =
+    "";
 
 
-document.getElementById(
-"siteName"
-).value =
-"";
+    document.getElementById(
+        "siteName"
+    ).value =
+    "";
 
 
-document.getElementById(
-"siteLocation"
-).value =
-"";
+    document.getElementById(
+        "siteLocation"
+    ).value =
+    "";
 
 
-document.getElementById(
-"latitude"
-).value =
-"";
+    document.getElementById(
+        "latitude"
+    ).value =
+    "";
 
 
-document.getElementById(
-"longitude"
-).value =
-"";
+    document.getElementById(
+        "longitude"
+    ).value =
+    "";
 
 
-document.getElementById(
-"remarks"
-).value =
-"";
+    document.getElementById(
+        "remarks"
+    ).value =
+    "";
 
 
-document.getElementById(
-"photo"
-).value =
-"";
+    document.getElementById(
+        "photo"
+    ).value =
+    "";
 
 
-document.getElementById(
-"photoPreview"
-).style.display =
-"none";
+    document.getElementById(
+        "photoPreview"
+    ).style.display =
+    "none";
 
 
-document.getElementById(
-"formTitle"
-).innerText =
-"➕ Add OOH Site";
+    document.getElementById(
+        "formTitle"
+    ).innerText =
+    "➕ Add OOH Site";
 
 
-currentPhoto =
-"";
-
-}
-
-
-/* =========================================================
-   ESCAPE HTML
-   ========================================================= */
-
-function escapeHTML(text){
-
-return String(text || "")
-.replace(
-/[&<>"']/g,
-function(character){
-
-return {
-
-"&":"&amp;",
-"<":"&lt;",
-">":"&gt;",
-'"':"&quot;",
-"'":"&#039;"
-
-}[character];
-
-}
-);
+    currentPhoto =
+    "";
 
 }
 
 
-/* =========================================================
-   EXPORT EXCEL
-   ========================================================= */
+
+/* =====================================================
+   EXCEL EXPORT
+   ===================================================== */
 
 function exportExcel(){
 
-const data =
-sites.filter(
-function(site){
+    const data =
+    sites.filter(
+        function(site){
 
-return selectedSites.size === 0 ||
-selectedSites.has(site.id);
+            return selectedSites.size === 0 ||
+                   selectedSites.has(site.id);
+
+        }
+    );
+
+
+    if(!data.length){
+
+        showMessage(
+            "No sites to export"
+        );
+
+        return;
+
+    }
+
+
+    if(
+        typeof XLSX === "undefined"
+    ){
+
+        alert(
+            "Excel library did not load. Refresh the page."
+        );
+
+        return;
+
+    }
+
+
+    const rows =
+    data.map(
+        function(site,index){
+
+            return {
+
+                "S.No":
+                index + 1,
+
+                "Site Name / ID":
+                site.siteName,
+
+                "Location":
+                site.location,
+
+                "Latitude":
+                site.latitude,
+
+                "Longitude":
+                site.longitude,
+
+                "Width (ft)":
+                site.width,
+
+                "Height (ft)":
+                site.height,
+
+                "Media Type":
+                site.mediaType,
+
+                "Illumination":
+                site.illumination,
+
+                "Monthly Rate":
+                site.rate,
+
+                "Status":
+                site.status,
+
+                "Remarks":
+                site.remarks,
+
+                "Google Maps":
+                "https://www.google.com/maps?q="+
+                site.latitude+
+                ","+
+                site.longitude
+
+            };
+
+        }
+    );
+
+
+    const worksheet =
+    XLSX.utils.json_to_sheet(
+        rows
+    );
+
+
+    const workbook =
+    XLSX.utils.book_new();
+
+
+    XLSX.utils.book_append_sheet(
+        workbook,
+        worksheet,
+        "OOH Sites"
+    );
+
+
+    XLSX.writeFile(
+        workbook,
+        "My_Vision_OOH_Sites.xlsx"
+    );
+
+
+    showMessage(
+        "Excel downloaded"
+    );
 
 }
-);
 
 
-if(data.length === 0){
 
-showMessage(
-"No sites available"
-);
-
-return;
-
-}
-
-
-const rows =
-data.map(
-function(site,index){
-
-return {
-
-"S.No":
-index + 1,
-
-"Site Name / ID":
-site.siteName,
-
-"Location":
-site.location,
-
-"Latitude":
-site.latitude,
-
-"Longitude":
-site.longitude,
-
-"Width (ft)":
-site.width,
-
-"Height (ft)":
-site.height,
-
-"Media Type":
-site.mediaType,
-
-"Illumination":
-site.illumination,
-
-"Monthly Rate":
-site.rate,
-
-"Status":
-site.status,
-
-"Remarks":
-site.remarks,
-
-"Google Maps":
-"https://www.google.com/maps?q="+
-site.latitude+
-","+
-site.longitude
-
-};
-
-}
-);
-
-
-const worksheet =
-XLSX.utils.json_to_sheet(
-rows
-);
-
-
-const workbook =
-XLSX.utils.book_new();
-
-
-XLSX.utils.book_append_sheet(
-workbook,
-worksheet,
-"OOH Sites"
-);
-
-
-XLSX.writeFile(
-workbook,
-"My_Vision_OOH_Sites.xlsx"
-);
-
-
-showMessage(
-"Excel downloaded"
-);
-
-}
-
-
-/* =========================================================
-   EXPORT PPT
-   ========================================================= */
+/* =====================================================
+   PPT EXPORT
+   ===================================================== */
 
 async function exportPPT(){
 
-const data =
-sites.filter(
-function(site){
+    const data =
+    sites.filter(
+        function(site){
 
-return selectedSites.size === 0 ||
-selectedSites.has(site.id);
+            return selectedSites.size === 0 ||
+                   selectedSites.has(site.id);
+
+        }
+    );
+
+
+    if(!data.length){
+
+        showMessage(
+            "No sites to export"
+        );
+
+        return;
+
+    }
+
+
+    if(
+        typeof pptxgen === "undefined"
+    ){
+
+        alert(
+            "PowerPoint library is not loaded. Please refresh the page."
+        );
+
+        return;
+
+    }
+
+
+    try{
+
+        const ppt =
+        new pptxgen();
+
+
+        ppt.layout =
+        "LAYOUT_WIDE";
+
+
+        ppt.author =
+        "MY VISION OOH";
+
+
+        ppt.company =
+        "MY VISION OOH";
+
+
+        ppt.subject =
+        "OOH Site Proposal";
+
+
+        ppt.title =
+        document.getElementById(
+            "campaign"
+        ).value ||
+        "OOH Site Proposal";
+
+
+        /* COVER */
+
+        const cover =
+        ppt.addSlide();
+
+
+        cover.background =
+        {
+            color:"111827"
+        };
+
+
+        cover.addText(
+            "MY VISION OOH",
+            {
+                x:.7,
+                y:2,
+                w:11,
+                h:.6,
+                fontSize:30,
+                bold:true,
+                color:"FFFFFF"
+            }
+        );
+
+
+        cover.addText(
+            document.getElementById(
+                "campaign"
+            ).value ||
+            "OOH Site Proposal",
+            {
+                x:.7,
+                y:2.8,
+                w:11,
+                h:.5,
+                fontSize:20,
+                color:"38BDF8"
+            }
+        );
+
+
+        cover.addText(
+            data.length+
+            " Selected Sites",
+            {
+                x:.7,
+                y:3.5,
+                w:11,
+                h:.4,
+                fontSize:15,
+                color:"FFFFFF"
+            }
+        );
+
+
+        /* SITE SLIDES */
+
+        data.forEach(
+            function(site,index){
+
+                const slide =
+                ppt.addSlide();
+
+
+                slide.addText(
+                    (index+1)+
+                    ". "+
+                    site.siteName,
+                    {
+                        x:.5,
+                        y:.35,
+                        w:7,
+                        h:.5,
+                        fontSize:23,
+                        bold:true
+                    }
+                );
+
+
+                slide.addText(
+                    site.location ||
+                    "Location not specified",
+                    {
+                        x:.5,
+                        y:.9,
+                        w:7,
+                        h:.35,
+                        fontSize:14
+                    }
+                );
+
+
+                /* PHOTO */
+
+                if(site.photo){
+
+                    try{
+
+                        slide.addImage(
+                            {
+                                data:
+                                site.photo,
+
+                                x:.5,
+                                y:1.4,
+                                w:5.6,
+                                h:3.8
+                            }
+                        );
+
+                    }
+                    catch(error){
+
+                        console.log(
+                            "Photo error:",
+                            error
+                        );
+
+                    }
+
+                }
+
+
+                /* DETAILS */
+
+                const details =
+
+                "LATITUDE: "+
+                site.latitude+
+
+                "\nLONGITUDE: "+
+                site.longitude+
+
+                "\n\nSIZE: "+
+                site.width+
+                " × "+
+                site.height+
+                " FT"+
+
+                "\n\nMEDIA: "+
+                site.mediaType+
+
+                "\nILLUMINATION: "+
+                site.illumination+
+
+                "\n\nMONTHLY RATE: ₹"+
+                Number(
+                    site.rate || 0
+                ).toLocaleString(
+                    "en-IN"
+                )+
+
+                "\nSTATUS: "+
+                site.status+
+
+                "\n\nREMARKS: "+
+                (site.remarks || "-");
+
+
+                slide.addText(
+                    details,
+                    {
+                        x:6.5,
+                        y:1.4,
+                        w:5.7,
+                        h:3.8,
+                        fontSize:14,
+                        breakLine:false,
+                        valign:"top"
+                    }
+                );
+
+
+                /* GOOGLE MAP */
+
+                slide.addText(
+                    "📍 Open Location in Google Maps",
+                    {
+                        x:6.5,
+                        y:5.45,
+                        w:4.5,
+                        h:.35,
+                        fontSize:12,
+                        color:"0563C1",
+                        underline:{
+                            style:"sng"
+                        },
+                        hyperlink:{
+                            url:
+                            "https://www.google.com/maps?q="+
+                            site.latitude+
+                            ","+
+                            site.longitude
+                        }
+                    }
+                );
+
+            }
+        );
+
+
+        await ppt.writeFile(
+            {
+                fileName:
+                "My_Vision_OOH_Proposal.pptx"
+            }
+        );
+
+
+        showMessage(
+            "PPT downloaded successfully"
+        );
+
+    }
+    catch(error){
+
+        console.error(
+            "PPT ERROR:",
+            error
+        );
+
+
+        alert(
+            "PPT export failed: "+
+            error.message
+        );
+
+    }
 
 }
-);
 
 
-if(data.length === 0){
 
-showMessage(
-"No sites available"
-);
+/* =====================================================
+   HTML SECURITY
+   ===================================================== */
 
-return;
+function escapeHTML(text){
 
-}
+    return String(
+        text || ""
+    )
+    .replace(
+        /[&<>"']/g,
+        function(character){
 
+            return {
 
-const ppt =
-new pptxgen();
+                "&":"&amp;",
+                "<":"&lt;",
+                ">":"&gt;",
+                '"':"&quot;",
+                "'":"&#039;"
 
+            }[character];
 
-ppt.layout =
-"LAYOUT_WIDE";
-
-
-ppt.author =
-"MY VISION OOH";
-
-
-/* COVER */
-
-let cover =
-ppt.addSlide();
-
-
-cover.background =
-{
-color:"111827"
-};
-
-
-cover.addText(
-"MY VISION OOH",
-{
-x:0.7,
-y:2,
-w:11,
-h:0.6,
-fontSize:30,
-bold:true,
-color:"FFFFFF"
-}
-);
-
-
-cover.addText(
-document.getElementById(
-"campaign"
-).value ||
-"OOH Site Proposal",
-{
-x:0.7,
-y:2.8,
-w:11,
-h:0.5,
-fontSize:20,
-color:"38BDF8"
-}
-);
-
-
-cover.addText(
-data.length+
-" Selected Sites",
-{
-x:0.7,
-y:3.5,
-w:11,
-h:0.4,
-fontSize:15,
-color:"FFFFFF"
-}
-);
-
-
-/* SITE SLIDES */
-
-data.forEach(
-function(site,index){
-
-let slide =
-ppt.addSlide();
-
-
-slide.addText(
-(index+1)+
-". "+
-site.siteName,
-{
-x:0.5,
-y:0.4,
-w:7,
-h:0.5,
-fontSize:23,
-bold:true
-}
-);
-
-
-slide.addText(
-site.location || "",
-{
-x:0.5,
-y:0.95,
-w:7,
-h:0.35,
-fontSize:14
-}
-);
-
-
-/* PHOTO */
-
-if(site.photo){
-
-try{
-
-slide.addImage(
-{
-data:site.photo,
-x:0.5,
-y:1.5,
-w:5.7,
-h:3.7
-}
-);
-
-}
-catch(error){}
+        }
+    );
 
 }
 
 
-/* DETAILS */
 
-slide.addText(
+/* =====================================================
+   START APPLICATION
+   ===================================================== */
 
-"Latitude: "+
-site.latitude+
+async function startApp(){
 
-"\nLongitude: "+
-site.longitude+
+    try{
 
-"\n\nSize: "+
-site.width+
-" × "+
-site.height+
-" ft"+
-
-"\n\nMedia Type: "+
-site.mediaType+
-
-"\nIllumination: "+
-site.illumination+
-
-"\n\nMonthly Rate: ₹"+
-Number(
-site.rate || 0
-).toLocaleString(
-"en-IN"
-)+
-
-"\nStatus: "+
-site.status+
-
-"\n\nRemarks: "+
-(site.remarks || "-"),
-
-{
-
-x:6.7,
-y:1.5,
-w:5.5,
-h:3.7,
-fontSize:14
-
-}
-
-);
+        await openDatabase();
 
 
-/* GOOGLE MAP LINK */
-
-slide.addText(
-"Open in Google Maps",
-{
-
-x:6.7,
-y:5.3,
-w:3,
-h:0.3,
-fontSize:12,
-color:"0563C1",
-underline:
-{
-style:"sng"
-},
-
-hyperlink:
-{
-url:
-"https://www.google.com/maps?q="+
-site.latitude+
-","+
-site.longitude
-}
-
-}
-);
-
-}
-);
+        sites =
+        await getAllSites();
 
 
-await ppt.writeFile(
-{
-fileName:
-"My_Vision_OOH_Proposal.pptx"
-}
-);
+        initializeMap();
 
 
-showMessage(
-"PPT downloaded"
-);
+        renderSites();
+
+
+        renderMarkers();
+
+
+        showMessage(
+            sites.length+
+            " saved site(s) loaded"
+        );
+
+    }
+    catch(error){
+
+        console.error(error);
+
+        alert(
+            "Could not open browser storage. "+
+            "Please use the website on a normal HTTPS address."
+        );
+
+    }
 
 }
 
 
-/* =========================================================
-   START
-   ========================================================= */
-
-initializeMap();
-
-renderSites();
-
-renderMarkers();
+startApp();
 
 </script>
 
