@@ -4,451 +4,653 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-<title>My Vision OOH</title>
+<title>MY VISION OOH</title>
 
-<link
-  rel="stylesheet"
-  href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css"
-/>
-
-<script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
-
-<script src="https://cdn.jsdelivr.net/npm/xlsx@0.18.5/dist/xlsx.full.min.js"></script>
-
-<script src="https://cdn.jsdelivr.net/npm/pptxgenjs@3.12.0/dist/pptxgen.bundle.js"></script>
+<link rel="stylesheet"
+href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css">
 
 <style>
-* {
-  box-sizing: border-box;
+*{box-sizing:border-box}
+
+body{
+margin:0;
+font-family:Arial,Helvetica,sans-serif;
+background:#f4f6f8;
+color:#172033;
 }
 
-body {
-  margin: 0;
-  font-family: Arial, sans-serif;
-  background: #f3f4f6;
-  color: #111827;
+header{
+height:60px;
+background:#111827;
+color:white;
+display:flex;
+align-items:center;
+padding:0 18px;
+gap:12px;
 }
 
-header {
-  height: 65px;
-  background: #111827;
-  color: white;
-  display: flex;
-  align-items: center;
-  padding: 0 20px;
-  font-size: 21px;
-  font-weight: bold;
+.logo{
+font-size:21px;
+font-weight:bold;
 }
 
-.logo {
-  color: #38bdf8;
-  margin-left: 6px;
+.logo span{
+color:#19a7e0;
 }
 
-.header-buttons {
-  margin-left: auto;
-  display: flex;
-  gap: 8px;
+.header-right{
+margin-left:auto;
+display:flex;
+align-items:center;
+gap:8px;
 }
 
-button {
-  border: none;
-  padding: 10px 14px;
-  border-radius: 7px;
-  cursor: pointer;
-  font-weight: bold;
+button{
+border:0;
+border-radius:7px;
+padding:10px 14px;
+font-weight:bold;
+cursor:pointer;
 }
 
-.blue {
-  background: #0284c7;
-  color: white;
+.blue{
+background:#0787c8;
+color:white;
 }
 
-.green {
-  background: #16a34a;
-  color: white;
+.green{
+background:#16a34a;
+color:white;
 }
 
-.white {
-  background: white;
-  color: #111827;
-  border: 1px solid #d1d5db;
+.red{
+background:#dc2626;
+color:white;
 }
 
-.app {
-  display: grid;
-  grid-template-columns: 350px 1fr;
-  height: calc(100vh - 65px);
+.gray{
+background:#e5e7eb;
+color:#111827;
 }
 
-.sidebar {
-  background: white;
-  padding: 15px;
-  overflow-y: auto;
-  border-right: 1px solid #ddd;
+.layout{
+display:grid;
+grid-template-columns:360px 1fr;
+height:calc(100vh - 60px);
 }
 
-.card {
-  border: 1px solid #e5e7eb;
-  border-radius: 10px;
-  padding: 14px;
-  margin-bottom: 12px;
+.sidebar{
+background:white;
+border-right:1px solid #ddd;
+overflow:auto;
+padding:12px;
 }
 
-.card h3 {
-  margin-top: 0;
+#map{
+height:100%;
+width:100%;
 }
 
-label {
-  display: block;
-  margin-top: 9px;
-  margin-bottom: 4px;
-  font-size: 12px;
-  font-weight: bold;
-  color: #4b5563;
+.card{
+background:white;
+border:1px solid #ddd;
+border-radius:10px;
+padding:13px;
+margin-bottom:12px;
 }
 
-input,
-select,
-textarea {
-  width: 100%;
-  padding: 9px;
-  border: 1px solid #d1d5db;
-  border-radius: 6px;
+h2,h3{
+margin:4px 0 12px;
 }
 
-textarea {
-  resize: vertical;
+label{
+display:block;
+font-size:12px;
+font-weight:bold;
+margin:8px 0 4px;
 }
 
-.row {
-  display: grid;
-  grid-template-columns: 1fr 1fr;
-  gap: 7px;
+input,select,textarea{
+width:100%;
+padding:9px;
+border:1px solid #cbd5e1;
+border-radius:6px;
+font-size:14px;
 }
 
-.stats {
-  display: grid;
-  grid-template-columns: 1fr 1fr;
-  gap: 8px;
-  margin-top: 10px;
+textarea{
+height:70px;
+resize:vertical;
 }
 
-.stat {
-  background: #f8fafc;
-  padding: 10px;
-  border-radius: 7px;
+.row{
+display:grid;
+grid-template-columns:1fr 1fr;
+gap:7px;
 }
 
-.stat strong {
-  display: block;
-  font-size: 22px;
+.search-row{
+display:grid;
+grid-template-columns:1fr auto;
+gap:7px;
 }
 
-#map {
-  width: 100%;
-  height: 100%;
+.site{
+border:1px solid #ddd;
+border-radius:7px;
+padding:9px;
+margin-top:7px;
 }
 
-.site {
-  display: flex;
-  align-items: center;
-  gap: 8px;
-  padding: 8px;
-  margin-top: 7px;
-  border: 1px solid #e5e7eb;
-  border-radius: 8px;
+.site-name{
+font-weight:bold;
+font-size:14px;
 }
 
-.site-photo {
-  width: 55px;
-  height: 45px;
-  object-fit: cover;
-  border-radius: 5px;
+.small{
+font-size:11px;
+color:#667085;
+margin-top:3px;
 }
 
-.site-info {
-  flex: 1;
-  font-size: 11px;
+.site-buttons{
+display:flex;
+gap:5px;
+margin-top:7px;
 }
 
-.site-info strong {
-  display: block;
-  font-size: 12px;
+.site-buttons button{
+font-size:11px;
+padding:6px 8px;
 }
 
-#message {
-  position: fixed;
-  right: 20px;
-  bottom: 20px;
-  background: #111827;
-  color: white;
-  padding: 12px 16px;
-  border-radius: 8px;
-  display: none;
-  z-index: 9999;
+.stats{
+display:grid;
+grid-template-columns:1fr 1fr;
+gap:8px;
+margin-top:10px;
 }
 
-@media(max-width:800px) {
+.stat{
+background:#f4f6f8;
+padding:10px;
+border-radius:7px;
+}
 
-  .app {
-    grid-template-columns: 1fr;
-    height: auto;
-  }
+.stat b{
+display:block;
+font-size:20px;
+}
 
-  .sidebar {
-    order: 2;
-  }
+#message{
+position:fixed;
+bottom:20px;
+left:50%;
+transform:translateX(-50%);
+background:#111827;
+color:white;
+padding:10px 18px;
+border-radius:7px;
+display:none;
+z-index:9999;
+}
 
-  #map {
-    height: 60vh;
-  }
+#loginScreen{
+position:fixed;
+inset:0;
+background:#111827;
+display:flex;
+align-items:center;
+justify-content:center;
+z-index:99999;
+}
+
+.login-box{
+background:white;
+width:360px;
+max-width:90%;
+padding:25px;
+border-radius:12px;
+}
+
+.photo-preview{
+max-width:100%;
+max-height:130px;
+margin-top:7px;
+border-radius:7px;
+display:none;
+}
+
+@media(max-width:800px){
+
+.layout{
+grid-template-columns:1fr;
+height:auto;
+}
+
+.sidebar{
+height:auto;
+}
+
+#map{
+height:60vh;
+}
+
 }
 </style>
 </head>
 
 <body>
 
+<!-- LOGIN -->
+
+<div id="loginScreen">
+
+<div class="login-box">
+
+<h2>MY VISION <span style="color:#0787c8">OOH</span></h2>
+
+<p class="small">
+Login to save your OOH sites permanently online.
+</p>
+
+<label>Email</label>
+
+<input
+id="email"
+type="email"
+placeholder="your@email.com"
+>
+
+<label>Password</label>
+
+<input
+id="password"
+type="password"
+placeholder="Minimum 6 characters"
+>
+
+<br><br>
+
+<button
+class="blue"
+style="width:100%"
+onclick="login()"
+>
+LOGIN
+</button>
+
+<br><br>
+
+<button
+class="gray"
+style="width:100%"
+onclick="signup()"
+>
+CREATE FREE ACCOUNT
+</button>
+
+<p id="loginMessage" class="small"></p>
+
+</div>
+
+</div>
+
+
+<!-- HEADER -->
+
 <header>
 
-  MY VISION
-  <span class="logo">OOH</span>
+<div class="logo">
+MY VISION <span>OOH</span>
+</div>
 
-  <div class="header-buttons">
+<div class="header-right">
 
-    <button class="white" onclick="exportExcel()">
-      Export Excel
-    </button>
+<span id="userEmail"></span>
 
-    <button class="green" onclick="exportPPT()">
-      Export PPT
-    </button>
+<button
+class="gray"
+onclick="logout()"
+>
+Logout
+</button>
 
-  </div>
+<button
+class="green"
+onclick="exportExcel()"
+>
+Export Excel
+</button>
+
+<button
+class="green"
+onclick="exportPPT()"
+>
+Export PPT
+</button>
+
+</div>
 
 </header>
 
 
-<div class="app">
+<div class="layout">
 
-  <aside class="sidebar">
+<!-- SIDEBAR -->
 
-    <div class="card">
+<div class="sidebar">
 
-      <h3>Campaign</h3>
 
-      <input
-        id="campaign"
-        placeholder="Client / Campaign Name"
-      >
+<!-- CAMPAIGN -->
 
-      <div class="stats">
+<div class="card">
 
-        <div class="stat">
-          <small>Total Sites</small>
-          <strong id="totalSites">0</strong>
-        </div>
+<h3>Campaign</h3>
 
-        <div class="stat">
-          <small>Selected</small>
-          <strong id="selectedSites">0</strong>
-        </div>
+<input
+id="campaign"
+placeholder="Client / Campaign Name"
+>
 
-      </div>
+<div class="stats">
 
-    </div>
+<div class="stat">
+Total Sites
+<b id="totalSites">0</b>
+</div>
 
+<div class="stat">
+Selected
+<b id="selectedSites">0</b>
+</div>
 
-    <div class="card">
+</div>
 
-      <h3>Add OOH Site</h3>
+</div>
 
-      <small>
-        Click anywhere on the map to select the billboard location.
-      </small>
 
+<!-- SEARCH -->
 
-      <label>Site Name / ID</label>
+<div class="card">
 
-      <input
-        id="siteName"
-        placeholder="MUM-001"
-      >
+<h3>📍 Find Location</h3>
 
+<label>
+Latitude
+</label>
 
-      <label>Location</label>
+<input
+id="searchLat"
+type="number"
+step="any"
+placeholder="19.1197"
+>
 
-      <input
-        id="siteLocation"
-        placeholder="Andheri East, Mumbai"
-      >
+<label>
+Longitude
+</label>
 
+<input
+id="searchLng"
+type="number"
+step="any"
+placeholder="72.8468"
+>
 
-      <div class="row">
+<button
+class="blue"
+style="width:100%;margin-top:8px"
+onclick="locateCoordinates()"
+>
+📍 LOCATE ON MAP
+</button>
 
-        <div>
+<br>
 
-          <label>Width (ft)</label>
+<button
+class="gray"
+style="width:100%;margin-top:7px"
+onclick="useMyLocation()"
+>
+📌 USE MY CURRENT LOCATION
+</button>
 
-          <input
-            id="width"
-            type="number"
-            placeholder="40"
-          >
+<p class="small">
+You can also click directly on the map to get coordinates.
+</p>
 
-        </div>
+</div>
 
-        <div>
 
-          <label>Height (ft)</label>
+<!-- ADD SITE -->
 
-          <input
-            id="height"
-            type="number"
-            placeholder="40"
-          >
+<div class="card">
 
-        </div>
+<h3 id="formTitle">
+➕ Add OOH Site
+</h3>
 
-      </div>
+<input
+id="editId"
+type="hidden"
+>
 
+<label>
+Site Name / ID
+</label>
 
-      <div class="row">
+<input
+id="siteName"
+placeholder="MUM-001"
+>
 
-        <div>
+<label>
+Location
+</label>
 
-          <label>Media Type</label>
+<input
+id="siteLocation"
+placeholder="Andheri West, Mumbai"
+>
 
-          <select id="mediaType">
+<div class="row">
 
-            <option>Billboard</option>
-            <option>Unipole</option>
-            <option>Gantry</option>
-            <option>Digital</option>
-            <option>Bus Shelter</option>
+<div>
 
-          </select>
+<label>Latitude</label>
 
-        </div>
+<input
+id="latitude"
+type="number"
+step="any"
+>
 
+</div>
 
-        <div>
+<div>
 
-          <label>Illumination</label>
+<label>Longitude</label>
 
-          <select id="illumination">
+<input
+id="longitude"
+type="number"
+step="any"
+>
 
-            <option>Lit</option>
-            <option>Non-Lit</option>
+</div>
 
-          </select>
+</div>
 
-        </div>
 
-      </div>
+<div class="row">
 
+<div>
 
-      <div class="row">
+<label>Width (ft)</label>
 
-        <div>
+<input
+id="width"
+type="number"
+value="40"
+>
 
-          <label>Monthly Rate ₹</label>
+</div>
 
-          <input
-            id="rate"
-            type="number"
-            placeholder="50000"
-          >
+<div>
 
-        </div>
+<label>Height (ft)</label>
 
+<input
+id="height"
+type="number"
+value="40"
+>
 
-        <div>
+</div>
 
-          <label>Status</label>
+</div>
 
-          <select id="status">
 
-            <option>Available</option>
-            <option>Booked</option>
-            <option>Hold</option>
+<div class="row">
 
-          </select>
+<div>
 
-        </div>
+<label>Media Type</label>
 
-      </div>
+<select id="mediaType">
 
+<option>Billboard</option>
+<option>Unipole</option>
+<option>Gantries</option>
+<option>Bus Shelter</option>
+<option>Digital</option>
+<option>Other</option>
 
-      <label>Site Photo</label>
+</select>
 
-      <input
-        id="photo"
-        type="file"
-        accept="image/*"
-      >
+</div>
 
+<div>
 
-      <label>Remarks</label>
+<label>Illumination</label>
 
-      <textarea
-        id="remarks"
-        placeholder="Facing direction, traffic details, etc."
-      ></textarea>
+<select id="illumination">
 
+<option>Lit</option>
+<option>Non-Lit</option>
+<option>Digital</option>
 
-      <div class="row">
+</select>
 
-        <input
-          id="latitude"
-          type="number"
-          step="any"
-          placeholder="Latitude"
-        >
+</div>
 
-        <input
-          id="longitude"
-          type="number"
-          step="any"
-          placeholder="Longitude"
-        >
+</div>
 
-      </div>
 
+<div class="row">
 
-      <button
-        class="blue"
-        style="width:100%; margin-top:10px;"
-        onclick="saveSite()"
-      >
-        SAVE SITE
-      </button>
+<div>
 
-    </div>
+<label>Monthly Rate ₹</label>
 
+<input
+id="rate"
+type="number"
+value="0"
+>
 
-    <div class="card">
+</div>
 
-      <h3>Saved Sites</h3>
+<div>
 
-      <input
-        id="search"
-        placeholder="Search sites..."
-        oninput="renderSites()"
-      >
+<label>Status</label>
 
-      <div id="siteList"></div>
+<select id="status">
 
-    </div>
+<option>Available</option>
+<option>Booked</option>
+<option>Hold</option>
+<option>Unavailable</option>
 
-  </aside>
+</select>
 
+</div>
 
-  <main>
+</div>
 
-    <div id="map"></div>
 
-  </main>
+<label>
+Site Photo
+</label>
+
+<input
+id="photo"
+type="file"
+accept="image/*"
+onchange="previewPhoto(event)"
+>
+
+<img
+id="photoPreview"
+class="photo-preview"
+>
+
+
+<label>
+Remarks
+</label>
+
+<textarea
+id="remarks"
+placeholder="Facing direction, traffic, etc."
+></textarea>
+
+
+<button
+class="blue"
+style="width:100%;margin-top:10px"
+onclick="saveSite()"
+>
+💾 SAVE SITE ONLINE
+</button>
+
+<button
+class="gray"
+style="width:100%;margin-top:7px"
+onclick="clearForm()"
+>
+CLEAR FORM
+</button>
+
+</div>
+
+
+<!-- SAVED SITES -->
+
+<div class="card">
+
+<h3>
+📌 My Saved OOH Sites
+</h3>
+
+<input
+id="siteSearch"
+placeholder="Search saved sites..."
+oninput="renderSites()"
+>
+
+<div id="siteList"></div>
+
+</div>
+
+
+</div>
+
+
+<!-- MAP -->
+
+<div id="map"></div>
 
 </div>
 
@@ -456,740 +658,1826 @@ textarea {
 <div id="message"></div>
 
 
+<!-- LIBRARIES -->
+
+<script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
+
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+
+<script src="https://cdn.jsdelivr.net/npm/xlsx@0.18.5/dist/xlsx.full.min.js"></script>
+
+<script src="https://cdn.jsdelivr.net/npm/pptxgenjs@3.12.0/dist/pptxgen.bundle.js"></script>
+
+
 <script>
 
-const STORAGE_KEY = "my_vision_ooh_sites";
+/* =========================================================
+   IMPORTANT:
+   AFTER CREATING YOUR SUPABASE PROJECT,
+   PUT YOUR SUPABASE URL AND KEY HERE.
+   ========================================================= */
 
-let sites =
-  JSON.parse(
-    localStorage.getItem(STORAGE_KEY) || "[]"
-  );
+const SUPABASE_URL =
+"PASTE_YOUR_SUPABASE_URL_HERE";
 
-let selected = new Set();
-
-let markers = {};
+const SUPABASE_KEY =
+"PASTE_YOUR_SUPABASE_ANON_OR_PUBLISHABLE_KEY_HERE";
 
 
-const map =
-  L.map("map").setView(
-    [19.0760, 72.8777],
-    11
-  );
+let supabaseClient = null;
 
+let currentUser = null;
+
+let sites = [];
+
+let selectedSites = new Set();
+
+let map;
+
+let markers = [];
+
+let searchMarker = null;
+
+let currentPhoto = "";
+
+
+/* =========================================================
+   MESSAGE
+   ========================================================= */
+
+function showMessage(text){
+
+const box =
+document.getElementById("message");
+
+box.innerText = text;
+
+box.style.display = "block";
+
+setTimeout(function(){
+
+box.style.display = "none";
+
+},2500);
+
+}
+
+
+/* =========================================================
+   MAP
+   ========================================================= */
+
+function initializeMap(){
+
+map =
+L.map("map")
+.setView(
+[19.0760,72.8777],
+10
+);
 
 L.tileLayer(
-  "https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png",
-  {
-    attribution:
-      "© OpenStreetMap contributors"
-  }
+"https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png",
+{
+maxZoom:19,
+attribution:"© OpenStreetMap contributors"
+}
 ).addTo(map);
 
 
+/* CLICK MAP */
+
 map.on(
-  "click",
-  function(event) {
+"click",
+function(event){
 
-    document.getElementById("latitude").value =
-      event.latlng.lat.toFixed(6);
+const lat =
+event.latlng.lat;
 
-    document.getElementById("longitude").value =
-      event.latlng.lng.toFixed(6);
+const lng =
+event.latlng.lng;
 
-    showMessage(
-      "Map location selected"
-    );
+document.getElementById("latitude").value =
+lat.toFixed(6);
 
-  }
+document.getElementById("longitude").value =
+lng.toFixed(6);
+
+placeSearchMarker(
+lat,
+lng,
+"Selected Site"
+);
+
+showMessage(
+"Coordinates added"
+);
+
+}
+);
+
+}
+
+
+/* =========================================================
+   SEARCH LAT LONG
+   ========================================================= */
+
+function locateCoordinates(){
+
+const lat =
+parseFloat(
+document.getElementById("searchLat").value
+);
+
+const lng =
+parseFloat(
+document.getElementById("searchLng").value
 );
 
 
-function showMessage(text) {
+if(
+isNaN(lat) ||
+isNaN(lng) ||
+lat < -90 ||
+lat > 90 ||
+lng < -180 ||
+lng > 180
+){
 
-  const box =
-    document.getElementById("message");
+showMessage(
+"Please enter valid Latitude and Longitude"
+);
 
-  box.innerText = text;
-
-  box.style.display = "block";
-
-  setTimeout(
-    () => box.style.display = "none",
-    1800
-  );
-
-}
-
-
-function readImage(file) {
-
-  return new Promise(
-    function(resolve, reject) {
-
-      if (!file) {
-        resolve("");
-        return;
-      }
-
-      const reader =
-        new FileReader();
-
-      reader.onload =
-        () => resolve(reader.result);
-
-      reader.onerror = reject;
-
-      reader.readAsDataURL(file);
-
-    }
-  );
+return;
 
 }
 
 
-async function saveSite() {
-
-  const name =
-    document.getElementById("siteName").value.trim();
-
-  const lat =
-    document.getElementById("latitude").value;
-
-  const lng =
-    document.getElementById("longitude").value;
+map.setView(
+[lat,lng],
+17
+);
 
 
-  if (!name) {
-
-    showMessage(
-      "Please enter Site Name / ID"
-    );
-
-    return;
-
-  }
+placeSearchMarker(
+lat,
+lng,
+"Selected Location"
+);
 
 
-  if (!lat || !lng) {
+/* ALSO PUT COORDINATES IN SAVE FORM */
 
-    showMessage(
-      "Click the map to select location"
-    );
+document.getElementById("latitude").value =
+lat;
 
-    return;
+document.getElementById("longitude").value =
+lng;
 
-  }
-
-
-  const image =
-    await readImage(
-      document.getElementById("photo").files[0]
-    );
-
-
-  const site = {
-
-    id: Date.now().toString(),
-
-    name: name,
-
-    location:
-      document.getElementById("siteLocation").value,
-
-    width:
-      document.getElementById("width").value,
-
-    height:
-      document.getElementById("height").value,
-
-    mediaType:
-      document.getElementById("mediaType").value,
-
-    illumination:
-      document.getElementById("illumination").value,
-
-    rate:
-      document.getElementById("rate").value,
-
-    status:
-      document.getElementById("status").value,
-
-    remarks:
-      document.getElementById("remarks").value,
-
-    latitude: Number(lat),
-
-    longitude: Number(lng),
-
-    photo: image
-
-  };
-
-
-  sites.push(site);
-
-  localStorage.setItem(
-    STORAGE_KEY,
-    JSON.stringify(sites)
-  );
-
-
-  clearForm();
-
-  render();
-
-  showMessage(
-    "Site saved successfully"
-  );
+showMessage(
+"Location found on map"
+);
 
 }
 
 
-function clearForm() {
+/* =========================================================
+   CURRENT LOCATION
+   ========================================================= */
 
-  [
-    "siteName",
-    "siteLocation",
-    "width",
-    "height",
-    "rate",
-    "remarks",
-    "latitude",
-    "longitude"
-  ].forEach(
-    id =>
-      document.getElementById(id).value = ""
-  );
+function useMyLocation(){
 
+if(!navigator.geolocation){
 
-  document.getElementById("photo").value = "";
+showMessage(
+"Location not supported"
+);
+
+return;
 
 }
 
 
-function toggleSite(id) {
+navigator.geolocation.getCurrentPosition(
 
-  if (selected.has(id)) {
+function(position){
 
-    selected.delete(id);
+const lat =
+position.coords.latitude;
 
-  } else {
+const lng =
+position.coords.longitude;
 
-    selected.add(id);
 
-  }
+document.getElementById("searchLat").value =
+lat.toFixed(6);
 
-  render();
+document.getElementById("searchLng").value =
+lng.toFixed(6);
+
+locateCoordinates();
+
+},
+
+function(){
+
+showMessage(
+"Please allow location permission"
+);
+
+}
+
+);
 
 }
 
 
-function deleteSite(id) {
+/* =========================================================
+   MAP MARKER
+   ========================================================= */
 
-  sites =
-    sites.filter(
-      site => site.id !== id
-    );
+function placeSearchMarker(
+lat,
+lng,
+title
+){
 
-  selected.delete(id);
+if(searchMarker){
 
-  localStorage.setItem(
-    STORAGE_KEY,
-    JSON.stringify(sites)
-  );
-
-  render();
+searchMarker.remove();
 
 }
 
 
-function render() {
-
-  Object.values(markers)
-    .forEach(
-      marker => marker.remove()
-    );
-
-  markers = {};
-
-
-  sites.forEach(
-    function(site, index) {
-
-      const marker =
-        L.marker(
-          [
-            site.latitude,
-            site.longitude
-          ]
-        )
-        .addTo(map);
-
-
-      marker.bindPopup(
-
-        `<b>${site.name}</b>
-        <br>${site.location || ""}
-        <br>${site.width || "-"} × ${site.height || "-"} ft
-        <br>${site.mediaType}
-        <br>₹${Number(site.rate || 0).toLocaleString("en-IN")}
-        <br><br>
-        <button onclick="toggleSite('${site.id}')">
-        ${selected.has(site.id)
-          ? "Unselect Site"
-          : "Select Site"}
-        </button>`
-
-      );
-
-
-      markers[site.id] = marker;
-
-    }
-  );
-
-
-  document.getElementById(
-    "totalSites"
-  ).innerText = sites.length;
-
-
-  document.getElementById(
-    "selectedSites"
-  ).innerText = selected.size;
-
-
-  renderSites();
+searchMarker =
+L.marker(
+[lat,lng]
+)
+.addTo(map)
+.bindPopup(
+"<b>"+title+"</b><br>"+
+lat.toFixed(6)+
+", "+
+lng.toFixed(6)
+)
+.openPopup();
 
 }
 
 
-function renderSites() {
+/* =========================================================
+   SUPABASE SETUP
+   ========================================================= */
 
-  const list =
-    document.getElementById("siteList");
+function initializeSupabase(){
 
-  const search =
-    document.getElementById("search")
-      .value
-      .toLowerCase();
+if(
+SUPABASE_URL.includes("PASTE_") ||
+SUPABASE_KEY.includes("PASTE_")
+){
 
+document.getElementById("loginMessage").innerText =
+"Supabase setup required. Add your Supabase URL and key in the code.";
 
-  list.innerHTML = "";
-
-
-  sites
-    .filter(
-      site =>
-        (
-          site.name +
-          " " +
-          site.location +
-          " " +
-          site.mediaType
-        )
-        .toLowerCase()
-        .includes(search)
-    )
-    .forEach(
-      function(site) {
-
-        const div =
-          document.createElement("div");
-
-        div.className = "site";
-
-
-        const image =
-          site.photo
-            ? `<img class="site-photo" src="${site.photo}">`
-            : `<div class="site-photo"
-                 style="background:#e5e7eb">
-               </div>`;
-
-
-        div.innerHTML = `
-
-          ${image}
-
-          <div class="site-info">
-
-            <strong>
-              ${site.name}
-            </strong>
-
-            ${site.location || ""}
-
-            <br>
-
-            ${site.width || "-"} ×
-            ${site.height || "-"} ft
-
-          </div>
-
-
-          <button
-            class="${selected.has(site.id)
-              ? "green"
-              : "white"}"
-            onclick="toggleSite('${site.id}')"
-          >
-
-            ${selected.has(site.id)
-              ? "✓"
-              : "Select"}
-
-          </button>
-
-          <button
-            class="white"
-            onclick="deleteSite('${site.id}')"
-          >
-            ×
-          </button>
-
-        `;
-
-
-        div.addEventListener(
-          "click",
-          function(event) {
-
-            if (
-              event.target.tagName === "BUTTON"
-            ) return;
-
-
-            map.setView(
-              [
-                site.latitude,
-                site.longitude
-              ],
-              15
-            );
-
-
-            markers[site.id]
-              .openPopup();
-
-          }
-        );
-
-
-        list.appendChild(div);
-
-      }
-    );
+return false;
 
 }
 
 
-function getSelectedSites() {
+supabaseClient =
+supabase.createClient(
+SUPABASE_URL,
+SUPABASE_KEY
+);
 
-  return sites.filter(
-    site => selected.has(site.id)
-  );
-
-}
-
-
-function exportExcel() {
-
-  const selectedSites =
-    getSelectedSites();
-
-
-  if (!selectedSites.length) {
-
-    showMessage(
-      "Select sites first"
-    );
-
-    return;
-
-  }
-
-
-  const rows =
-    selectedSites.map(
-      function(site, index) {
-
-        return {
-
-          "Sr No":
-            index + 1,
-
-          "Site ID":
-            site.name,
-
-          "Location":
-            site.location,
-
-          "Media Type":
-            site.mediaType,
-
-          "Size":
-            `${site.width || ""} x ${site.height || ""} ft`,
-
-          "Illumination":
-            site.illumination,
-
-          "Monthly Rate":
-            Number(site.rate || 0),
-
-          "Status":
-            site.status,
-
-          "Latitude":
-            site.latitude,
-
-          "Longitude":
-            site.longitude,
-
-          "Remarks":
-            site.remarks
-
-        };
-
-      }
-    );
-
-
-  const workbook =
-    XLSX.utils.book_new();
-
-
-  const worksheet =
-    XLSX.utils.json_to_sheet(rows);
-
-
-  XLSX.utils.book_append_sheet(
-    workbook,
-    worksheet,
-    "Selected Sites"
-  );
-
-
-  XLSX.writeFile(
-    workbook,
-    "My_Vision_OOH_Sites.xlsx"
-  );
-
-
-  showMessage(
-    "Excel downloaded"
-  );
+return true;
 
 }
 
 
-async function exportPPT() {
+/* =========================================================
+   SIGN UP
+   ========================================================= */
 
-  const selectedSites =
-    getSelectedSites();
+async function signup(){
 
+if(!supabaseClient){
 
-  if (!selectedSites.length) {
+showMessage(
+"First add Supabase URL and key"
+);
 
-    showMessage(
-      "Select sites first"
-    );
-
-    return;
-
-  }
-
-
-  const ppt =
-    new pptxgen();
-
-  ppt.layout =
-    "LAYOUT_WIDE";
-
-  ppt.author =
-    "My Vision OOH";
-
-
-  let slide =
-    ppt.addSlide();
-
-
-  slide.background = {
-    color: "111827"
-  };
-
-
-  slide.addText(
-    "MY VISION OOH",
-    {
-      x: 0.7,
-      y: 1.4,
-      w: 11,
-      h: 0.6,
-      fontSize: 30,
-      bold: true,
-      color: "FFFFFF"
-    }
-  );
-
-
-  slide.addText(
-    document.getElementById(
-      "campaign"
-    ).value ||
-    "OOH Site Proposal",
-    {
-      x: 0.7,
-      y: 2.2,
-      w: 11,
-      h: 0.5,
-      fontSize: 22,
-      bold: true,
-      color: "38BDF8"
-    }
-  );
-
-
-  slide.addText(
-    selectedSites.length +
-    " Selected Sites",
-    {
-      x: 0.7,
-      y: 3,
-      w: 10,
-      h: 0.4,
-      fontSize: 16,
-      color: "D1D5DB"
-    }
-  );
-
-
-  let listSlide =
-    ppt.addSlide();
-
-
-  listSlide.addText(
-    "SELECTED OOH SITES",
-    {
-      x: 0.6,
-      y: 0.4,
-      w: 12,
-      h: 0.5,
-      fontSize: 22,
-      bold: true
-    }
-  );
-
-
-  let text =
-    selectedSites
-      .map(
-        (site, index) =>
-          `${index + 1}. ${site.name} — ${site.location || "-"}`
-      )
-      .join("\n");
-
-
-  listSlide.addText(
-    text,
-    {
-      x: 0.8,
-      y: 1.2,
-      w: 11,
-      h: 5,
-      fontSize: 16
-    }
-  );
-
-
-  for (
-    let index = 0;
-    index < selectedSites.length;
-    index++
-  ) {
-
-    const site =
-      selectedSites[index];
-
-
-    const s =
-      ppt.addSlide();
-
-
-    s.addText(
-      `${index + 1}. ${site.name}`,
-      {
-        x: 0.6,
-        y: 0.4,
-        w: 11,
-        h: 0.5,
-        fontSize: 22,
-        bold: true
-      }
-    );
-
-
-    if (site.photo) {
-
-      s.addImage(
-        {
-          data: site.photo,
-          x: 0.6,
-          y: 1.1,
-          w: 6,
-          h: 4
-        }
-      );
-
-    }
-
-
-    s.addText(
-
-      `Location: ${site.location || "-"}
-
-Size: ${site.width || "-"} × ${site.height || "-"} ft
-
-Media: ${site.mediaType}
-
-Illumination: ${site.illumination}
-
-Monthly Rate: ₹${Number(site.rate || 0).toLocaleString("en-IN")}
-
-Status: ${site.status}
-
-Coordinates:
-${site.latitude}, ${site.longitude}`,
-
-      {
-        x: 7,
-        y: 1.1,
-        w: 5,
-        h: 5,
-        fontSize: 14
-      }
-
-    );
-
-  }
-
-
-  await ppt.writeFile(
-    {
-      fileName:
-        "My_Vision_OOH_Proposal.pptx"
-    }
-  );
-
-
-  showMessage(
-    "PPT downloaded"
-  );
+return;
 
 }
 
 
-render();
+const email =
+document.getElementById("email").value.trim();
+
+const password =
+document.getElementById("password").value;
+
+
+if(!email || password.length < 6){
+
+document.getElementById("loginMessage").innerText =
+"Enter email and password of at least 6 characters.";
+
+return;
+
+}
+
+
+const result =
+await supabaseClient.auth.signUp({
+
+email:email,
+
+password:password
+
+});
+
+
+if(result.error){
+
+document.getElementById("loginMessage").innerText =
+result.error.message;
+
+return;
+
+}
+
+
+document.getElementById("loginMessage").innerText =
+"Account created. Check your email if verification is enabled.";
+
+}
+
+
+/* =========================================================
+   LOGIN
+   ========================================================= */
+
+async function login(){
+
+if(!supabaseClient){
+
+showMessage(
+"First add Supabase URL and key"
+);
+
+return;
+
+}
+
+
+const email =
+document.getElementById("email").value.trim();
+
+const password =
+document.getElementById("password").value;
+
+
+const result =
+await supabaseClient.auth.signInWithPassword({
+
+email:email,
+
+password:password
+
+});
+
+
+if(result.error){
+
+document.getElementById("loginMessage").innerText =
+result.error.message;
+
+return;
+
+}
+
+
+showApp(
+result.data.user
+);
+
+}
+
+
+/* =========================================================
+   LOGOUT
+   ========================================================= */
+
+async function logout(){
+
+await supabaseClient.auth.signOut();
+
+location.reload();
+
+}
+
+
+/* =========================================================
+   SHOW APP
+   ========================================================= */
+
+async function showApp(user){
+
+currentUser =
+user;
+
+document.getElementById("loginScreen").style.display =
+"none";
+
+document.getElementById("userEmail").innerText =
+user.email;
+
+await loadSites();
+
+}
+
+
+/* =========================================================
+   LOAD SITES ONLINE
+   ========================================================= */
+
+async function loadSites(){
+
+const result =
+await supabaseClient
+.from("ooh_sites")
+.select("*")
+.order(
+"created_at",
+{
+ascending:false
+}
+);
+
+
+if(result.error){
+
+showMessage(
+result.error.message
+);
+
+return;
+
+}
+
+
+sites =
+result.data || [];
+
+selectedSites.clear();
+
+renderSites();
+
+renderMarkers();
+
+}
+
+
+/* =========================================================
+   SAVE SITE ONLINE
+   ========================================================= */
+
+async function saveSite(){
+
+if(!currentUser){
+
+showMessage(
+"Please login first"
+);
+
+return;
+
+}
+
+
+const siteName =
+document.getElementById("siteName").value.trim();
+
+const location =
+document.getElementById("siteLocation").value.trim();
+
+const lat =
+parseFloat(
+document.getElementById("latitude").value
+);
+
+const lng =
+parseFloat(
+document.getElementById("longitude").value
+);
+
+
+if(!siteName){
+
+showMessage(
+"Enter Site Name"
+);
+
+return;
+
+}
+
+
+if(
+isNaN(lat) ||
+isNaN(lng)
+){
+
+showMessage(
+"Enter valid coordinates"
+);
+
+return;
+
+}
+
+
+/* PHOTO */
+
+let photoData =
+currentPhoto;
+
+
+const photoFile =
+document.getElementById("photo").files[0];
+
+
+if(photoFile){
+
+photoData =
+await convertPhoto(
+photoFile
+);
+
+}
+
+
+const siteData = {
+
+user_id:
+currentUser.id,
+
+site_name:
+siteName,
+
+location:
+location,
+
+latitude:
+lat,
+
+longitude:
+lng,
+
+width_ft:
+parseFloat(
+document.getElementById("width").value
+) || 0,
+
+height_ft:
+parseFloat(
+document.getElementById("height").value
+) || 0,
+
+media_type:
+document.getElementById("mediaType").value,
+
+illumination:
+document.getElementById("illumination").value,
+
+monthly_rate:
+parseFloat(
+document.getElementById("rate").value
+) || 0,
+
+status:
+document.getElementById("status").value,
+
+photo_data:
+photoData,
+
+remarks:
+document.getElementById("remarks").value
+
+};
+
+
+const editId =
+document.getElementById("editId").value;
+
+
+let result;
+
+
+if(editId){
+
+result =
+await supabaseClient
+.from("ooh_sites")
+.update(siteData)
+.eq("id",editId)
+.select()
+.single();
+
+}else{
+
+result =
+await supabaseClient
+.from("ooh_sites")
+.insert(siteData)
+.select()
+.single();
+
+}
+
+
+if(result.error){
+
+showMessage(
+result.error.message
+);
+
+return;
+
+}
+
+
+if(editId){
+
+sites =
+sites.map(
+function(site){
+
+return site.id === editId
+?
+result.data
+:
+site;
+
+}
+);
+
+}else{
+
+sites.unshift(
+result.data
+);
+
+}
+
+
+selectedSites.add(
+result.data.id
+);
+
+
+renderSites();
+
+renderMarkers();
+
+showMessage(
+"Site saved permanently online"
+);
+
+clearForm();
+
+}
+
+
+/* =========================================================
+   PHOTO CONVERSION
+   ========================================================= */
+
+function convertPhoto(file){
+
+return new Promise(
+function(resolve,reject){
+
+const reader =
+new FileReader();
+
+
+reader.onload =
+function(event){
+
+const image =
+new Image();
+
+
+image.onload =
+function(){
+
+const canvas =
+document.createElement(
+"canvas"
+);
+
+const max =
+1200;
+
+let width =
+image.width;
+
+let height =
+image.height;
+
+
+if(width > max){
+
+height =
+height *
+max /
+width;
+
+width =
+max;
+
+}
+
+
+if(height > max){
+
+width =
+width *
+max /
+height;
+
+height =
+max;
+
+}
+
+
+canvas.width =
+width;
+
+canvas.height =
+height;
+
+
+const context =
+canvas.getContext("2d");
+
+
+context.drawImage(
+image,
+0,
+0,
+width,
+height
+);
+
+
+resolve(
+canvas.toDataURL(
+"image/jpeg",
+0.75
+)
+);
+
+};
+
+
+image.src =
+event.target.result;
+
+};
+
+
+reader.onerror =
+reject;
+
+reader.readAsDataURL(file);
+
+}
+);
+
+}
+
+
+/* =========================================================
+   PHOTO PREVIEW
+   ========================================================= */
+
+function previewPhoto(event){
+
+const file =
+event.target.files[0];
+
+
+if(!file){
+
+return;
+
+}
+
+
+const reader =
+new FileReader();
+
+
+reader.onload =
+function(e){
+
+const img =
+document.getElementById(
+"photoPreview"
+);
+
+img.src =
+e.target.result;
+
+img.style.display =
+"block";
+
+currentPhoto =
+e.target.result;
+
+};
+
+
+reader.readAsDataURL(file);
+
+}
+
+
+/* =========================================================
+   RENDER MARKERS
+   ========================================================= */
+
+function renderMarkers(){
+
+markers.forEach(
+function(marker){
+
+marker.remove();
+
+}
+);
+
+markers = [];
+
+
+sites.forEach(
+function(site){
+
+const marker =
+L.marker(
+[
+site.latitude,
+site.longitude
+]
+)
+.addTo(map);
+
+
+marker.bindPopup(
+
+"<b>"+
+escapeHtml(site.site_name)+
+"</b><br>"+
+
+escapeHtml(
+site.location || ""
+)+
+
+"<br><br>"+
+
+"Size: "+
+site.width_ft+
+" × "+
+site.height_ft+
+" ft<br>"+
+
+"Rate: ₹"+
+Number(
+site.monthly_rate || 0
+).toLocaleString("en-IN")+
+"<br>"+
+
+"Status: "+
+escapeHtml(site.status)
+
+);
+
+
+marker.on(
+"click",
+function(){
+
+selectedSites.add(
+site.id
+);
+
+renderSites();
+
+}
+);
+
+
+markers.push(
+marker
+);
+
+}
+);
+
+}
+
+
+/* =========================================================
+   RENDER SAVED SITES
+   ========================================================= */
+
+function renderSites(){
+
+const list =
+document.getElementById(
+"siteList"
+);
+
+
+const search =
+document.getElementById(
+"siteSearch"
+).value.toLowerCase();
+
+
+const filtered =
+sites.filter(
+function(site){
+
+return (
+
+site.site_name
++
+" "+
+(site.location || "")
+
+)
+.toLowerCase()
+.includes(search);
+
+}
+);
+
+
+list.innerHTML =
+"";
+
+
+filtered.forEach(
+function(site){
+
+const div =
+document.createElement(
+"div"
+);
+
+div.className =
+"site";
+
+
+const selected =
+selectedSites.has(
+site.id
+);
+
+
+div.innerHTML =
+
+"<div class='site-name'>"+
+(selected ? "☑ " : "☐ ")+
+escapeHtml(site.site_name)+
+"</div>"+
+
+"<div class='small'>"+
+escapeHtml(
+site.location || ""
+)+
+"</div>"+
+
+"<div class='small'>"+
+site.latitude+
+", "+
+site.longitude+
+"</div>"+
+
+"<div class='small'>"+
+site.width_ft+
+" × "+
+site.height_ft+
+" ft | ₹"+
+Number(
+site.monthly_rate || 0
+).toLocaleString("en-IN")+
+"</div>"+
+
+"<div class='site-buttons'>"+
+
+"<button class='blue' onclick=\"viewSite('"+
+site.id+
+"')\">MAP</button>"+
+
+"<button class='gray' onclick=\"selectSite('"+
+site.id+
+"')\">"+
+(selected ? "UNSELECT" : "SELECT")+
+"</button>"+
+
+"<button class='gray' onclick=\"editSite('"+
+site.id+
+"')\">EDIT</button>"+
+
+"<button class='red' onclick=\"deleteSite('"+
+site.id+
+"')\">DELETE</button>"+
+
+"</div>";
+
+
+list.appendChild(
+div
+);
+
+}
+);
+
+
+document.getElementById(
+"totalSites"
+).innerText =
+sites.length;
+
+
+document.getElementById(
+"selectedSites"
+).innerText =
+selectedSites.size;
+
+}
+
+
+/* =========================================================
+   SELECT SITE
+   ========================================================= */
+
+function selectSite(id){
+
+if(
+selectedSites.has(id)
+){
+
+selectedSites.delete(id);
+
+}else{
+
+selectedSites.add(id);
+
+}
+
+renderSites();
+
+}
+
+
+/* =========================================================
+   VIEW SITE
+   ========================================================= */
+
+function viewSite(id){
+
+const site =
+sites.find(
+function(s){
+
+return s.id === id;
+
+}
+);
+
+
+if(!site)return;
+
+
+map.setView(
+[
+site.latitude,
+site.longitude
+],
+17
+);
+
+
+placeSearchMarker(
+site.latitude,
+site.longitude,
+site.site_name
+);
+
+}
+
+
+/* =========================================================
+   EDIT SITE
+   ========================================================= */
+
+function editSite(id){
+
+const site =
+sites.find(
+function(s){
+
+return s.id === id;
+
+}
+);
+
+
+if(!site)return;
+
+
+document.getElementById(
+"editId"
+).value =
+site.id;
+
+
+document.getElementById(
+"siteName"
+).value =
+site.site_name;
+
+
+document.getElementById(
+"siteLocation"
+).value =
+site.location || "";
+
+
+document.getElementById(
+"latitude"
+).value =
+site.latitude;
+
+
+document.getElementById(
+"longitude"
+).value =
+site.longitude;
+
+
+document.getElementById(
+"width"
+).value =
+site.width_ft;
+
+
+document.getElementById(
+"height"
+).value =
+site.height_ft;
+
+
+document.getElementById(
+"mediaType"
+).value =
+site.media_type;
+
+
+document.getElementById(
+"illumination"
+).value =
+site.illumination;
+
+
+document.getElementById(
+"rate"
+).value =
+site.monthly_rate;
+
+
+document.getElementById(
+"status"
+).value =
+site.status;
+
+
+document.getElementById(
+"remarks"
+).value =
+site.remarks || "";
+
+
+currentPhoto =
+site.photo_data || "";
+
+
+if(site.photo_data){
+
+const image =
+document.getElementById(
+"photoPreview"
+);
+
+image.src =
+site.photo_data;
+
+image.style.display =
+"block";
+
+}
+
+
+document.getElementById(
+"formTitle"
+).innerText =
+"✏️ Edit OOH Site";
+
+
+viewSite(id);
+
+}
+
+
+/* =========================================================
+   DELETE SITE
+   ========================================================= */
+
+async function deleteSite(id){
+
+if(
+!confirm(
+"Delete this site permanently?"
+)
+){
+
+return;
+
+}
+
+
+const result =
+await supabaseClient
+.from("ooh_sites")
+.delete()
+.eq(
+"id",
+id
+);
+
+
+if(result.error){
+
+showMessage(
+result.error.message
+);
+
+return;
+
+}
+
+
+sites =
+sites.filter(
+function(site){
+
+return site.id !== id;
+
+}
+);
+
+
+selectedSites.delete(
+id
+);
+
+
+renderSites();
+
+renderMarkers();
+
+showMessage(
+"Site deleted"
+);
+
+}
+
+
+/* =========================================================
+   CLEAR FORM
+   ========================================================= */
+
+function clearForm(){
+
+document.getElementById(
+"editId"
+).value =
+"";
+
+
+document.getElementById(
+"siteName"
+).value =
+"";
+
+
+document.getElementById(
+"siteLocation"
+).value =
+"";
+
+
+document.getElementById(
+"latitude"
+).value =
+"";
+
+
+document.getElementById(
+"longitude"
+).value =
+"";
+
+
+document.getElementById(
+"remarks"
+).value =
+"";
+
+
+document.getElementById(
+"photo"
+).value =
+"";
+
+
+document.getElementById(
+"photoPreview"
+).style.display =
+"none";
+
+
+document.getElementById(
+"formTitle"
+).innerText =
+"➕ Add OOH Site";
+
+
+currentPhoto =
+"";
+
+}
+
+
+/* =========================================================
+   ESCAPE HTML
+   ========================================================= */
+
+function escapeHtml(text){
+
+return String(text || "")
+.replace(
+/[&<>"']/g,
+function(match){
+
+return {
+
+"&":"&amp;",
+"<":"&lt;",
+">":"&gt;",
+'"':"&quot;",
+"'":"&#039;"
+
+}[match];
+
+}
+);
+
+}
+
+
+/* =========================================================
+   EXPORT EXCEL
+   ========================================================= */
+
+function exportExcel(){
+
+let data =
+sites.filter(
+function(site){
+
+return selectedSites.size === 0 ||
+selectedSites.has(site.id);
+
+}
+);
+
+
+if(data.length === 0){
+
+showMessage(
+"No sites available"
+);
+
+return;
+
+}
+
+
+const rows =
+data.map(
+function(site,index){
+
+return {
+
+"S.No":
+index + 1,
+
+"Site Name":
+site.site_name,
+
+"Location":
+site.location,
+
+"Latitude":
+site.latitude,
+
+"Longitude":
+site.longitude,
+
+"Width (ft)":
+site.width_ft,
+
+"Height (ft)":
+site.height_ft,
+
+"Media Type":
+site.media_type,
+
+"Illumination":
+site.illumination,
+
+"Monthly Rate":
+site.monthly_rate,
+
+"Status":
+site.status,
+
+"Remarks":
+site.remarks,
+
+"Google Maps":
+"https://www.google.com/maps?q="+
+site.latitude+
+","+
+site.longitude
+
+};
+
+}
+);
+
+
+const worksheet =
+XLSX.utils.json_to_sheet(
+rows
+);
+
+
+const workbook =
+XLSX.utils.book_new();
+
+
+XLSX.utils.book_append_sheet(
+workbook,
+worksheet,
+"OOH Sites"
+);
+
+
+XLSX.writeFile(
+workbook,
+"My_Vision_OOH_Sites.xlsx"
+);
+
+
+showMessage(
+"Excel exported"
+);
+
+}
+
+
+/* =========================================================
+   EXPORT PPT
+   ========================================================= */
+
+async function exportPPT(){
+
+const data =
+sites.filter(
+function(site){
+
+return selectedSites.size === 0 ||
+selectedSites.has(site.id);
+
+}
+);
+
+
+if(data.length === 0){
+
+showMessage(
+"No sites available"
+);
+
+return;
+
+}
+
+
+const ppt =
+new pptxgen();
+
+
+ppt.layout =
+"LAYOUT_WIDE";
+
+
+ppt.author =
+"MY VISION OOH";
+
+
+/* COVER */
+
+let slide =
+ppt.addSlide();
+
+
+slide.background =
+{
+color:"111827"
+};
+
+
+slide.addText(
+"MY VISION OOH",
+{
+x:0.7,
+y:2,
+w:11,
+h:0.6,
+fontSize:30,
+bold:true,
+color:"FFFFFF"
+}
+);
+
+
+slide.addText(
+document.getElementById(
+"campaign"
+).value ||
+"OOH Site Proposal",
+{
+x:0.7,
+y:2.8,
+w:11,
+h:0.5,
+fontSize:20,
+color:"38BDF8"
+}
+);
+
+
+slide.addText(
+data.length+
+" Selected Sites",
+{
+x:0.7,
+y:3.5,
+w:11,
+h:0.4,
+fontSize:15,
+color:"FFFFFF"
+}
+);
+
+
+/* SITE SLIDES */
+
+data.forEach(
+function(site,index){
+
+let slide =
+ppt.addSlide();
+
+
+slide.addText(
+(index+1)+
+". "+
+site.site_name,
+{
+x:0.5,
+y:0.4,
+w:7,
+h:0.5,
+fontSize:23,
+bold:true
+}
+);
+
+
+slide.addText(
+site.location ||
+"Location",
+{
+x:0.5,
+y:0.95,
+w:6,
+h:0.35,
+fontSize:14
+}
+);
+
+
+/* PHOTO */
+
+if(site.photo_data){
+
+try{
+
+slide.addImage({
+
+data:
+site.photo_data,
+
+x:0.5,
+y:1.5,
+w:5.7,
+h:3.7
+
+});
+
+}catch(e){}
+
+}
+
+
+/* DETAILS */
+
+slide.addText(
+
+"Latitude: "+
+site.latitude+
+
+"\nLongitude: "+
+site.longitude+
+
+"\n\nSize: "+
+site.width_ft+
+" × "+
+site.height_ft+
+" ft"+
+
+"\n\nMedia: "+
+site.media_type+
+
+"\nIllumination: "+
+site.illumination+
+
+"\n\nMonthly Rate: ₹"+
+Number(
+site.monthly_rate || 0
+).toLocaleString(
+"en-IN"
+)+
+
+"\nStatus: "+
+site.status+
+
+"\n\nRemarks: "+
+(site.remarks || "-"),
+
+{
+
+x:6.7,
+y:1.5,
+w:5.5,
+h:3.5,
+fontSize:14
+
+}
+
+);
+
+
+/* GOOGLE MAP LINK */
+
+slide.addText(
+"Open in Google Maps",
+{
+
+x:6.7,
+y:5.1,
+w:3,
+h:0.3,
+fontSize:12,
+color:"0563C1",
+underline:
+{
+style:"sng"
+},
+
+hyperlink:
+{
+url:
+"https://www.google.com/maps?q="+
+site.latitude+
+","+
+site.longitude
+}
+
+}
+);
+
+}
+);
+
+
+await ppt.writeFile(
+{
+fileName:
+"My_Vision_OOH_Proposal.pptx"
+}
+);
+
+
+showMessage(
+"PPT exported"
+);
+
+
+/* =========================================================
+   START WEBSITE
+   ========================================================= */
+
+initializeMap();
+
+
+if(
+initializeSupabase()
+){
+
+supabaseClient.auth.getSession()
+.then(
+function(result){
+
+if(
+result.data.session
+){
+
+showApp(
+result.data.session.user
+);
+
+}else{
+
+document.getElementById(
+"loginScreen"
+).style.display =
+"flex";
+
+}
+
+}
+);
+
+
+supabaseClient.auth.onAuthStateChange(
+function(event,session){
+
+if(session){
+
+showApp(
+session.user
+);
+
+}
+
+}
+);
+
+}
 
 </script>
 
