@@ -1,0 +1,1197 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+<title>My Vision OOH</title>
+
+<link
+  rel="stylesheet"
+  href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css"
+/>
+
+<script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
+
+<script src="https://cdn.jsdelivr.net/npm/xlsx@0.18.5/dist/xlsx.full.min.js"></script>
+
+<script src="https://cdn.jsdelivr.net/npm/pptxgenjs@3.12.0/dist/pptxgen.bundle.js"></script>
+
+<style>
+* {
+  box-sizing: border-box;
+}
+
+body {
+  margin: 0;
+  font-family: Arial, sans-serif;
+  background: #f3f4f6;
+  color: #111827;
+}
+
+header {
+  height: 65px;
+  background: #111827;
+  color: white;
+  display: flex;
+  align-items: center;
+  padding: 0 20px;
+  font-size: 21px;
+  font-weight: bold;
+}
+
+.logo {
+  color: #38bdf8;
+  margin-left: 6px;
+}
+
+.header-buttons {
+  margin-left: auto;
+  display: flex;
+  gap: 8px;
+}
+
+button {
+  border: none;
+  padding: 10px 14px;
+  border-radius: 7px;
+  cursor: pointer;
+  font-weight: bold;
+}
+
+.blue {
+  background: #0284c7;
+  color: white;
+}
+
+.green {
+  background: #16a34a;
+  color: white;
+}
+
+.white {
+  background: white;
+  color: #111827;
+  border: 1px solid #d1d5db;
+}
+
+.app {
+  display: grid;
+  grid-template-columns: 350px 1fr;
+  height: calc(100vh - 65px);
+}
+
+.sidebar {
+  background: white;
+  padding: 15px;
+  overflow-y: auto;
+  border-right: 1px solid #ddd;
+}
+
+.card {
+  border: 1px solid #e5e7eb;
+  border-radius: 10px;
+  padding: 14px;
+  margin-bottom: 12px;
+}
+
+.card h3 {
+  margin-top: 0;
+}
+
+label {
+  display: block;
+  margin-top: 9px;
+  margin-bottom: 4px;
+  font-size: 12px;
+  font-weight: bold;
+  color: #4b5563;
+}
+
+input,
+select,
+textarea {
+  width: 100%;
+  padding: 9px;
+  border: 1px solid #d1d5db;
+  border-radius: 6px;
+}
+
+textarea {
+  resize: vertical;
+}
+
+.row {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 7px;
+}
+
+.stats {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 8px;
+  margin-top: 10px;
+}
+
+.stat {
+  background: #f8fafc;
+  padding: 10px;
+  border-radius: 7px;
+}
+
+.stat strong {
+  display: block;
+  font-size: 22px;
+}
+
+#map {
+  width: 100%;
+  height: 100%;
+}
+
+.site {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  padding: 8px;
+  margin-top: 7px;
+  border: 1px solid #e5e7eb;
+  border-radius: 8px;
+}
+
+.site-photo {
+  width: 55px;
+  height: 45px;
+  object-fit: cover;
+  border-radius: 5px;
+}
+
+.site-info {
+  flex: 1;
+  font-size: 11px;
+}
+
+.site-info strong {
+  display: block;
+  font-size: 12px;
+}
+
+#message {
+  position: fixed;
+  right: 20px;
+  bottom: 20px;
+  background: #111827;
+  color: white;
+  padding: 12px 16px;
+  border-radius: 8px;
+  display: none;
+  z-index: 9999;
+}
+
+@media(max-width:800px) {
+
+  .app {
+    grid-template-columns: 1fr;
+    height: auto;
+  }
+
+  .sidebar {
+    order: 2;
+  }
+
+  #map {
+    height: 60vh;
+  }
+}
+</style>
+</head>
+
+<body>
+
+<header>
+
+  MY VISION
+  <span class="logo">OOH</span>
+
+  <div class="header-buttons">
+
+    <button class="white" onclick="exportExcel()">
+      Export Excel
+    </button>
+
+    <button class="green" onclick="exportPPT()">
+      Export PPT
+    </button>
+
+  </div>
+
+</header>
+
+
+<div class="app">
+
+  <aside class="sidebar">
+
+    <div class="card">
+
+      <h3>Campaign</h3>
+
+      <input
+        id="campaign"
+        placeholder="Client / Campaign Name"
+      >
+
+      <div class="stats">
+
+        <div class="stat">
+          <small>Total Sites</small>
+          <strong id="totalSites">0</strong>
+        </div>
+
+        <div class="stat">
+          <small>Selected</small>
+          <strong id="selectedSites">0</strong>
+        </div>
+
+      </div>
+
+    </div>
+
+
+    <div class="card">
+
+      <h3>Add OOH Site</h3>
+
+      <small>
+        Click anywhere on the map to select the billboard location.
+      </small>
+
+
+      <label>Site Name / ID</label>
+
+      <input
+        id="siteName"
+        placeholder="MUM-001"
+      >
+
+
+      <label>Location</label>
+
+      <input
+        id="siteLocation"
+        placeholder="Andheri East, Mumbai"
+      >
+
+
+      <div class="row">
+
+        <div>
+
+          <label>Width (ft)</label>
+
+          <input
+            id="width"
+            type="number"
+            placeholder="40"
+          >
+
+        </div>
+
+        <div>
+
+          <label>Height (ft)</label>
+
+          <input
+            id="height"
+            type="number"
+            placeholder="40"
+          >
+
+        </div>
+
+      </div>
+
+
+      <div class="row">
+
+        <div>
+
+          <label>Media Type</label>
+
+          <select id="mediaType">
+
+            <option>Billboard</option>
+            <option>Unipole</option>
+            <option>Gantry</option>
+            <option>Digital</option>
+            <option>Bus Shelter</option>
+
+          </select>
+
+        </div>
+
+
+        <div>
+
+          <label>Illumination</label>
+
+          <select id="illumination">
+
+            <option>Lit</option>
+            <option>Non-Lit</option>
+
+          </select>
+
+        </div>
+
+      </div>
+
+
+      <div class="row">
+
+        <div>
+
+          <label>Monthly Rate ₹</label>
+
+          <input
+            id="rate"
+            type="number"
+            placeholder="50000"
+          >
+
+        </div>
+
+
+        <div>
+
+          <label>Status</label>
+
+          <select id="status">
+
+            <option>Available</option>
+            <option>Booked</option>
+            <option>Hold</option>
+
+          </select>
+
+        </div>
+
+      </div>
+
+
+      <label>Site Photo</label>
+
+      <input
+        id="photo"
+        type="file"
+        accept="image/*"
+      >
+
+
+      <label>Remarks</label>
+
+      <textarea
+        id="remarks"
+        placeholder="Facing direction, traffic details, etc."
+      ></textarea>
+
+
+      <div class="row">
+
+        <input
+          id="latitude"
+          type="number"
+          step="any"
+          placeholder="Latitude"
+        >
+
+        <input
+          id="longitude"
+          type="number"
+          step="any"
+          placeholder="Longitude"
+        >
+
+      </div>
+
+
+      <button
+        class="blue"
+        style="width:100%; margin-top:10px;"
+        onclick="saveSite()"
+      >
+        SAVE SITE
+      </button>
+
+    </div>
+
+
+    <div class="card">
+
+      <h3>Saved Sites</h3>
+
+      <input
+        id="search"
+        placeholder="Search sites..."
+        oninput="renderSites()"
+      >
+
+      <div id="siteList"></div>
+
+    </div>
+
+  </aside>
+
+
+  <main>
+
+    <div id="map"></div>
+
+  </main>
+
+</div>
+
+
+<div id="message"></div>
+
+
+<script>
+
+const STORAGE_KEY = "my_vision_ooh_sites";
+
+let sites =
+  JSON.parse(
+    localStorage.getItem(STORAGE_KEY) || "[]"
+  );
+
+let selected = new Set();
+
+let markers = {};
+
+
+const map =
+  L.map("map").setView(
+    [19.0760, 72.8777],
+    11
+  );
+
+
+L.tileLayer(
+  "https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png",
+  {
+    attribution:
+      "© OpenStreetMap contributors"
+  }
+).addTo(map);
+
+
+map.on(
+  "click",
+  function(event) {
+
+    document.getElementById("latitude").value =
+      event.latlng.lat.toFixed(6);
+
+    document.getElementById("longitude").value =
+      event.latlng.lng.toFixed(6);
+
+    showMessage(
+      "Map location selected"
+    );
+
+  }
+);
+
+
+function showMessage(text) {
+
+  const box =
+    document.getElementById("message");
+
+  box.innerText = text;
+
+  box.style.display = "block";
+
+  setTimeout(
+    () => box.style.display = "none",
+    1800
+  );
+
+}
+
+
+function readImage(file) {
+
+  return new Promise(
+    function(resolve, reject) {
+
+      if (!file) {
+        resolve("");
+        return;
+      }
+
+      const reader =
+        new FileReader();
+
+      reader.onload =
+        () => resolve(reader.result);
+
+      reader.onerror = reject;
+
+      reader.readAsDataURL(file);
+
+    }
+  );
+
+}
+
+
+async function saveSite() {
+
+  const name =
+    document.getElementById("siteName").value.trim();
+
+  const lat =
+    document.getElementById("latitude").value;
+
+  const lng =
+    document.getElementById("longitude").value;
+
+
+  if (!name) {
+
+    showMessage(
+      "Please enter Site Name / ID"
+    );
+
+    return;
+
+  }
+
+
+  if (!lat || !lng) {
+
+    showMessage(
+      "Click the map to select location"
+    );
+
+    return;
+
+  }
+
+
+  const image =
+    await readImage(
+      document.getElementById("photo").files[0]
+    );
+
+
+  const site = {
+
+    id: Date.now().toString(),
+
+    name: name,
+
+    location:
+      document.getElementById("siteLocation").value,
+
+    width:
+      document.getElementById("width").value,
+
+    height:
+      document.getElementById("height").value,
+
+    mediaType:
+      document.getElementById("mediaType").value,
+
+    illumination:
+      document.getElementById("illumination").value,
+
+    rate:
+      document.getElementById("rate").value,
+
+    status:
+      document.getElementById("status").value,
+
+    remarks:
+      document.getElementById("remarks").value,
+
+    latitude: Number(lat),
+
+    longitude: Number(lng),
+
+    photo: image
+
+  };
+
+
+  sites.push(site);
+
+  localStorage.setItem(
+    STORAGE_KEY,
+    JSON.stringify(sites)
+  );
+
+
+  clearForm();
+
+  render();
+
+  showMessage(
+    "Site saved successfully"
+  );
+
+}
+
+
+function clearForm() {
+
+  [
+    "siteName",
+    "siteLocation",
+    "width",
+    "height",
+    "rate",
+    "remarks",
+    "latitude",
+    "longitude"
+  ].forEach(
+    id =>
+      document.getElementById(id).value = ""
+  );
+
+
+  document.getElementById("photo").value = "";
+
+}
+
+
+function toggleSite(id) {
+
+  if (selected.has(id)) {
+
+    selected.delete(id);
+
+  } else {
+
+    selected.add(id);
+
+  }
+
+  render();
+
+}
+
+
+function deleteSite(id) {
+
+  sites =
+    sites.filter(
+      site => site.id !== id
+    );
+
+  selected.delete(id);
+
+  localStorage.setItem(
+    STORAGE_KEY,
+    JSON.stringify(sites)
+  );
+
+  render();
+
+}
+
+
+function render() {
+
+  Object.values(markers)
+    .forEach(
+      marker => marker.remove()
+    );
+
+  markers = {};
+
+
+  sites.forEach(
+    function(site, index) {
+
+      const marker =
+        L.marker(
+          [
+            site.latitude,
+            site.longitude
+          ]
+        )
+        .addTo(map);
+
+
+      marker.bindPopup(
+
+        `<b>${site.name}</b>
+        <br>${site.location || ""}
+        <br>${site.width || "-"} × ${site.height || "-"} ft
+        <br>${site.mediaType}
+        <br>₹${Number(site.rate || 0).toLocaleString("en-IN")}
+        <br><br>
+        <button onclick="toggleSite('${site.id}')">
+        ${selected.has(site.id)
+          ? "Unselect Site"
+          : "Select Site"}
+        </button>`
+
+      );
+
+
+      markers[site.id] = marker;
+
+    }
+  );
+
+
+  document.getElementById(
+    "totalSites"
+  ).innerText = sites.length;
+
+
+  document.getElementById(
+    "selectedSites"
+  ).innerText = selected.size;
+
+
+  renderSites();
+
+}
+
+
+function renderSites() {
+
+  const list =
+    document.getElementById("siteList");
+
+  const search =
+    document.getElementById("search")
+      .value
+      .toLowerCase();
+
+
+  list.innerHTML = "";
+
+
+  sites
+    .filter(
+      site =>
+        (
+          site.name +
+          " " +
+          site.location +
+          " " +
+          site.mediaType
+        )
+        .toLowerCase()
+        .includes(search)
+    )
+    .forEach(
+      function(site) {
+
+        const div =
+          document.createElement("div");
+
+        div.className = "site";
+
+
+        const image =
+          site.photo
+            ? `<img class="site-photo" src="${site.photo}">`
+            : `<div class="site-photo"
+                 style="background:#e5e7eb">
+               </div>`;
+
+
+        div.innerHTML = `
+
+          ${image}
+
+          <div class="site-info">
+
+            <strong>
+              ${site.name}
+            </strong>
+
+            ${site.location || ""}
+
+            <br>
+
+            ${site.width || "-"} ×
+            ${site.height || "-"} ft
+
+          </div>
+
+
+          <button
+            class="${selected.has(site.id)
+              ? "green"
+              : "white"}"
+            onclick="toggleSite('${site.id}')"
+          >
+
+            ${selected.has(site.id)
+              ? "✓"
+              : "Select"}
+
+          </button>
+
+          <button
+            class="white"
+            onclick="deleteSite('${site.id}')"
+          >
+            ×
+          </button>
+
+        `;
+
+
+        div.addEventListener(
+          "click",
+          function(event) {
+
+            if (
+              event.target.tagName === "BUTTON"
+            ) return;
+
+
+            map.setView(
+              [
+                site.latitude,
+                site.longitude
+              ],
+              15
+            );
+
+
+            markers[site.id]
+              .openPopup();
+
+          }
+        );
+
+
+        list.appendChild(div);
+
+      }
+    );
+
+}
+
+
+function getSelectedSites() {
+
+  return sites.filter(
+    site => selected.has(site.id)
+  );
+
+}
+
+
+function exportExcel() {
+
+  const selectedSites =
+    getSelectedSites();
+
+
+  if (!selectedSites.length) {
+
+    showMessage(
+      "Select sites first"
+    );
+
+    return;
+
+  }
+
+
+  const rows =
+    selectedSites.map(
+      function(site, index) {
+
+        return {
+
+          "Sr No":
+            index + 1,
+
+          "Site ID":
+            site.name,
+
+          "Location":
+            site.location,
+
+          "Media Type":
+            site.mediaType,
+
+          "Size":
+            `${site.width || ""} x ${site.height || ""} ft`,
+
+          "Illumination":
+            site.illumination,
+
+          "Monthly Rate":
+            Number(site.rate || 0),
+
+          "Status":
+            site.status,
+
+          "Latitude":
+            site.latitude,
+
+          "Longitude":
+            site.longitude,
+
+          "Remarks":
+            site.remarks
+
+        };
+
+      }
+    );
+
+
+  const workbook =
+    XLSX.utils.book_new();
+
+
+  const worksheet =
+    XLSX.utils.json_to_sheet(rows);
+
+
+  XLSX.utils.book_append_sheet(
+    workbook,
+    worksheet,
+    "Selected Sites"
+  );
+
+
+  XLSX.writeFile(
+    workbook,
+    "My_Vision_OOH_Sites.xlsx"
+  );
+
+
+  showMessage(
+    "Excel downloaded"
+  );
+
+}
+
+
+async function exportPPT() {
+
+  const selectedSites =
+    getSelectedSites();
+
+
+  if (!selectedSites.length) {
+
+    showMessage(
+      "Select sites first"
+    );
+
+    return;
+
+  }
+
+
+  const ppt =
+    new pptxgen();
+
+  ppt.layout =
+    "LAYOUT_WIDE";
+
+  ppt.author =
+    "My Vision OOH";
+
+
+  let slide =
+    ppt.addSlide();
+
+
+  slide.background = {
+    color: "111827"
+  };
+
+
+  slide.addText(
+    "MY VISION OOH",
+    {
+      x: 0.7,
+      y: 1.4,
+      w: 11,
+      h: 0.6,
+      fontSize: 30,
+      bold: true,
+      color: "FFFFFF"
+    }
+  );
+
+
+  slide.addText(
+    document.getElementById(
+      "campaign"
+    ).value ||
+    "OOH Site Proposal",
+    {
+      x: 0.7,
+      y: 2.2,
+      w: 11,
+      h: 0.5,
+      fontSize: 22,
+      bold: true,
+      color: "38BDF8"
+    }
+  );
+
+
+  slide.addText(
+    selectedSites.length +
+    " Selected Sites",
+    {
+      x: 0.7,
+      y: 3,
+      w: 10,
+      h: 0.4,
+      fontSize: 16,
+      color: "D1D5DB"
+    }
+  );
+
+
+  let listSlide =
+    ppt.addSlide();
+
+
+  listSlide.addText(
+    "SELECTED OOH SITES",
+    {
+      x: 0.6,
+      y: 0.4,
+      w: 12,
+      h: 0.5,
+      fontSize: 22,
+      bold: true
+    }
+  );
+
+
+  let text =
+    selectedSites
+      .map(
+        (site, index) =>
+          `${index + 1}. ${site.name} — ${site.location || "-"}`
+      )
+      .join("\n");
+
+
+  listSlide.addText(
+    text,
+    {
+      x: 0.8,
+      y: 1.2,
+      w: 11,
+      h: 5,
+      fontSize: 16
+    }
+  );
+
+
+  for (
+    let index = 0;
+    index < selectedSites.length;
+    index++
+  ) {
+
+    const site =
+      selectedSites[index];
+
+
+    const s =
+      ppt.addSlide();
+
+
+    s.addText(
+      `${index + 1}. ${site.name}`,
+      {
+        x: 0.6,
+        y: 0.4,
+        w: 11,
+        h: 0.5,
+        fontSize: 22,
+        bold: true
+      }
+    );
+
+
+    if (site.photo) {
+
+      s.addImage(
+        {
+          data: site.photo,
+          x: 0.6,
+          y: 1.1,
+          w: 6,
+          h: 4
+        }
+      );
+
+    }
+
+
+    s.addText(
+
+      `Location: ${site.location || "-"}
+
+Size: ${site.width || "-"} × ${site.height || "-"} ft
+
+Media: ${site.mediaType}
+
+Illumination: ${site.illumination}
+
+Monthly Rate: ₹${Number(site.rate || 0).toLocaleString("en-IN")}
+
+Status: ${site.status}
+
+Coordinates:
+${site.latitude}, ${site.longitude}`,
+
+      {
+        x: 7,
+        y: 1.1,
+        w: 5,
+        h: 5,
+        fontSize: 14
+      }
+
+    );
+
+  }
+
+
+  await ppt.writeFile(
+    {
+      fileName:
+        "My_Vision_OOH_Proposal.pptx"
+    }
+  );
+
+
+  showMessage(
+    "PPT downloaded"
+  );
+
+}
+
+
+render();
+
+</script>
+
+</body>
+</html>
