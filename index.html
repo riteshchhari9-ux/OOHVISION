@@ -2,11 +2,10 @@
 <html lang="en">
 <head>
 <meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="viewport" content="width=device-width,initial-scale=1.0">
 
-<title>My Vision OOH</title>
+<title>MY VISION OOH</title>
 
-<!-- Leaflet Map -->
 <link rel="stylesheet"
 href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css">
 
@@ -30,7 +29,6 @@ header{
     display:flex;
     align-items:center;
     padding:0 18px;
-    gap:20px;
 }
 
 .logo{
@@ -51,7 +49,7 @@ header{
 button{
     border:0;
     border-radius:7px;
-    padding:10px 13px;
+    padding:9px 12px;
     cursor:pointer;
     font-weight:bold;
 }
@@ -82,7 +80,7 @@ button:hover{
 
 .main{
     display:grid;
-    grid-template-columns:380px 1fr;
+    grid-template-columns:390px 1fr;
     height:calc(100vh - 64px);
 }
 
@@ -176,16 +174,66 @@ textarea{
     display:none;
 }
 
+
+/* =========================
+   SAVED SITE CARD
+   ========================= */
+
 .site{
     border:1px solid #d8dee6;
-    border-radius:8px;
-    padding:10px;
+    border-radius:9px;
+    padding:9px;
     margin-top:8px;
+    background:#fff;
+}
+
+.saved-site-row{
+    display:flex;
+    gap:10px;
+    align-items:center;
+}
+
+.saved-site-image{
+    width:82px;
+    height:68px;
+    flex-shrink:0;
+}
+
+.saved-site-photo{
+    width:82px;
+    height:68px;
+    object-fit:cover;
+    border-radius:7px;
+    cursor:pointer;
+    border:1px solid #d1d5db;
+    display:block;
+}
+
+.saved-site-photo:hover{
+    opacity:.85;
+}
+
+.no-site-photo{
+    width:82px;
+    height:68px;
+    background:#e5e7eb;
+    border-radius:7px;
+    display:flex;
+    align-items:center;
+    justify-content:center;
+    font-size:25px;
+    color:#64748b;
+}
+
+.saved-site-details{
+    flex:1;
+    min-width:0;
 }
 
 .site-name{
     font-weight:bold;
     font-size:14px;
+    word-break:break-word;
 }
 
 .site-info{
@@ -193,6 +241,7 @@ textarea{
     color:#64748b;
     margin-top:4px;
     line-height:1.5;
+    word-break:break-word;
 }
 
 .site-buttons{
@@ -204,7 +253,7 @@ textarea{
 
 .site-buttons button{
     padding:6px 8px;
-    font-size:11px;
+    font-size:10px;
 }
 
 .photo-preview{
@@ -213,6 +262,13 @@ textarea{
     border-radius:7px;
     margin-top:7px;
     display:none;
+}
+
+.empty{
+    text-align:center;
+    color:#64748b;
+    padding:15px 5px;
+    font-size:13px;
 }
 
 #message{
@@ -228,13 +284,6 @@ textarea{
     display:none;
 }
 
-.empty{
-    text-align:center;
-    color:#64748b;
-    padding:15px 5px;
-    font-size:13px;
-}
-
 @media(max-width:850px){
 
     header{
@@ -245,8 +294,7 @@ textarea{
     }
 
     .header-actions{
-        margin-left:0;
-        width:100%;
+        margin-left:15px;
     }
 
     .main{
@@ -300,8 +348,6 @@ onclick="exportPPT()">
 <div class="main">
 
 
-<!-- SIDEBAR -->
-
 <div class="sidebar">
 
 
@@ -340,9 +386,7 @@ Selected
 
 <h3>🔎 Search Location</h3>
 
-<label>
-Location Name
-</label>
+<label>Location Name</label>
 
 <input
 id="locationSearch"
@@ -356,9 +400,7 @@ SEARCH LOCATION
 </button>
 
 
-<label>
-Latitude & Longitude
-</label>
+<label>Latitude & Longitude</label>
 
 <div class="row">
 
@@ -509,14 +551,12 @@ value="40"
 <label>Media Type</label>
 
 <select id="mediaType">
-
 <option>Billboard</option>
 <option>Unipole</option>
 <option>Gantries</option>
 <option>Bus Shelter</option>
 <option>Digital</option>
 <option>Other</option>
-
 </select>
 
 </div>
@@ -527,11 +567,9 @@ value="40"
 <label>Illumination</label>
 
 <select id="illumination">
-
 <option>Lit</option>
 <option>Non-Lit</option>
 <option>Digital</option>
-
 </select>
 
 </div>
@@ -558,12 +596,10 @@ value="0"
 <label>Status</label>
 
 <select id="status">
-
 <option>Available</option>
 <option>Booked</option>
 <option>Hold</option>
 <option>Unavailable</option>
-
 </select>
 
 </div>
@@ -619,7 +655,7 @@ CLEAR FORM
 
 <input
 id="siteSearch"
-placeholder="Search saved sites..."
+placeholder="Search site, location, lat, long, status..."
 oninput="renderSites()"
 >
 
@@ -630,8 +666,6 @@ oninput="renderSites()"
 
 </div>
 
-
-<!-- MAP -->
 
 <div class="map-container">
 
@@ -648,8 +682,6 @@ oninput="renderSites()"
 
 
 
-<!-- LIBRARIES -->
-
 <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
 
 <script src="https://cdn.jsdelivr.net/npm/xlsx@0.18.5/dist/xlsx.full.min.js"></script>
@@ -657,21 +689,20 @@ oninput="renderSites()"
 <script src="https://cdn.jsdelivr.net/npm/pptxgenjs@3.12.0/dist/pptxgen.bundle.js"></script>
 
 
-
 <script>
 
-/* =====================================================
-   MY VISION OOH
-   ===================================================== */
-
-
-/* DATABASE */
+/* =========================================================
+   IMPORTANT:
+   SAME DATABASE NAME AS YOUR PREVIOUS VERSION
+   DO NOT CHANGE THESE
+   ========================================================= */
 
 const DB_NAME = "MY_VISION_OOH_DATABASE";
 
 const DB_VERSION = 1;
 
 const STORE_NAME = "sites";
+
 
 let db;
 
@@ -689,14 +720,14 @@ let currentPhoto = "";
 
 
 
-/* =====================================================
+/* =========================================================
    MESSAGE
-   ===================================================== */
+   ========================================================= */
 
 function showMessage(text){
 
     const box =
-    document.getElementById("message");
+        document.getElementById("message");
 
     box.innerText = text;
 
@@ -712,65 +743,65 @@ function showMessage(text){
 
 
 
-/* =====================================================
-   INDEXED DB
-   PERMANENT BROWSER STORAGE
-   ===================================================== */
+/* =========================================================
+   DATABASE
+   IMPORTANT:
+   THIS OPENS THE EXISTING DATABASE.
+   IT DOES NOT DELETE IT.
+   ========================================================= */
 
 function openDatabase(){
 
     return new Promise(function(resolve,reject){
 
         const request =
-        indexedDB.open(
-            DB_NAME,
-            DB_VERSION
-        );
+            indexedDB.open(
+                DB_NAME,
+                DB_VERSION
+            );
 
 
         request.onupgradeneeded =
-        function(event){
+            function(event){
 
-            const database =
-            event.target.result;
+                const database =
+                    event.target.result;
 
-            if(
-                !database.objectStoreNames.contains(
-                    STORE_NAME
-                )
-            ){
+                if(
+                    !database.objectStoreNames.contains(
+                        STORE_NAME
+                    )
+                ){
 
-                database.createObjectStore(
-                    STORE_NAME,
-                    {
-                        keyPath:"id"
-                    }
-                );
+                    database.createObjectStore(
+                        STORE_NAME,
+                        {
+                            keyPath:"id"
+                        }
+                    );
 
-            }
+                }
 
-        };
+            };
 
 
         request.onsuccess =
-        function(event){
+            function(event){
 
-            db =
-            event.target.result;
+                db =
+                    event.target.result;
 
-            resolve(db);
+                resolve(db);
 
-        };
+            };
 
 
         request.onerror =
-        function(){
+            function(){
 
-            reject(
-                request.error
-            );
+                reject(request.error);
 
-        };
+            };
 
     });
 
@@ -783,38 +814,36 @@ function getAllSites(){
     return new Promise(function(resolve,reject){
 
         const transaction =
-        db.transaction(
-            STORE_NAME,
-            "readonly"
-        );
+            db.transaction(
+                STORE_NAME,
+                "readonly"
+            );
 
         const store =
-        transaction.objectStore(
-            STORE_NAME
-        );
+            transaction.objectStore(
+                STORE_NAME
+            );
 
         const request =
-        store.getAll();
+            store.getAll();
 
 
         request.onsuccess =
-        function(){
+            function(){
 
-            resolve(
-                request.result || []
-            );
+                resolve(
+                    request.result || []
+                );
 
-        };
+            };
 
 
         request.onerror =
-        function(){
+            function(){
 
-            reject(
-                request.error
-            );
+                reject(request.error);
 
-        };
+            };
 
     });
 
@@ -827,36 +856,34 @@ function putSite(site){
     return new Promise(function(resolve,reject){
 
         const transaction =
-        db.transaction(
-            STORE_NAME,
-            "readwrite"
-        );
+            db.transaction(
+                STORE_NAME,
+                "readwrite"
+            );
 
         const store =
-        transaction.objectStore(
-            STORE_NAME
-        );
+            transaction.objectStore(
+                STORE_NAME
+            );
 
         const request =
-        store.put(site);
+            store.put(site);
 
 
         request.onsuccess =
-        function(){
+            function(){
 
-            resolve();
+                resolve();
 
-        };
+            };
 
 
         request.onerror =
-        function(){
+            function(){
 
-            reject(
-                request.error
-            );
+                reject(request.error);
 
-        };
+            };
 
     });
 
@@ -869,36 +896,34 @@ function removeSite(id){
     return new Promise(function(resolve,reject){
 
         const transaction =
-        db.transaction(
-            STORE_NAME,
-            "readwrite"
-        );
+            db.transaction(
+                STORE_NAME,
+                "readwrite"
+            );
 
         const store =
-        transaction.objectStore(
-            STORE_NAME
-        );
+            transaction.objectStore(
+                STORE_NAME
+            );
 
         const request =
-        store.delete(id);
+            store.delete(id);
 
 
         request.onsuccess =
-        function(){
+            function(){
 
-            resolve();
+                resolve();
 
-        };
+            };
 
 
         request.onerror =
-        function(){
+            function(){
 
-            reject(
-                request.error
-            );
+                reject(request.error);
 
-        };
+            };
 
     });
 
@@ -906,18 +931,18 @@ function removeSite(id){
 
 
 
-/* =====================================================
+/* =========================================================
    MAP
-   ===================================================== */
+   ========================================================= */
 
 function initializeMap(){
 
     map =
-    L.map("map")
-    .setView(
-        [19.0760,72.8777],
-        11
-    );
+        L.map("map")
+        .setView(
+            [19.0760,72.8777],
+            11
+        );
 
 
     L.tileLayer(
@@ -925,7 +950,7 @@ function initializeMap(){
         {
             maxZoom:19,
             attribution:
-            "© OpenStreetMap contributors"
+                "© OpenStreetMap contributors"
         }
     ).addTo(map);
 
@@ -935,34 +960,34 @@ function initializeMap(){
         function(event){
 
             const lat =
-            event.latlng.lat;
+                event.latlng.lat;
 
             const lng =
-            event.latlng.lng;
+                event.latlng.lng;
 
 
             document.getElementById(
                 "latitude"
             ).value =
-            lat.toFixed(6);
+                lat.toFixed(6);
 
 
             document.getElementById(
                 "longitude"
             ).value =
-            lng.toFixed(6);
+                lng.toFixed(6);
 
 
             document.getElementById(
                 "searchLat"
             ).value =
-            lat.toFixed(6);
+                lat.toFixed(6);
 
 
             document.getElementById(
                 "searchLng"
             ).value =
-            lng.toFixed(6);
+                lng.toFixed(6);
 
 
             placeSearchMarker(
@@ -983,16 +1008,16 @@ function initializeMap(){
 
 
 
-/* =====================================================
+/* =========================================================
    LOCATION NAME SEARCH
-   ===================================================== */
+   ========================================================= */
 
 async function searchLocation(){
 
     const query =
-    document.getElementById(
-        "locationSearch"
-    ).value.trim();
+        document.getElementById(
+            "locationSearch"
+        ).value.trim();
 
 
     if(!query){
@@ -1006,34 +1031,25 @@ async function searchLocation(){
     }
 
 
-    showMessage(
-        "Searching..."
-    );
+    showMessage("Searching...");
 
 
     try{
 
         const url =
-        "https://nominatim.openstreetmap.org/search"+
-        "?format=json"+
-        "&limit=1"+
-        "&q="+
-        encodeURIComponent(query);
+            "https://nominatim.openstreetmap.org/search"+
+            "?format=json"+
+            "&limit=1"+
+            "&q="+
+            encodeURIComponent(query);
 
 
         const response =
-        await fetch(
-            url,
-            {
-                headers:{
-                    "Accept-Language":"en"
-                }
-            }
-        );
+            await fetch(url);
 
 
         const data =
-        await response.json();
+            await response.json();
 
 
         if(!data.length){
@@ -1048,7 +1064,7 @@ async function searchLocation(){
 
 
         const result =
-        data[0];
+            data[0];
 
 
         showLocation(
@@ -1072,26 +1088,26 @@ async function searchLocation(){
 
 
 
-/* =====================================================
+/* =========================================================
    LAT LONG SEARCH
-   ===================================================== */
+   ========================================================= */
 
 function searchCoordinates(){
 
     const lat =
-    parseFloat(
-        document.getElementById(
-            "searchLat"
-        ).value
-    );
+        parseFloat(
+            document.getElementById(
+                "searchLat"
+            ).value
+        );
 
 
     const lng =
-    parseFloat(
-        document.getElementById(
-            "searchLng"
-        ).value
-    );
+        parseFloat(
+            document.getElementById(
+                "searchLng"
+            ).value
+        );
 
 
     if(
@@ -1134,9 +1150,9 @@ function searchCoordinates(){
 
 
 
-/* =====================================================
+/* =========================================================
    SHOW LOCATION
-   ===================================================== */
+   ========================================================= */
 
 function showLocation(
     lat,
@@ -1160,25 +1176,25 @@ function showLocation(
     document.getElementById(
         "latitude"
     ).value =
-    lat.toFixed(6);
+        lat.toFixed(6);
 
 
     document.getElementById(
         "longitude"
     ).value =
-    lng.toFixed(6);
+        lng.toFixed(6);
 
 
     document.getElementById(
         "searchLat"
     ).value =
-    lat.toFixed(6);
+        lat.toFixed(6);
 
 
     document.getElementById(
         "searchLng"
     ).value =
-    lng.toFixed(6);
+        lng.toFixed(6);
 
 
     if(
@@ -1188,30 +1204,30 @@ function showLocation(
         document.getElementById(
             "siteLocation"
         ).value =
-        name;
+            name;
 
     }
 
 
     const box =
-    document.getElementById(
-        "locationResult"
-    );
+        document.getElementById(
+            "locationResult"
+        );
 
 
     box.style.display =
-    "block";
+        "block";
 
 
     box.innerHTML =
-    "<b>📍 Location Found</b><br>"+
-    escapeHTML(name)+
-    "<br><br>"+
-    "<b>Lat:</b> "+
-    lat.toFixed(6)+
-    "<br>"+
-    "<b>Long:</b> "+
-    lng.toFixed(6);
+        "<b>📍 Location Found</b><br>"+
+        escapeHTML(name)+
+        "<br><br>"+
+        "<b>Lat:</b> "+
+        lat.toFixed(6)+
+        "<br>"+
+        "<b>Long:</b> "+
+        lng.toFixed(6);
 
 
     showMessage(
@@ -1222,9 +1238,9 @@ function showLocation(
 
 
 
-/* =====================================================
+/* =========================================================
    SEARCH MARKER
-   ===================================================== */
+   ========================================================= */
 
 function placeSearchMarker(
     lat,
@@ -1240,33 +1256,31 @@ function placeSearchMarker(
 
 
     searchMarker =
-    L.marker(
-        [lat,lng]
-    )
-    .addTo(map)
-    .bindPopup(
-        "<b>📍 "+
-        escapeHTML(name)+
-        "</b><br><br>"+
-        lat.toFixed(6)+
-        ", "+
-        lng.toFixed(6)
-    )
-    .openPopup();
+        L.marker(
+            [lat,lng]
+        )
+        .addTo(map)
+        .bindPopup(
+            "<b>📍 "+
+            escapeHTML(name)+
+            "</b><br><br>"+
+            lat.toFixed(6)+
+            ", "+
+            lng.toFixed(6)
+        )
+        .openPopup();
 
 }
 
 
 
-/* =====================================================
+/* =========================================================
    MY LOCATION
-   ===================================================== */
+   ========================================================= */
 
 function useMyLocation(){
 
-    if(
-        !navigator.geolocation
-    ){
+    if(!navigator.geolocation){
 
         showMessage(
             "Geolocation not supported"
@@ -1303,38 +1317,38 @@ function useMyLocation(){
 
 
 
-/* =====================================================
+/* =========================================================
    SAVE SITE
-   ===================================================== */
+   ========================================================= */
 
 async function saveSite(){
 
     const name =
-    document.getElementById(
-        "siteName"
-    ).value.trim();
+        document.getElementById(
+            "siteName"
+        ).value.trim();
 
 
     const location =
-    document.getElementById(
-        "siteLocation"
-    ).value.trim();
+        document.getElementById(
+            "siteLocation"
+        ).value.trim();
 
 
     const lat =
-    parseFloat(
-        document.getElementById(
-            "latitude"
-        ).value
-    );
+        parseFloat(
+            document.getElementById(
+                "latitude"
+            ).value
+        );
 
 
     const lng =
-    parseFloat(
-        document.getElementById(
-            "longitude"
-        ).value
-    );
+        parseFloat(
+            document.getElementById(
+                "longitude"
+            ).value
+        );
 
 
     if(!name){
@@ -1354,7 +1368,7 @@ async function saveSite(){
     ){
 
         showMessage(
-            "Search/select a location first"
+            "Select/search a location first"
         );
 
         return;
@@ -1363,95 +1377,93 @@ async function saveSite(){
 
 
     let photo =
-    currentPhoto;
+        currentPhoto;
 
 
     const photoFile =
-    document.getElementById(
-        "photo"
-    ).files[0];
+        document.getElementById(
+            "photo"
+        ).files[0];
 
 
     if(photoFile){
 
         photo =
-        await resizePhoto(
-            photoFile
-        );
+            await resizePhoto(photoFile);
 
     }
 
 
     const editId =
-    document.getElementById(
-        "editId"
-    ).value;
+        document.getElementById(
+            "editId"
+        ).value;
 
 
     const site = {
 
         id:
-        editId ||
-        crypto.randomUUID(),
+            editId ||
+            crypto.randomUUID(),
 
         siteName:
-        name,
+            name,
 
         location:
-        location,
+            location,
 
         latitude:
-        lat,
+            lat,
 
         longitude:
-        lng,
+            lng,
 
         width:
-        Number(
-            document.getElementById(
-                "width"
-            ).value
-        ) || 0,
+            Number(
+                document.getElementById(
+                    "width"
+                ).value
+            ) || 0,
 
         height:
-        Number(
-            document.getElementById(
-                "height"
-            ).value
-        ) || 0,
+            Number(
+                document.getElementById(
+                    "height"
+                ).value
+            ) || 0,
 
         mediaType:
-        document.getElementById(
-            "mediaType"
-        ).value,
+            document.getElementById(
+                "mediaType"
+            ).value,
 
         illumination:
-        document.getElementById(
-            "illumination"
-        ).value,
+            document.getElementById(
+                "illumination"
+            ).value,
 
         rate:
-        Number(
-            document.getElementById(
-                "rate"
-            ).value
-        ) || 0,
+            Number(
+                document.getElementById(
+                    "rate"
+                ).value
+            ) || 0,
 
         status:
-        document.getElementById(
-            "status"
-        ).value,
+            document.getElementById(
+                "status"
+            ).value,
 
         photo:
-        photo || "",
+            photo || "",
 
         remarks:
-        document.getElementById(
-            "remarks"
-        ).value,
+            document.getElementById(
+                "remarks"
+            ).value,
 
         updated:
-        new Date().toISOString()
+            new Date().toISOString()
 
     };
 
@@ -1460,20 +1472,22 @@ async function saveSite(){
 
 
     const existingIndex =
-    sites.findIndex(
-        function(item){
-            return item.id === site.id;
-        }
-    );
+        sites.findIndex(
+            function(item){
+
+                return item.id === site.id;
+
+            }
+        );
 
 
     if(existingIndex >= 0){
 
         sites[existingIndex] =
-        site;
+            site;
 
         showMessage(
-            "Site updated & permanently saved"
+            "Site updated and saved"
         );
 
     }
@@ -1486,7 +1500,7 @@ async function saveSite(){
         );
 
         showMessage(
-            "Site permanently saved"
+            "New site saved"
         );
 
     }
@@ -1502,110 +1516,112 @@ async function saveSite(){
 
 
 
-/* =====================================================
+/* =========================================================
    PHOTO RESIZE
-   ===================================================== */
+   ========================================================= */
 
 function resizePhoto(file){
 
     return new Promise(function(resolve,reject){
 
         const reader =
-        new FileReader();
+            new FileReader();
 
 
         reader.onload =
-        function(event){
+            function(event){
 
-            const img =
-            new Image();
-
-
-            img.onload =
-            function(){
-
-                const canvas =
-                document.createElement(
-                    "canvas"
-                );
+                const img =
+                    new Image();
 
 
-                const max =
-                1200;
+                img.onload =
+                    function(){
+
+                        const canvas =
+                            document.createElement(
+                                "canvas"
+                            );
 
 
-                let width =
-                img.width;
-
-                let height =
-                img.height;
+                        const max =
+                            1200;
 
 
-                if(width > max){
+                        let width =
+                            img.width;
 
-                    height =
-                    height * max / width;
-
-                    width =
-                    max;
-
-                }
+                        let height =
+                            img.height;
 
 
-                if(height > max){
+                        if(width > max){
 
-                    width =
-                    width * max / height;
+                            height =
+                                height * max / width;
 
-                    height =
-                    max;
+                            width =
+                                max;
 
-                }
-
-
-                canvas.width =
-                width;
-
-                canvas.height =
-                height;
+                        }
 
 
-                const ctx =
-                canvas.getContext(
-                    "2d"
-                );
+                        if(height > max){
+
+                            width =
+                                width * max / height;
+
+                            height =
+                                max;
+
+                        }
 
 
-                ctx.drawImage(
-                    img,
-                    0,
-                    0,
-                    width,
-                    height
-                );
+                        canvas.width =
+                            width;
+
+                        canvas.height =
+                            height;
 
 
-                resolve(
-                    canvas.toDataURL(
-                        "image/jpeg",
-                        .70
-                    )
-                );
+                        const ctx =
+                            canvas.getContext(
+                                "2d"
+                            );
+
+
+                        ctx.drawImage(
+                            img,
+                            0,
+                            0,
+                            width,
+                            height
+                        );
+
+
+                        resolve(
+                            canvas.toDataURL(
+                                "image/jpeg",
+                                .70
+                            )
+                        );
+
+                    };
+
+
+                img.onerror =
+                    reject;
+
+
+                img.src =
+                    event.target.result;
 
             };
 
 
-            img.onerror =
+        reader.onerror =
             reject;
 
-            img.src =
-            event.target.result;
-
-        };
-
-
-        reader.onerror =
-        reject;
 
         reader.readAsDataURL(file);
 
@@ -1615,14 +1631,14 @@ function resizePhoto(file){
 
 
 
-/* =====================================================
+/* =========================================================
    PHOTO PREVIEW
-   ===================================================== */
+   ========================================================= */
 
 function previewPhoto(event){
 
     const file =
-    event.target.files[0];
+        event.target.files[0];
 
 
     if(!file){
@@ -1633,28 +1649,28 @@ function previewPhoto(event){
 
 
     const reader =
-    new FileReader();
+        new FileReader();
 
 
     reader.onload =
-    function(e){
+        function(e){
 
-        const img =
-        document.getElementById(
-            "photoPreview"
-        );
+            const img =
+                document.getElementById(
+                    "photoPreview"
+                );
 
 
-        img.src =
-        e.target.result;
+            img.src =
+                e.target.result;
 
-        img.style.display =
-        "block";
+            img.style.display =
+                "block";
 
-        currentPhoto =
-        e.target.result;
+            currentPhoto =
+                e.target.result;
 
-    };
+        };
 
 
     reader.readAsDataURL(file);
@@ -1663,15 +1679,17 @@ function previewPhoto(event){
 
 
 
-/* =====================================================
+/* =========================================================
    MAP MARKERS
-   ===================================================== */
+   ========================================================= */
 
 function renderMarkers(){
 
     markers.forEach(
         function(marker){
+
             marker.remove();
+
         }
     );
 
@@ -1682,17 +1700,27 @@ function renderMarkers(){
     sites.forEach(
         function(site){
 
+            if(
+                isNaN(site.latitude) ||
+                isNaN(site.longitude)
+            ){
+
+                return;
+
+            }
+
+
             const marker =
-            L.marker(
-                [
-                    site.latitude,
-                    site.longitude
-                ]
-            )
-            .addTo(map);
+                L.marker(
+                    [
+                        Number(site.latitude),
+                        Number(site.longitude)
+                    ]
+                )
+                .addTo(map);
 
 
-            marker.bindPopup(
+            let popup =
 
                 "<b>"+
                 escapeHTML(
@@ -1720,7 +1748,7 @@ function renderMarkers(){
 
                 "Rate: ₹"+
                 Number(
-                    site.rate
+                    site.rate || 0
                 ).toLocaleString(
                     "en-IN"
                 )+
@@ -1729,8 +1757,22 @@ function renderMarkers(){
                 "Status: "+
                 escapeHTML(
                     site.status
-                )
+                );
 
+
+            if(site.photo){
+
+                popup +=
+                    "<br><br>"+
+                    "<img src='"+
+                    site.photo+
+                    "' style='width:180px;height:120px;object-fit:cover;border-radius:6px'>";
+
+            }
+
+
+            marker.bindPopup(
+                popup
             );
 
 
@@ -1748,9 +1790,7 @@ function renderMarkers(){
             );
 
 
-            markers.push(
-                marker
-            );
+            markers.push(marker);
 
         }
     );
@@ -1759,55 +1799,115 @@ function renderMarkers(){
 
 
 
-/* =====================================================
-   RENDER SITE LIST
-   ===================================================== */
+/* =========================================================
+   SMART SAVED SITE SEARCH
+   ========================================================= */
 
 function renderSites(){
 
     const list =
-    document.getElementById(
-        "siteList"
-    );
+        document.getElementById(
+            "siteList"
+        );
 
 
     const search =
-    document.getElementById(
-        "siteSearch"
-    ).value
-    .toLowerCase();
+        document.getElementById(
+            "siteSearch"
+        )
+        .value
+        .toLowerCase()
+        .trim();
 
+
+    /*
+       SEARCHES:
+       SITE NAME
+       LOCATION
+       LATITUDE
+       LONGITUDE
+       MEDIA TYPE
+       STATUS
+       SIZE
+       REMARKS
+    */
 
     const filtered =
-    sites.filter(
-        function(site){
+        sites.filter(
+            function(site){
 
-            return (
+                const searchableText =
 
-                site.siteName+
-                " "+
-                (site.location || "")+
-                " "+
-                site.mediaType
+                    String(
+                        site.siteName || ""
+                    )+
 
-            )
-            .toLowerCase()
-            .includes(search);
+                    " "+
 
-        }
-    );
+                    String(
+                        site.location || ""
+                    )+
+
+                    " "+
+
+                    String(
+                        site.latitude || ""
+                    )+
+
+                    " "+
+
+                    String(
+                        site.longitude || ""
+                    )+
+
+                    " "+
+
+                    String(
+                        site.mediaType || ""
+                    )+
+
+                    " "+
+
+                    String(
+                        site.status || ""
+                    )+
+
+                    " "+
+
+                    String(
+                        site.width || ""
+                    )+
+
+                    " "+
+
+                    String(
+                        site.height || ""
+                    )+
+
+                    " "+
+
+                    String(
+                        site.remarks || ""
+                    );
 
 
-    list.innerHTML =
-    "";
+                return searchableText
+                    .toLowerCase()
+                    .includes(search);
+
+            }
+        );
+
+
+    list.innerHTML = "";
 
 
     if(!filtered.length){
 
         list.innerHTML =
-        "<div class='empty'>"+
-        "No saved sites"+
-        "</div>";
+            "<div class='empty'>"+
+            "No saved sites found"+
+            "</div>";
 
     }
 
@@ -1816,77 +1916,146 @@ function renderSites(){
         function(site){
 
             const div =
-            document.createElement(
-                "div"
-            );
+                document.createElement(
+                    "div"
+                );
 
 
             div.className =
-            "site";
+                "site";
 
 
             const selected =
-            selectedSites.has(
-                site.id
-            );
+                selectedSites.has(
+                    site.id
+                );
+
+
+            /*
+               PHOTO THUMBNAIL
+            */
+
+            let photoHTML;
+
+
+            if(site.photo){
+
+                photoHTML =
+
+                    "<img "+
+                    "src=\""+
+                    site.photo+
+                    "\" "+
+                    "class=\"saved-site-photo\" "+
+                    "onclick=\"viewSite('"+
+                    site.id+
+                    "')\" "+
+                    "title=\"Click to show site on map\">";
+
+            }
+            else{
+
+                photoHTML =
+
+                    "<div class='no-site-photo'>"+
+                    "📷"+
+                    "</div>";
+
+            }
 
 
             div.innerHTML =
 
-            "<div class='site-name'>"+
-            (selected ? "☑ " : "☐ ")+
-            escapeHTML(
-                site.siteName
-            )+
-            "</div>"+
+                "<div class='saved-site-row'>"+
 
-            "<div class='site-info'>"+
-            escapeHTML(
-                site.location || ""
-            )+
-            "<br>"+
-            site.latitude+
-            ", "+
-            site.longitude+
-            "<br>"+
-            site.width+
-            " × "+
-            site.height+
-            " ft | ₹"+
-            Number(
-                site.rate || 0
-            ).toLocaleString(
-                "en-IN"
-            )+
-            "</div>"+
+                    "<div class='saved-site-image'>"+
+                        photoHTML+
+                    "</div>"+
 
-            "<div class='site-buttons'>"+
+                    "<div class='saved-site-details'>"+
 
-            "<button class='btn-blue' "+
-            "onclick=\"viewSite('"+
-            site.id+
-            "')\">MAP</button>"+
+                        "<div class='site-name'>"+
+                            (selected ? "☑ " : "☐ ")+
+                            escapeHTML(
+                                site.siteName
+                            )+
+                        "</div>"+
 
-            "<button class='btn-gray' "+
-            "onclick=\"selectSite('"+
-            site.id+
-            "')\">"+
-            (selected ?
-            "UNSELECT":
-            "SELECT")+
-            "</button>"+
+                        "<div class='site-info'>"+
 
-            "<button class='btn-gray' "+
-            "onclick=\"editSite('"+
-            site.id+
-            "')\">EDIT</button>"+
+                            escapeHTML(
+                                site.location || ""
+                            )+
 
-            "<button class='btn-red' "+
-            "onclick=\"deleteSite('"+
-            site.id+
-            "')\">DELETE</button>"+
+                            "<br>"+
 
-            "</div>";
+                            "📍 "+
+                            site.latitude+
+                            ", "+
+                            site.longitude+
+
+                            "<br>"+
+
+                            "📐 "+
+                            site.width+
+                            " × "+
+                            site.height+
+                            " ft"+
+
+                            "<br>"+
+
+                            escapeHTML(
+                                site.mediaType || ""
+                            )+
+                            " | "+
+                            escapeHTML(
+                                site.status || ""
+                            )+
+
+                        "</div>"+
+
+                    "</div>"+
+
+                "</div>"+
+
+
+                "<div class='site-buttons'>"+
+
+                    "<button "+
+                    "class='btn-blue' "+
+                    "onclick=\"viewSite('"+
+                    site.id+
+                    "')\">"+
+                    "MAP"+
+                    "</button>"+
+
+                    "<button "+
+                    "class='btn-gray' "+
+                    "onclick=\"selectSite('"+
+                    site.id+
+                    "')\">"+
+                    (selected ?
+                        "UNSELECT":
+                        "SELECT")+
+                    "</button>"+
+
+                    "<button "+
+                    "class='btn-gray' "+
+                    "onclick=\"editSite('"+
+                    site.id+
+                    "')\">"+
+                    "EDIT"+
+                    "</button>"+
+
+                    "<button "+
+                    "class='btn-red' "+
+                    "onclick=\"deleteSite('"+
+                    site.id+
+                    "')\">"+
+                    "DELETE"+
+                    "</button>"+
+
+                "</div>";
 
 
             list.appendChild(
@@ -1900,21 +2069,21 @@ function renderSites(){
     document.getElementById(
         "totalSites"
     ).innerText =
-    sites.length;
+        sites.length;
 
 
     document.getElementById(
         "selectedSites"
     ).innerText =
-    selectedSites.size;
+        selectedSites.size;
 
 }
 
 
 
-/* =====================================================
+/* =========================================================
    SELECT
-   ===================================================== */
+   ========================================================= */
 
 function selectSite(id){
 
@@ -1938,18 +2107,20 @@ function selectSite(id){
 
 
 
-/* =====================================================
-   VIEW
-   ===================================================== */
+/* =========================================================
+   VIEW SITE
+   ========================================================= */
 
 function viewSite(id){
 
     const site =
-    sites.find(
-        function(item){
-            return item.id === id;
-        }
-    );
+        sites.find(
+            function(item){
+
+                return item.id === id;
+
+            }
+        );
 
 
     if(!site){
@@ -1961,16 +2132,16 @@ function viewSite(id){
 
     map.setView(
         [
-            site.latitude,
-            site.longitude
+            Number(site.latitude),
+            Number(site.longitude)
         ],
         17
     );
 
 
     placeSearchMarker(
-        site.latitude,
-        site.longitude,
+        Number(site.latitude),
+        Number(site.longitude),
         site.siteName
     );
 
@@ -1986,18 +2157,20 @@ function viewSite(id){
 
 
 
-/* =====================================================
+/* =========================================================
    EDIT
-   ===================================================== */
+   ========================================================= */
 
 function editSite(id){
 
     const site =
-    sites.find(
-        function(item){
-            return item.id === id;
-        }
-    );
+        sites.find(
+            function(item){
+
+                return item.id === id;
+
+            }
+        );
 
 
     if(!site){
@@ -2010,91 +2183,91 @@ function editSite(id){
     document.getElementById(
         "editId"
     ).value =
-    site.id;
+        site.id;
 
 
     document.getElementById(
         "siteName"
     ).value =
-    site.siteName;
+        site.siteName;
 
 
     document.getElementById(
         "siteLocation"
     ).value =
-    site.location || "";
+        site.location || "";
 
 
     document.getElementById(
         "latitude"
     ).value =
-    site.latitude;
+        site.latitude;
 
 
     document.getElementById(
         "longitude"
     ).value =
-    site.longitude;
+        site.longitude;
 
 
     document.getElementById(
         "width"
     ).value =
-    site.width;
+        site.width;
 
 
     document.getElementById(
         "height"
     ).value =
-    site.height;
+        site.height;
 
 
     document.getElementById(
         "mediaType"
     ).value =
-    site.mediaType;
+        site.mediaType;
 
 
     document.getElementById(
         "illumination"
     ).value =
-    site.illumination;
+        site.illumination;
 
 
     document.getElementById(
         "rate"
     ).value =
-    site.rate;
+        site.rate;
 
 
     document.getElementById(
         "status"
     ).value =
-    site.status;
+        site.status;
 
 
     document.getElementById(
         "remarks"
     ).value =
-    site.remarks || "";
+        site.remarks || "";
 
 
     currentPhoto =
-    site.photo || "";
+        site.photo || "";
 
 
     if(site.photo){
 
         const img =
-        document.getElementById(
-            "photoPreview"
-        );
+            document.getElementById(
+                "photoPreview"
+            );
 
         img.src =
-        site.photo;
+            site.photo;
 
         img.style.display =
-        "block";
+            "block";
 
     }
 
@@ -2102,7 +2275,7 @@ function editSite(id){
     document.getElementById(
         "formTitle"
     ).innerText =
-    "✏️ Edit OOH Site";
+        "✏️ Edit OOH Site";
 
 
     viewSite(id);
@@ -2111,19 +2284,17 @@ function editSite(id){
 
 
 
-/* =====================================================
+/* =========================================================
    DELETE
-   ===================================================== */
+   ========================================================= */
 
 async function deleteSite(id){
 
-    const confirmed =
-    confirm(
-        "Delete this site permanently?"
-    );
-
-
-    if(!confirmed){
+    if(
+        !confirm(
+            "Delete this site permanently?"
+        )
+    ){
 
         return;
 
@@ -2134,11 +2305,13 @@ async function deleteSite(id){
 
 
     sites =
-    sites.filter(
-        function(site){
-            return site.id !== id;
-        }
-    );
+        sites.filter(
+            function(site){
+
+                return site.id !== id;
+
+            }
+        );
 
 
     selectedSites.delete(id);
@@ -2157,88 +2330,88 @@ async function deleteSite(id){
 
 
 
-/* =====================================================
+/* =========================================================
    CLEAR FORM
-   ===================================================== */
+   ========================================================= */
 
 function clearForm(){
 
     document.getElementById(
         "editId"
     ).value =
-    "";
+        "";
 
 
     document.getElementById(
         "siteName"
     ).value =
-    "";
+        "";
 
 
     document.getElementById(
         "siteLocation"
     ).value =
-    "";
+        "";
 
 
     document.getElementById(
         "latitude"
     ).value =
-    "";
+        "";
 
 
     document.getElementById(
         "longitude"
     ).value =
-    "";
+        "";
 
 
     document.getElementById(
         "remarks"
     ).value =
-    "";
+        "";
 
 
     document.getElementById(
         "photo"
     ).value =
-    "";
+        "";
 
 
     document.getElementById(
         "photoPreview"
     ).style.display =
-    "none";
+        "none";
 
 
     document.getElementById(
         "formTitle"
     ).innerText =
-    "➕ Add OOH Site";
+        "➕ Add OOH Site";
 
 
     currentPhoto =
-    "";
+        "";
 
 }
 
 
 
-/* =====================================================
-   EXCEL EXPORT
-   ===================================================== */
+/* =========================================================
+   EXCEL
+   ========================================================= */
 
 function exportExcel(){
 
     const data =
-    sites.filter(
-        function(site){
+        sites.filter(
+            function(site){
 
-            return selectedSites.size === 0 ||
-                   selectedSites.has(site.id);
+                return selectedSites.size === 0 ||
+                       selectedSites.has(site.id);
 
-        }
-    );
+            }
+        );
 
 
     if(!data.length){
@@ -2252,81 +2425,68 @@ function exportExcel(){
     }
 
 
-    if(
-        typeof XLSX === "undefined"
-    ){
-
-        alert(
-            "Excel library did not load. Refresh the page."
-        );
-
-        return;
-
-    }
-
-
     const rows =
-    data.map(
-        function(site,index){
+        data.map(
+            function(site,index){
 
-            return {
+                return {
 
-                "S.No":
-                index + 1,
+                    "S.No":
+                        index+1,
 
-                "Site Name / ID":
-                site.siteName,
+                    "Site Name / ID":
+                        site.siteName,
 
-                "Location":
-                site.location,
+                    "Location":
+                        site.location,
 
-                "Latitude":
-                site.latitude,
+                    "Latitude":
+                        site.latitude,
 
-                "Longitude":
-                site.longitude,
+                    "Longitude":
+                        site.longitude,
 
-                "Width (ft)":
-                site.width,
+                    "Width (ft)":
+                        site.width,
 
-                "Height (ft)":
-                site.height,
+                    "Height (ft)":
+                        site.height,
 
-                "Media Type":
-                site.mediaType,
+                    "Media Type":
+                        site.mediaType,
 
-                "Illumination":
-                site.illumination,
+                    "Illumination":
+                        site.illumination,
 
-                "Monthly Rate":
-                site.rate,
+                    "Monthly Rate":
+                        site.rate,
 
-                "Status":
-                site.status,
+                    "Status":
+                        site.status,
 
-                "Remarks":
-                site.remarks,
+                    "Remarks":
+                        site.remarks,
 
-                "Google Maps":
-                "https://www.google.com/maps?q="+
-                site.latitude+
-                ","+
-                site.longitude
+                    "Google Maps":
+                        "https://www.google.com/maps?q="+
+                        site.latitude+
+                        ","+
+                        site.longitude
 
-            };
+                };
 
-        }
-    );
+            }
+        );
 
 
     const worksheet =
-    XLSX.utils.json_to_sheet(
-        rows
-    );
+        XLSX.utils.json_to_sheet(
+            rows
+        );
 
 
     const workbook =
-    XLSX.utils.book_new();
+        XLSX.utils.book_new();
 
 
     XLSX.utils.book_append_sheet(
@@ -2350,21 +2510,21 @@ function exportExcel(){
 
 
 
-/* =====================================================
-   PPT EXPORT
-   ===================================================== */
+/* =========================================================
+   POWERPOINT
+   ========================================================= */
 
 async function exportPPT(){
 
     const data =
-    sites.filter(
-        function(site){
+        sites.filter(
+            function(site){
 
-            return selectedSites.size === 0 ||
-                   selectedSites.has(site.id);
+                return selectedSites.size === 0 ||
+                       selectedSites.has(site.id);
 
-        }
-    );
+            }
+        );
 
 
     if(!data.length){
@@ -2383,7 +2543,7 @@ async function exportPPT(){
     ){
 
         alert(
-            "PowerPoint library is not loaded. Please refresh the page."
+            "PowerPoint library did not load. Refresh the website."
         );
 
         return;
@@ -2394,42 +2554,34 @@ async function exportPPT(){
     try{
 
         const ppt =
-        new pptxgen();
+            new pptxgen();
 
 
         ppt.layout =
-        "LAYOUT_WIDE";
+            "LAYOUT_WIDE";
 
 
         ppt.author =
-        "MY VISION OOH";
-
-
-        ppt.company =
-        "MY VISION OOH";
-
-
-        ppt.subject =
-        "OOH Site Proposal";
+            "MY VISION OOH";
 
 
         ppt.title =
-        document.getElementById(
-            "campaign"
-        ).value ||
-        "OOH Site Proposal";
+            document.getElementById(
+                "campaign"
+            ).value ||
+            "OOH Site Proposal";
 
 
         /* COVER */
 
         const cover =
-        ppt.addSlide();
+            ppt.addSlide();
 
 
         cover.background =
-        {
-            color:"111827"
-        };
+            {
+                color:"111827"
+            };
 
 
         cover.addText(
@@ -2482,7 +2634,7 @@ async function exportPPT(){
             function(site,index){
 
                 const slide =
-                ppt.addSlide();
+                    ppt.addSlide();
 
 
                 slide.addText(
@@ -2513,8 +2665,6 @@ async function exportPPT(){
                 );
 
 
-                /* PHOTO */
-
                 if(site.photo){
 
                     try{
@@ -2522,7 +2672,7 @@ async function exportPPT(){
                         slide.addImage(
                             {
                                 data:
-                                site.photo,
+                                    site.photo,
 
                                 x:.5,
                                 y:1.4,
@@ -2535,7 +2685,7 @@ async function exportPPT(){
                     catch(error){
 
                         console.log(
-                            "Photo error:",
+                            "Photo error",
                             error
                         );
 
@@ -2544,57 +2694,50 @@ async function exportPPT(){
                 }
 
 
-                /* DETAILS */
-
-                const details =
-
-                "LATITUDE: "+
-                site.latitude+
-
-                "\nLONGITUDE: "+
-                site.longitude+
-
-                "\n\nSIZE: "+
-                site.width+
-                " × "+
-                site.height+
-                " FT"+
-
-                "\n\nMEDIA: "+
-                site.mediaType+
-
-                "\nILLUMINATION: "+
-                site.illumination+
-
-                "\n\nMONTHLY RATE: ₹"+
-                Number(
-                    site.rate || 0
-                ).toLocaleString(
-                    "en-IN"
-                )+
-
-                "\nSTATUS: "+
-                site.status+
-
-                "\n\nREMARKS: "+
-                (site.remarks || "-");
-
-
                 slide.addText(
-                    details,
+
+                    "LATITUDE: "+
+                    site.latitude+
+
+                    "\nLONGITUDE: "+
+                    site.longitude+
+
+                    "\n\nSIZE: "+
+                    site.width+
+                    " × "+
+                    site.height+
+                    " FT"+
+
+                    "\n\nMEDIA: "+
+                    site.mediaType+
+
+                    "\nILLUMINATION: "+
+                    site.illumination+
+
+                    "\n\nMONTHLY RATE: ₹"+
+                    Number(
+                        site.rate || 0
+                    ).toLocaleString(
+                        "en-IN"
+                    )+
+
+                    "\nSTATUS: "+
+                    site.status+
+
+                    "\n\nREMARKS: "+
+                    (site.remarks || "-"),
+
                     {
                         x:6.5,
                         y:1.4,
                         w:5.7,
                         h:3.8,
                         fontSize:14,
-                        breakLine:false,
                         valign:"top"
                     }
+
                 );
 
-
-                /* GOOGLE MAP */
 
                 slide.addText(
                     "📍 Open Location in Google Maps",
@@ -2610,10 +2753,10 @@ async function exportPPT(){
                         },
                         hyperlink:{
                             url:
-                            "https://www.google.com/maps?q="+
-                            site.latitude+
-                            ","+
-                            site.longitude
+                                "https://www.google.com/maps?q="+
+                                site.latitude+
+                                ","+
+                                site.longitude
                         }
                     }
                 );
@@ -2625,7 +2768,7 @@ async function exportPPT(){
         await ppt.writeFile(
             {
                 fileName:
-                "My_Vision_OOH_Proposal.pptx"
+                    "My_Vision_OOH_Proposal.pptx"
             }
         );
 
@@ -2637,11 +2780,7 @@ async function exportPPT(){
     }
     catch(error){
 
-        console.error(
-            "PPT ERROR:",
-            error
-        );
-
+        console.error(error);
 
         alert(
             "PPT export failed: "+
@@ -2654,9 +2793,9 @@ async function exportPPT(){
 
 
 
-/* =====================================================
-   HTML SECURITY
-   ===================================================== */
+/* =========================================================
+   SECURITY
+   ========================================================= */
 
 function escapeHTML(text){
 
@@ -2684,9 +2823,9 @@ function escapeHTML(text){
 
 
 
-/* =====================================================
-   START APPLICATION
-   ===================================================== */
+/* =========================================================
+   START
+   ========================================================= */
 
 async function startApp(){
 
@@ -2695,8 +2834,13 @@ async function startApp(){
         await openDatabase();
 
 
+        /*
+           THIS LOADS YOUR EXISTING SAVED SITES.
+           NOTHING IS DELETED.
+        */
+
         sites =
-        await getAllSites();
+            await getAllSites();
 
 
         initializeMap();
@@ -2719,8 +2863,8 @@ async function startApp(){
         console.error(error);
 
         alert(
-            "Could not open browser storage. "+
-            "Please use the website on a normal HTTPS address."
+            "Could not load saved sites. "+
+            "Do NOT clear browser data."
         );
 
     }
