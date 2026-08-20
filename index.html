@@ -1,3 +1,4 @@
+```html
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -10,10 +11,7 @@
 href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css">
 
 <style>
-
-*{
-    box-sizing:border-box;
-}
+*{box-sizing:border-box}
 
 body{
     margin:0;
@@ -29,6 +27,7 @@ header{
     display:flex;
     align-items:center;
     padding:0 18px;
+    box-shadow:0 2px 12px rgba(0,0,0,.15);
 }
 
 .logo{
@@ -36,14 +35,13 @@ header{
     font-weight:800;
 }
 
-.logo span{
-    color:#20aef3;
-}
+.logo span{color:#20aef3}
 
 .header-actions{
     margin-left:auto;
     display:flex;
     gap:8px;
+    align-items:center;
 }
 
 button{
@@ -56,27 +54,25 @@ button{
 
 button:hover{
     opacity:.9;
+    transform:translateY(-1px);
 }
 
-.btn-blue{
-    background:#0787c8;
+.btn-blue{background:#0787c8;color:white}
+.btn-green{background:#16a34a;color:white}
+.btn-red{background:#dc2626;color:white}
+.btn-gray{background:#e5e7eb;color:#111827}
+
+.sync-status{
+    font-size:11px;
+    padding:6px 9px;
+    border-radius:20px;
+    background:#334155;
     color:white;
 }
 
-.btn-green{
-    background:#16a34a;
-    color:white;
-}
-
-.btn-red{
-    background:#dc2626;
-    color:white;
-}
-
-.btn-gray{
-    background:#e5e7eb;
-    color:#111827;
-}
+.sync-online{background:#16a34a}
+.sync-offline{background:#dc2626}
+.sync-loading{background:#d97706}
 
 .main{
     display:grid;
@@ -119,9 +115,7 @@ label{
     margin:8px 0 4px;
 }
 
-input,
-select,
-textarea{
+input,select,textarea{
     width:100%;
     border:1px solid #cbd5e1;
     border-radius:6px;
@@ -174,17 +168,17 @@ textarea{
     display:none;
 }
 
-
-/* =========================
-   SAVED SITE CARD
-   ========================= */
-
 .site{
     border:1px solid #d8dee6;
     border-radius:9px;
     padding:9px;
     margin-top:8px;
     background:#fff;
+    transition:.2s;
+}
+
+.site:hover{
+    box-shadow:0 4px 14px rgba(15,23,42,.08);
 }
 
 .saved-site-row{
@@ -209,9 +203,7 @@ textarea{
     display:block;
 }
 
-.saved-site-photo:hover{
-    opacity:.85;
-}
+.saved-site-photo:hover{opacity:.85}
 
 .no-site-photo{
     width:82px;
@@ -282,6 +274,39 @@ textarea{
     padding:11px 18px;
     border-radius:8px;
     display:none;
+    box-shadow:0 5px 20px rgba(0,0,0,.2);
+}
+
+.export-progress{
+    display:none;
+    position:fixed;
+    z-index:99998;
+    inset:0;
+    background:rgba(15,23,42,.55);
+    align-items:center;
+    justify-content:center;
+}
+
+.export-box{
+    background:white;
+    padding:25px;
+    border-radius:12px;
+    text-align:center;
+    width:300px;
+}
+
+.spinner{
+    width:35px;
+    height:35px;
+    border:4px solid #ddd;
+    border-top-color:#0787c8;
+    border-radius:50%;
+    animation:spin 1s linear infinite;
+    margin:0 auto 15px;
+}
+
+@keyframes spin{
+    to{transform:rotate(360deg)}
 }
 
 @media(max-width:850px){
@@ -295,6 +320,7 @@ textarea{
 
     .header-actions{
         margin-left:15px;
+        flex-wrap:wrap;
     }
 
     .main{
@@ -309,15 +335,11 @@ textarea{
     #map{
         height:60vh;
     }
-
 }
-
 </style>
 </head>
 
-
 <body>
-
 
 <header>
 
@@ -327,15 +349,15 @@ MY VISION <span>OOH</span>
 
 <div class="header-actions">
 
-<button
-class="btn-green"
-onclick="exportExcel()">
+<span id="syncStatus" class="sync-status sync-loading">
+☁ Connecting...
+</span>
+
+<button class="btn-green" onclick="exportExcel()">
 📊 Excel
 </button>
 
-<button
-class="btn-green"
-onclick="exportPPT()">
+<button class="btn-green" onclick="exportPPT()">
 📑 PPT
 </button>
 
@@ -343,15 +365,9 @@ onclick="exportPPT()">
 
 </header>
 
-
-
 <div class="main">
 
-
 <div class="sidebar">
-
-
-<!-- CAMPAIGN -->
 
 <div class="card">
 
@@ -379,9 +395,6 @@ Selected
 </div>
 
 
-
-<!-- LOCATION SEARCH -->
-
 <div class="card">
 
 <h3>🔎 Search Location</h3>
@@ -393,70 +406,53 @@ id="locationSearch"
 placeholder="Bandra West, Mumbai"
 >
 
-<button
-class="btn-blue full"
+<button class="btn-blue full"
 onclick="searchLocation()">
 SEARCH LOCATION
 </button>
-
 
 <label>Latitude & Longitude</label>
 
 <div class="row">
 
 <div>
-
 <label>Latitude</label>
-
 <input
 id="searchLat"
 type="number"
 step="any"
 placeholder="19.0596"
 >
-
 </div>
 
 <div>
-
 <label>Longitude</label>
-
 <input
 id="searchLng"
 type="number"
 step="any"
 placeholder="72.8295"
 >
-
 </div>
 
 </div>
 
-
-<button
-class="btn-blue full"
+<button class="btn-blue full"
 onclick="searchCoordinates()">
 📍 FIND COORDINATES
 </button>
 
-
-<button
-class="btn-gray full"
+<button class="btn-gray full"
 onclick="useMyLocation()">
 📌 USE MY LOCATION
 </button>
 
-
-<div
-id="locationResult"
+<div id="locationResult"
 class="location-result">
 </div>
 
 </div>
 
-
-
-<!-- SITE FORM -->
 
 <div class="card">
 
@@ -464,11 +460,7 @@ class="location-result">
 ➕ Add OOH Site
 </h3>
 
-<input
-id="editId"
-type="hidden"
->
-
+<input id="editId" type="hidden">
 
 <label>Site Name / ID</label>
 
@@ -477,7 +469,6 @@ id="siteName"
 placeholder="MUM-001"
 >
 
-
 <label>Location</label>
 
 <input
@@ -485,69 +476,37 @@ id="siteLocation"
 placeholder="Bandra West, Mumbai"
 >
 
-
 <div class="row">
 
 <div>
-
 <label>Latitude</label>
-
-<input
-id="latitude"
-type="number"
-step="any"
->
-
+<input id="latitude" type="number" step="any">
 </div>
 
 <div>
-
 <label>Longitude</label>
-
-<input
-id="longitude"
-type="number"
-step="any"
->
-
+<input id="longitude" type="number" step="any">
 </div>
 
 </div>
-
 
 <div class="row">
 
 <div>
-
 <label>Width (ft)</label>
-
-<input
-id="width"
-type="number"
-value="40"
->
-
+<input id="width" type="number" value="40">
 </div>
 
 <div>
-
 <label>Height (ft)</label>
-
-<input
-id="height"
-type="number"
-value="40"
->
-
+<input id="height" type="number" value="40">
 </div>
 
 </div>
-
 
 <div class="row">
 
 <div>
-
 <label>Media Type</label>
 
 <select id="mediaType">
@@ -561,9 +520,7 @@ value="40"
 
 </div>
 
-
 <div>
-
 <label>Illumination</label>
 
 <select id="illumination">
@@ -576,23 +533,14 @@ value="40"
 
 </div>
 
-
 <div class="row">
 
 <div>
-
 <label>Monthly Rate ₹</label>
-
-<input
-id="rate"
-type="number"
-value="0"
->
-
+<input id="rate" type="number" value="0">
 </div>
 
 <div>
-
 <label>Status</label>
 
 <select id="status">
@@ -605,7 +553,6 @@ value="0"
 </div>
 
 </div>
-
 
 <label>Site Photo</label>
 
@@ -621,7 +568,6 @@ id="photoPreview"
 class="photo-preview"
 >
 
-
 <label>Remarks</label>
 
 <textarea
@@ -629,13 +575,11 @@ id="remarks"
 placeholder="Facing direction, traffic, visibility etc."
 ></textarea>
 
-
 <button
 class="btn-blue full"
 onclick="saveSite()">
 💾 SAVE SITE
 </button>
-
 
 <button
 class="btn-gray full"
@@ -645,9 +589,6 @@ CLEAR FORM
 
 </div>
 
-
-
-<!-- SAVED SITES -->
 
 <div class="card">
 
@@ -663,9 +604,7 @@ oninput="renderSites()"
 
 </div>
 
-
 </div>
-
 
 <div class="map-container">
 
@@ -673,16 +612,21 @@ oninput="renderSites()"
 
 </div>
 
-
 </div>
-
-
 
 <div id="message"></div>
 
+<div id="exportProgress" class="export-progress">
+<div class="export-box">
+<div class="spinner"></div>
+<strong id="exportText">Creating PowerPoint...</strong>
+</div>
+</div>
 
 
 <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
+
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
 
 <script src="https://cdn.jsdelivr.net/npm/xlsx@0.18.5/dist/xlsx.full.min.js"></script>
 
@@ -692,19 +636,45 @@ oninput="renderSites()"
 <script>
 
 /* =========================================================
-   IMPORTANT:
-   SAME DATABASE NAME AS YOUR PREVIOUS VERSION
-   DO NOT CHANGE THESE
+   SUPABASE
    ========================================================= */
 
-const DB_NAME = "MY_VISION_OOH_DATABASE";
+const SUPABASE_URL =
+"https://fdrdswbrjuigzzmskpru.supabase.co";
 
-const DB_VERSION = 1;
+/*
+ IMPORTANT:
+ Use your Supabase PUBLISHABLE/ANON key here.
+ This is the publishable key you provided.
+*/
 
-const STORE_NAME = "sites";
+const SUPABASE_KEY =
+"sb_publishable_H_iVOgmPDIf-cSXUcdAWow_mT3SXLZr";
 
 
-let db;
+const supabaseClient =
+supabase.createClient(
+    SUPABASE_URL,
+    SUPABASE_KEY
+);
+
+
+/* =========================================================
+   OLD DATABASE
+   Used to recover your existing 54 sites
+   ========================================================= */
+
+const OLD_DB_NAME =
+"MY_VISION_OOH_DATABASE";
+
+const OLD_DB_VERSION = 1;
+
+const OLD_STORE_NAME = "sites";
+
+
+/* =========================================================
+   GLOBALS
+   ========================================================= */
 
 let sites = [];
 
@@ -718,6 +688,7 @@ let searchMarker = null;
 
 let currentPhoto = "";
 
+let realtimeChannel = null;
 
 
 /* =========================================================
@@ -733,115 +704,62 @@ function showMessage(text){
 
     box.style.display = "block";
 
-    setTimeout(function(){
+    clearTimeout(window.messageTimer);
 
-        box.style.display = "none";
+    window.messageTimer =
+        setTimeout(function(){
 
-    },2500);
+            box.style.display = "none";
 
+        },2800);
 }
 
 
-
 /* =========================================================
-   DATABASE
-   IMPORTANT:
-   THIS OPENS THE EXISTING DATABASE.
-   IT DOES NOT DELETE IT.
+   SYNC STATUS
    ========================================================= */
 
-function openDatabase(){
+function setSyncStatus(type,text){
+
+    const el =
+        document.getElementById("syncStatus");
+
+    el.className =
+        "sync-status sync-"+type;
+
+    el.innerText = text;
+}
+
+
+/* =========================================================
+   OLD INDEXEDDB
+   ========================================================= */
+
+function openOldDatabase(){
 
     return new Promise(function(resolve,reject){
 
         const request =
             indexedDB.open(
-                DB_NAME,
-                DB_VERSION
+                OLD_DB_NAME,
+                OLD_DB_VERSION
             );
-
-
-        request.onupgradeneeded =
-            function(event){
-
-                const database =
-                    event.target.result;
-
-                if(
-                    !database.objectStoreNames.contains(
-                        STORE_NAME
-                    )
-                ){
-
-                    database.createObjectStore(
-                        STORE_NAME,
-                        {
-                            keyPath:"id"
-                        }
-                    );
-
-                }
-
-            };
-
 
         request.onsuccess =
             function(event){
-
-                db =
-                    event.target.result;
-
-                resolve(db);
-
-            };
-
-
-        request.onerror =
-            function(){
-
-                reject(request.error);
-
-            };
-
-    });
-
-}
-
-
-
-function getAllSites(){
-
-    return new Promise(function(resolve,reject){
-
-        const transaction =
-            db.transaction(
-                STORE_NAME,
-                "readonly"
-            );
-
-        const store =
-            transaction.objectStore(
-                STORE_NAME
-            );
-
-        const request =
-            store.getAll();
-
-
-        request.onsuccess =
-            function(){
 
                 resolve(
-                    request.result || []
+                    event.target.result
                 );
 
             };
 
-
         request.onerror =
             function(){
 
-                reject(request.error);
+                reject(
+                    request.error
+                );
 
             };
 
@@ -850,85 +768,423 @@ function getAllSites(){
 }
 
 
+function getOldSites(){
 
-function putSite(site){
+    return new Promise(async function(resolve){
 
-    return new Promise(function(resolve,reject){
+        try{
 
-        const transaction =
-            db.transaction(
-                STORE_NAME,
-                "readwrite"
-            );
+            const oldDB =
+                await openOldDatabase();
 
-        const store =
-            transaction.objectStore(
-                STORE_NAME
-            );
+            if(
+                !oldDB.objectStoreNames.contains(
+                    OLD_STORE_NAME
+                )
+            ){
 
-        const request =
-            store.put(site);
+                resolve([]);
 
+                return;
 
-        request.onsuccess =
-            function(){
+            }
 
-                resolve();
+            const tx =
+                oldDB.transaction(
+                    OLD_STORE_NAME,
+                    "readonly"
+                );
 
-            };
+            const store =
+                tx.objectStore(
+                    OLD_STORE_NAME
+                );
 
+            const request =
+                store.getAll();
 
-        request.onerror =
-            function(){
+            request.onsuccess =
+                function(){
 
-                reject(request.error);
+                    resolve(
+                        request.result || []
+                    );
 
-            };
+                };
 
-    });
+            request.onerror =
+                function(){
 
-}
+                    resolve([]);
 
+                };
 
+        }
+        catch(error){
 
-function removeSite(id){
+            resolve([]);
 
-    return new Promise(function(resolve,reject){
-
-        const transaction =
-            db.transaction(
-                STORE_NAME,
-                "readwrite"
-            );
-
-        const store =
-            transaction.objectStore(
-                STORE_NAME
-            );
-
-        const request =
-            store.delete(id);
-
-
-        request.onsuccess =
-            function(){
-
-                resolve();
-
-            };
-
-
-        request.onerror =
-            function(){
-
-                reject(request.error);
-
-            };
+        }
 
     });
 
 }
 
+
+/* =========================================================
+   CONVERT OLD SITE TO CLOUD FORMAT
+   ========================================================= */
+
+function normalizeSite(site){
+
+    return {
+
+        id:
+            site.id ||
+            crypto.randomUUID(),
+
+        site_name:
+            site.site_name ||
+            site.siteName ||
+            "",
+
+        location:
+            site.location ||
+            "",
+
+        latitude:
+            Number(site.latitude) || 0,
+
+        longitude:
+            Number(site.longitude) || 0,
+
+        width:
+            Number(site.width) || 0,
+
+        height:
+            Number(site.height) || 0,
+
+        media_type:
+            site.media_type ||
+            site.mediaType ||
+            "Billboard",
+
+        illumination:
+            site.illumination ||
+            "Lit",
+
+        rate:
+            Number(site.rate) || 0,
+
+        status:
+            site.status ||
+            "Available",
+
+        photo:
+            site.photo ||
+            "",
+
+        remarks:
+            site.remarks ||
+            "",
+
+        updated_at:
+            site.updated_at ||
+            site.updated ||
+            new Date().toISOString()
+
+    };
+
+}
+
+
+/* =========================================================
+   LOAD CLOUD SITES
+   ========================================================= */
+
+async function loadCloudSites(){
+
+    setSyncStatus(
+        "loading",
+        "☁ Syncing..."
+    );
+
+    const {data,error} =
+        await supabaseClient
+        .from("sites")
+        .select("*")
+        .order(
+            "updated_at",
+            {ascending:false}
+        );
+
+    if(error){
+
+        console.error(
+            "Supabase load error:",
+            error
+        );
+
+        setSyncStatus(
+            "offline",
+            "☁ Cloud error"
+        );
+
+        showMessage(
+            "Supabase table not available"
+        );
+
+        return false;
+
+    }
+
+    sites =
+        (data || []).map(function(site){
+
+            return {
+
+                id:site.id,
+
+                siteName:
+                    site.site_name || "",
+
+                location:
+                    site.location || "",
+
+                latitude:
+                    Number(site.latitude) || 0,
+
+                longitude:
+                    Number(site.longitude) || 0,
+
+                width:
+                    Number(site.width) || 0,
+
+                height:
+                    Number(site.height) || 0,
+
+                mediaType:
+                    site.media_type || "Billboard",
+
+                illumination:
+                    site.illumination || "Lit",
+
+                rate:
+                    Number(site.rate) || 0,
+
+                status:
+                    site.status || "Available",
+
+                photo:
+                    site.photo || "",
+
+                remarks:
+                    site.remarks || "",
+
+                updated:
+                    site.updated_at || ""
+
+            };
+
+        });
+
+    setSyncStatus(
+        "online",
+        "☁ Cloud synced"
+    );
+
+    renderSites();
+    renderMarkers();
+
+    return true;
+}
+
+
+/* =========================================================
+   SAVE TO SUPABASE
+   ========================================================= */
+
+async function saveCloudSite(site){
+
+    const cloud =
+        normalizeSite(site);
+
+    const {error} =
+        await supabaseClient
+        .from("sites")
+        .upsert(
+            cloud,
+            {
+                onConflict:"id"
+            }
+        );
+
+    if(error){
+
+        console.error(
+            "Supabase save error:",
+            error
+        );
+
+        throw error;
+
+    }
+
+}
+
+
+/* =========================================================
+   DELETE FROM SUPABASE
+   ========================================================= */
+
+async function deleteCloudSite(id){
+
+    const {error} =
+        await supabaseClient
+        .from("sites")
+        .delete()
+        .eq("id",id);
+
+    if(error){
+
+        console.error(
+            "Supabase delete error:",
+            error
+        );
+
+        throw error;
+
+    }
+
+}
+
+
+/* =========================================================
+   MIGRATE YOUR OLD 54 SITES
+   ========================================================= */
+
+async function migrateOldSites(){
+
+    const oldSites =
+        await getOldSites();
+
+    if(!oldSites.length){
+
+        return;
+
+    }
+
+    showMessage(
+        "Found "+oldSites.length+
+        " old saved sites. Syncing..."
+    );
+
+    let count = 0;
+
+    for(
+        const oldSite of oldSites
+    ){
+
+        try{
+
+            await saveCloudSite(
+                oldSite
+            );
+
+            count++;
+
+        }
+        catch(error){
+
+            console.error(
+                "Migration failed:",
+                oldSite,
+                error
+            );
+
+        }
+
+    }
+
+    if(count){
+
+        showMessage(
+            count+
+            " existing sites synced to cloud"
+        );
+
+    }
+
+}
+
+
+/* =========================================================
+   REALTIME SYNC
+   ========================================================= */
+
+function startRealtime(){
+
+    if(realtimeChannel){
+
+        supabaseClient
+        .removeChannel(
+            realtimeChannel
+        );
+
+    }
+
+    realtimeChannel =
+        supabaseClient
+        .channel(
+            "my-vision-ooh-sites"
+        )
+        .on(
+            "postgres_changes",
+            {
+                event:"*",
+                schema:"public",
+                table:"sites"
+            },
+            function(){
+
+                loadCloudSites();
+
+            }
+        )
+        .subscribe(
+            function(status){
+
+                console.log(
+                    "Realtime:",
+                    status
+                );
+
+            }
+        );
+
+}
+
+
+/* =========================================================
+   PERIODIC CLOUD SYNC
+   Backup for realtime
+   ========================================================= */
+
+setInterval(
+    async function(){
+
+        if(
+            document.visibilityState ===
+            "visible"
+        ){
+
+            await loadCloudSites();
+
+        }
+
+    },
+    15000
+);
 
 
 /* =========================================================
@@ -944,7 +1200,6 @@ function initializeMap(){
             11
         );
 
-
     L.tileLayer(
         "https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png",
         {
@@ -953,7 +1208,6 @@ function initializeMap(){
                 "© OpenStreetMap contributors"
         }
     ).addTo(map);
-
 
     map.on(
         "click",
@@ -965,37 +1219,31 @@ function initializeMap(){
             const lng =
                 event.latlng.lng;
 
-
             document.getElementById(
                 "latitude"
             ).value =
                 lat.toFixed(6);
-
 
             document.getElementById(
                 "longitude"
             ).value =
                 lng.toFixed(6);
 
-
             document.getElementById(
                 "searchLat"
             ).value =
                 lat.toFixed(6);
-
 
             document.getElementById(
                 "searchLng"
             ).value =
                 lng.toFixed(6);
 
-
             placeSearchMarker(
                 lat,
                 lng,
                 "Selected Location"
             );
-
 
             showMessage(
                 "Location selected"
@@ -1007,9 +1255,8 @@ function initializeMap(){
 }
 
 
-
 /* =========================================================
-   LOCATION NAME SEARCH
+   LOCATION SEARCH
    ========================================================= */
 
 async function searchLocation(){
@@ -1018,7 +1265,6 @@ async function searchLocation(){
         document.getElementById(
             "locationSearch"
         ).value.trim();
-
 
     if(!query){
 
@@ -1030,9 +1276,7 @@ async function searchLocation(){
 
     }
 
-
     showMessage("Searching...");
-
 
     try{
 
@@ -1043,14 +1287,11 @@ async function searchLocation(){
             "&q="+
             encodeURIComponent(query);
 
-
         const response =
             await fetch(url);
 
-
         const data =
             await response.json();
-
 
         if(!data.length){
 
@@ -1062,10 +1303,8 @@ async function searchLocation(){
 
         }
 
-
         const result =
             data[0];
-
 
         showLocation(
             parseFloat(result.lat),
@@ -1087,9 +1326,8 @@ async function searchLocation(){
 }
 
 
-
 /* =========================================================
-   LAT LONG SEARCH
+   COORDINATES
    ========================================================= */
 
 function searchCoordinates(){
@@ -1101,14 +1339,12 @@ function searchCoordinates(){
             ).value
         );
 
-
     const lng =
         parseFloat(
             document.getElementById(
                 "searchLng"
             ).value
         );
-
 
     if(
         isNaN(lat) ||
@@ -1123,23 +1359,6 @@ function searchCoordinates(){
 
     }
 
-
-    if(
-        lat < -90 ||
-        lat > 90 ||
-        lng < -180 ||
-        lng > 180
-    ){
-
-        showMessage(
-            "Invalid coordinates"
-        );
-
-        return;
-
-    }
-
-
     showLocation(
         lat,
         lng,
@@ -1147,7 +1366,6 @@ function searchCoordinates(){
     );
 
 }
-
 
 
 /* =========================================================
@@ -1165,37 +1383,31 @@ function showLocation(
         17
     );
 
-
     placeSearchMarker(
         lat,
         lng,
         name
     );
 
-
     document.getElementById(
         "latitude"
     ).value =
         lat.toFixed(6);
-
 
     document.getElementById(
         "longitude"
     ).value =
         lng.toFixed(6);
 
-
     document.getElementById(
         "searchLat"
     ).value =
         lat.toFixed(6);
 
-
     document.getElementById(
         "searchLng"
     ).value =
         lng.toFixed(6);
-
 
     if(
         name !== "Selected Coordinates"
@@ -1208,16 +1420,13 @@ function showLocation(
 
     }
 
-
     const box =
         document.getElementById(
             "locationResult"
         );
 
-
     box.style.display =
         "block";
-
 
     box.innerHTML =
         "<b>📍 Location Found</b><br>"+
@@ -1229,13 +1438,11 @@ function showLocation(
         "<b>Long:</b> "+
         lng.toFixed(6);
 
-
     showMessage(
         "Location highlighted"
     );
 
 }
-
 
 
 /* =========================================================
@@ -1253,7 +1460,6 @@ function placeSearchMarker(
         searchMarker.remove();
 
     }
-
 
     searchMarker =
         L.marker(
@@ -1273,7 +1479,6 @@ function placeSearchMarker(
 }
 
 
-
 /* =========================================================
    MY LOCATION
    ========================================================= */
@@ -1289,7 +1494,6 @@ function useMyLocation(){
         return;
 
     }
-
 
     navigator.geolocation.getCurrentPosition(
 
@@ -1316,6 +1520,146 @@ function useMyLocation(){
 }
 
 
+/* =========================================================
+   PHOTO RESIZE
+   ========================================================= */
+
+function resizePhoto(file){
+
+    return new Promise(function(resolve,reject){
+
+        const reader =
+            new FileReader();
+
+        reader.onload =
+            function(event){
+
+                const img =
+                    new Image();
+
+                img.onload =
+                    function(){
+
+                        const canvas =
+                            document.createElement(
+                                "canvas"
+                            );
+
+                        const max = 1200;
+
+                        let width =
+                            img.width;
+
+                        let height =
+                            img.height;
+
+                        if(width > max){
+
+                            height =
+                                height *
+                                max /
+                                width;
+
+                            width = max;
+
+                        }
+
+                        if(height > max){
+
+                            width =
+                                width *
+                                max /
+                                height;
+
+                            height = max;
+
+                        }
+
+                        canvas.width =
+                            width;
+
+                        canvas.height =
+                            height;
+
+                        const ctx =
+                            canvas.getContext(
+                                "2d"
+                            );
+
+                        ctx.drawImage(
+                            img,
+                            0,
+                            0,
+                            width,
+                            height
+                        );
+
+                        resolve(
+                            canvas.toDataURL(
+                                "image/jpeg",
+                                .70
+                            )
+                        );
+
+                    };
+
+                img.onerror = reject;
+
+                img.src =
+                    event.target.result;
+
+            };
+
+        reader.onerror = reject;
+
+        reader.readAsDataURL(file);
+
+    });
+
+}
+
+
+/* =========================================================
+   PHOTO PREVIEW
+   ========================================================= */
+
+function previewPhoto(event){
+
+    const file =
+        event.target.files[0];
+
+    if(!file){
+
+        return;
+
+    }
+
+    const reader =
+        new FileReader();
+
+    reader.onload =
+        function(e){
+
+            const img =
+                document.getElementById(
+                    "photoPreview"
+                );
+
+            img.src =
+                e.target.result;
+
+            img.style.display =
+                "block";
+
+            currentPhoto =
+                e.target.result;
+
+        };
+
+    reader.readAsDataURL(file);
+
+}
+
 
 /* =========================================================
    SAVE SITE
@@ -1328,12 +1672,10 @@ async function saveSite(){
             "siteName"
         ).value.trim();
 
-
     const location =
         document.getElementById(
             "siteLocation"
         ).value.trim();
-
 
     const lat =
         parseFloat(
@@ -1342,14 +1684,12 @@ async function saveSite(){
             ).value
         );
 
-
     const lng =
         parseFloat(
             document.getElementById(
                 "longitude"
             ).value
         );
-
 
     if(!name){
 
@@ -1360,7 +1700,6 @@ async function saveSite(){
         return;
 
     }
-
 
     if(
         isNaN(lat) ||
@@ -1375,30 +1714,40 @@ async function saveSite(){
 
     }
 
-
     let photo =
         currentPhoto;
-
 
     const photoFile =
         document.getElementById(
             "photo"
         ).files[0];
 
-
     if(photoFile){
 
-        photo =
-            await resizePhoto(photoFile);
+        try{
+
+            photo =
+                await resizePhoto(
+                    photoFile
+                );
+
+        }
+        catch(error){
+
+            showMessage(
+                "Photo processing failed"
+            );
+
+            return;
+
+        }
 
     }
-
 
     const editId =
         document.getElementById(
             "editId"
         ).value;
-
 
     const site = {
 
@@ -1406,17 +1755,13 @@ async function saveSite(){
             editId ||
             crypto.randomUUID(),
 
-        siteName:
-            name,
+        siteName:name,
 
-        location:
-            location,
+        location:location,
 
-        latitude:
-            lat,
+        latitude:lat,
 
-        longitude:
-            lng,
+        longitude:lng,
 
         width:
             Number(
@@ -1467,216 +1812,72 @@ async function saveSite(){
 
     };
 
+    setSyncStatus(
+        "loading",
+        "☁ Saving..."
+    );
 
-    await putSite(site);
+    try{
 
+        await saveCloudSite(site);
 
-    const existingIndex =
-        sites.findIndex(
-            function(item){
+        const index =
+            sites.findIndex(
+                function(item){
 
-                return item.id === site.id;
+                    return item.id === site.id;
 
-            }
+                }
+            );
+
+        if(index >= 0){
+
+            sites[index] =
+                site;
+
+        }
+        else{
+
+            sites.unshift(site);
+
+            selectedSites.add(
+                site.id
+            );
+
+        }
+
+        setSyncStatus(
+            "online",
+            "☁ Saved"
         );
 
+        renderSites();
+        renderMarkers();
 
-    if(existingIndex >= 0){
-
-        sites[existingIndex] =
-            site;
+        clearForm();
 
         showMessage(
-            "Site updated and saved"
+            editId ?
+            "Site updated in cloud" :
+            "Site saved to cloud"
         );
 
     }
-    else{
+    catch(error){
 
-        sites.unshift(site);
-
-        selectedSites.add(
-            site.id
+        setSyncStatus(
+            "offline",
+            "☁ Save failed"
         );
 
-        showMessage(
-            "New site saved"
+        alert(
+            "Could not save to Supabase.\n\n"+
+            error.message
         );
 
     }
 
-
-    renderSites();
-
-    renderMarkers();
-
-    clearForm();
-
 }
-
-
-
-/* =========================================================
-   PHOTO RESIZE
-   ========================================================= */
-
-function resizePhoto(file){
-
-    return new Promise(function(resolve,reject){
-
-        const reader =
-            new FileReader();
-
-
-        reader.onload =
-            function(event){
-
-                const img =
-                    new Image();
-
-
-                img.onload =
-                    function(){
-
-                        const canvas =
-                            document.createElement(
-                                "canvas"
-                            );
-
-
-                        const max =
-                            1200;
-
-
-                        let width =
-                            img.width;
-
-                        let height =
-                            img.height;
-
-
-                        if(width > max){
-
-                            height =
-                                height * max / width;
-
-                            width =
-                                max;
-
-                        }
-
-
-                        if(height > max){
-
-                            width =
-                                width * max / height;
-
-                            height =
-                                max;
-
-                        }
-
-
-                        canvas.width =
-                            width;
-
-                        canvas.height =
-                            height;
-
-
-                        const ctx =
-                            canvas.getContext(
-                                "2d"
-                            );
-
-
-                        ctx.drawImage(
-                            img,
-                            0,
-                            0,
-                            width,
-                            height
-                        );
-
-
-                        resolve(
-                            canvas.toDataURL(
-                                "image/jpeg",
-                                .70
-                            )
-                        );
-
-                    };
-
-
-                img.onerror =
-                    reject;
-
-
-                img.src =
-                    event.target.result;
-
-            };
-
-
-        reader.onerror =
-            reject;
-
-
-        reader.readAsDataURL(file);
-
-    });
-
-}
-
-
-
-/* =========================================================
-   PHOTO PREVIEW
-   ========================================================= */
-
-function previewPhoto(event){
-
-    const file =
-        event.target.files[0];
-
-
-    if(!file){
-
-        return;
-
-    }
-
-
-    const reader =
-        new FileReader();
-
-
-    reader.onload =
-        function(e){
-
-            const img =
-                document.getElementById(
-                    "photoPreview"
-                );
-
-
-            img.src =
-                e.target.result;
-
-            img.style.display =
-                "block";
-
-            currentPhoto =
-                e.target.result;
-
-        };
-
-
-    reader.readAsDataURL(file);
-
-}
-
 
 
 /* =========================================================
@@ -1693,9 +1894,7 @@ function renderMarkers(){
         }
     );
 
-
     markers = [];
-
 
     sites.forEach(
         function(site){
@@ -1709,7 +1908,6 @@ function renderMarkers(){
 
             }
 
-
             const marker =
                 L.marker(
                     [
@@ -1718,7 +1916,6 @@ function renderMarkers(){
                     ]
                 )
                 .addTo(map);
-
 
             let popup =
 
@@ -1759,7 +1956,6 @@ function renderMarkers(){
                     site.status
                 );
 
-
             if(site.photo){
 
                 popup +=
@@ -1770,11 +1966,9 @@ function renderMarkers(){
 
             }
 
-
             marker.bindPopup(
                 popup
             );
-
 
             marker.on(
                 "click",
@@ -1789,7 +1983,6 @@ function renderMarkers(){
                 }
             );
 
-
             markers.push(marker);
 
         }
@@ -1798,9 +1991,8 @@ function renderMarkers(){
 }
 
 
-
 /* =========================================================
-   SMART SAVED SITE SEARCH
+   RENDER SITES
    ========================================================= */
 
 function renderSites(){
@@ -1810,7 +2002,6 @@ function renderSites(){
             "siteList"
         );
 
-
     const search =
         document.getElementById(
             "siteSearch"
@@ -1819,88 +2010,56 @@ function renderSites(){
         .toLowerCase()
         .trim();
 
-
-    /*
-       SEARCHES:
-       SITE NAME
-       LOCATION
-       LATITUDE
-       LONGITUDE
-       MEDIA TYPE
-       STATUS
-       SIZE
-       REMARKS
-    */
-
     const filtered =
         sites.filter(
             function(site){
 
-                const searchableText =
+                const text =
 
                     String(
                         site.siteName || ""
                     )+
-
                     " "+
-
                     String(
                         site.location || ""
                     )+
-
                     " "+
-
                     String(
                         site.latitude || ""
                     )+
-
                     " "+
-
                     String(
                         site.longitude || ""
                     )+
-
                     " "+
-
                     String(
                         site.mediaType || ""
                     )+
-
                     " "+
-
                     String(
                         site.status || ""
                     )+
-
                     " "+
-
                     String(
                         site.width || ""
                     )+
-
                     " "+
-
                     String(
                         site.height || ""
                     )+
-
                     " "+
-
                     String(
                         site.remarks || ""
                     );
 
-
-                return searchableText
+                return text
                     .toLowerCase()
                     .includes(search);
 
             }
         );
 
-
     list.innerHTML = "";
-
 
     if(!filtered.length){
 
@@ -1911,7 +2070,6 @@ function renderSites(){
 
     }
 
-
     filtered.forEach(
         function(site){
 
@@ -1920,28 +2078,19 @@ function renderSites(){
                     "div"
                 );
 
-
             div.className =
                 "site";
-
 
             const selected =
                 selectedSites.has(
                     site.id
                 );
 
-
-            /*
-               PHOTO THUMBNAIL
-            */
-
             let photoHTML;
-
 
             if(site.photo){
 
                 photoHTML =
-
                     "<img "+
                     "src=\""+
                     site.photo+
@@ -1949,128 +2098,106 @@ function renderSites(){
                     "class=\"saved-site-photo\" "+
                     "onclick=\"viewSite('"+
                     site.id+
-                    "')\" "+
-                    "title=\"Click to show site on map\">";
+                    "')\">";
 
             }
             else{
 
                 photoHTML =
-
                     "<div class='no-site-photo'>"+
                     "📷"+
                     "</div>";
 
             }
 
-
             div.innerHTML =
 
                 "<div class='saved-site-row'>"+
 
-                    "<div class='saved-site-image'>"+
-                        photoHTML+
-                    "</div>"+
-
-                    "<div class='saved-site-details'>"+
-
-                        "<div class='site-name'>"+
-                            (selected ? "☑ " : "☐ ")+
-                            escapeHTML(
-                                site.siteName
-                            )+
-                        "</div>"+
-
-                        "<div class='site-info'>"+
-
-                            escapeHTML(
-                                site.location || ""
-                            )+
-
-                            "<br>"+
-
-                            "📍 "+
-                            site.latitude+
-                            ", "+
-                            site.longitude+
-
-                            "<br>"+
-
-                            "📐 "+
-                            site.width+
-                            " × "+
-                            site.height+
-                            " ft"+
-
-                            "<br>"+
-
-                            escapeHTML(
-                                site.mediaType || ""
-                            )+
-                            " | "+
-                            escapeHTML(
-                                site.status || ""
-                            )+
-
-                        "</div>"+
-
-                    "</div>"+
-
+                "<div class='saved-site-image'>"+
+                photoHTML+
                 "</div>"+
 
+                "<div class='saved-site-details'>"+
+
+                "<div class='site-name'>"+
+                (
+                    selected ?
+                    "☑ " :
+                    "☐ "
+                )+
+                escapeHTML(
+                    site.siteName
+                )+
+                "</div>"+
+
+                "<div class='site-info'>"+
+                escapeHTML(
+                    site.location || ""
+                )+
+                "<br>"+
+                "📍 "+
+                site.latitude+
+                ", "+
+                site.longitude+
+                "<br>"+
+                "📐 "+
+                site.width+
+                " × "+
+                site.height+
+                " ft"+
+                "<br>"+
+                escapeHTML(
+                    site.mediaType || ""
+                )+
+                " | "+
+                escapeHTML(
+                    site.status || ""
+                )+
+                "</div>"+
+
+                "</div>"+
+                "</div>"+
 
                 "<div class='site-buttons'>"+
 
-                    "<button "+
-                    "class='btn-blue' "+
-                    "onclick=\"viewSite('"+
-                    site.id+
-                    "')\">"+
-                    "MAP"+
-                    "</button>"+
+                "<button class='btn-blue' "+
+                "onclick=\"viewSite('"+
+                site.id+
+                "')\">MAP</button>"+
 
-                    "<button "+
-                    "class='btn-gray' "+
-                    "onclick=\"selectSite('"+
-                    site.id+
-                    "')\">"+
-                    (selected ?
-                        "UNSELECT":
-                        "SELECT")+
-                    "</button>"+
+                "<button class='btn-gray' "+
+                "onclick=\"selectSite('"+
+                site.id+
+                "')\">"+
+                (
+                    selected ?
+                    "UNSELECT" :
+                    "SELECT"
+                )+
+                "</button>"+
 
-                    "<button "+
-                    "class='btn-gray' "+
-                    "onclick=\"editSite('"+
-                    site.id+
-                    "')\">"+
-                    "EDIT"+
-                    "</button>"+
+                "<button class='btn-gray' "+
+                "onclick=\"editSite('"+
+                site.id+
+                "')\">EDIT</button>"+
 
-                    "<button "+
-                    "class='btn-red' "+
-                    "onclick=\"deleteSite('"+
-                    site.id+
-                    "')\">"+
-                    "DELETE"+
-                    "</button>"+
+                "<button class='btn-red' "+
+                "onclick=\"deleteSite('"+
+                site.id+
+                "')\">DELETE</button>"+
 
                 "</div>";
 
-
-            list.appendChild(
-                div
-            );
+            list.appendChild(div);
 
         }
     );
-
 
     document.getElementById(
         "totalSites"
     ).innerText =
         sites.length;
-
 
     document.getElementById(
         "selectedSites"
@@ -2078,7 +2205,6 @@ function renderSites(){
         selectedSites.size;
 
 }
-
 
 
 /* =========================================================
@@ -2100,11 +2226,9 @@ function selectSite(id){
 
     }
 
-
     renderSites();
 
 }
-
 
 
 /* =========================================================
@@ -2122,13 +2246,11 @@ function viewSite(id){
             }
         );
 
-
     if(!site){
 
         return;
 
     }
-
 
     map.setView(
         [
@@ -2138,23 +2260,19 @@ function viewSite(id){
         17
     );
 
-
     placeSearchMarker(
         Number(site.latitude),
         Number(site.longitude),
         site.siteName
     );
 
-
     selectedSites.add(
         site.id
     );
 
-
     renderSites();
 
 }
-
 
 
 /* =========================================================
@@ -2172,96 +2290,81 @@ function editSite(id){
             }
         );
 
-
     if(!site){
 
         return;
 
     }
 
-
     document.getElementById(
         "editId"
     ).value =
         site.id;
-
 
     document.getElementById(
         "siteName"
     ).value =
         site.siteName;
 
-
     document.getElementById(
         "siteLocation"
     ).value =
         site.location || "";
-
 
     document.getElementById(
         "latitude"
     ).value =
         site.latitude;
 
-
     document.getElementById(
         "longitude"
     ).value =
         site.longitude;
-
 
     document.getElementById(
         "width"
     ).value =
         site.width;
 
-
     document.getElementById(
         "height"
     ).value =
         site.height;
-
 
     document.getElementById(
         "mediaType"
     ).value =
         site.mediaType;
 
-
     document.getElementById(
         "illumination"
     ).value =
         site.illumination;
-
 
     document.getElementById(
         "rate"
     ).value =
         site.rate;
 
-
     document.getElementById(
         "status"
     ).value =
         site.status;
-
 
     document.getElementById(
         "remarks"
     ).value =
         site.remarks || "";
 
-
     currentPhoto =
         site.photo || "";
 
+    const img =
+        document.getElementById(
+            "photoPreview"
+        );
 
     if(site.photo){
-
-        const img =
-            document.getElementById(
-                "photoPreview"
-            );
 
         img.src =
             site.photo;
@@ -2270,18 +2373,21 @@ function editSite(id){
             "block";
 
     }
+    else{
 
+        img.style.display =
+            "none";
+
+    }
 
     document.getElementById(
         "formTitle"
     ).innerText =
         "✏️ Edit OOH Site";
 
-
     viewSite(id);
 
 }
-
 
 
 /* =========================================================
@@ -2290,9 +2396,25 @@ function editSite(id){
 
 async function deleteSite(id){
 
+    const site =
+        sites.find(
+            function(item){
+
+                return item.id === id;
+
+            }
+        );
+
+    if(!site){
+
+        return;
+
+    }
+
     if(
         !confirm(
-            "Delete this site permanently?"
+            "Delete "+site.siteName+
+            " permanently from cloud?"
         )
     ){
 
@@ -2300,34 +2422,56 @@ async function deleteSite(id){
 
     }
 
-
-    await removeSite(id);
-
-
-    sites =
-        sites.filter(
-            function(site){
-
-                return site.id !== id;
-
-            }
-        );
-
-
-    selectedSites.delete(id);
-
-
-    renderSites();
-
-    renderMarkers();
-
-
-    showMessage(
-        "Site deleted"
+    setSyncStatus(
+        "loading",
+        "☁ Deleting..."
     );
 
-}
+    try{
 
+        await deleteCloudSite(id);
+
+        sites =
+            sites.filter(
+                function(item){
+
+                    return item.id !== id;
+
+                }
+            );
+
+        selectedSites.delete(id);
+
+        renderSites();
+        renderMarkers();
+
+        setSyncStatus(
+            "online",
+            "☁ Cloud synced"
+        );
+
+        showMessage(
+            "Site deleted from cloud"
+        );
+
+    }
+    catch(error){
+
+        console.error(error);
+
+        setSyncStatus(
+            "offline",
+            "☁ Delete failed"
+        );
+
+        alert(
+            "Delete failed:\n"+
+            error.message
+        );
+
+    }
+
+}
 
 
 /* =========================================================
@@ -2338,67 +2482,49 @@ function clearForm(){
 
     document.getElementById(
         "editId"
-    ).value =
-        "";
-
+    ).value = "";
 
     document.getElementById(
         "siteName"
-    ).value =
-        "";
-
+    ).value = "";
 
     document.getElementById(
         "siteLocation"
-    ).value =
-        "";
-
+    ).value = "";
 
     document.getElementById(
         "latitude"
-    ).value =
-        "";
-
+    ).value = "";
 
     document.getElementById(
         "longitude"
-    ).value =
-        "";
-
+    ).value = "";
 
     document.getElementById(
         "remarks"
-    ).value =
-        "";
-
+    ).value = "";
 
     document.getElementById(
         "photo"
-    ).value =
-        "";
-
+    ).value = "";
 
     document.getElementById(
         "photoPreview"
     ).style.display =
         "none";
 
-
     document.getElementById(
         "formTitle"
     ).innerText =
         "➕ Add OOH Site";
 
-
-    currentPhoto =
-        "";
+    currentPhoto = "";
 
 }
 
 
-
 /* =========================================================
-   EXCEL
+   EXCEL EXPORT
    ========================================================= */
 
 function exportExcel(){
@@ -2407,12 +2533,13 @@ function exportExcel(){
         sites.filter(
             function(site){
 
-                return selectedSites.size === 0 ||
-                       selectedSites.has(site.id);
+                return (
+                    selectedSites.size === 0 ||
+                    selectedSites.has(site.id)
+                );
 
             }
         );
-
 
     if(!data.length){
 
@@ -2423,7 +2550,6 @@ function exportExcel(){
         return;
 
     }
-
 
     const rows =
         data.map(
@@ -2478,16 +2604,13 @@ function exportExcel(){
             }
         );
 
-
     const worksheet =
         XLSX.utils.json_to_sheet(
             rows
         );
 
-
     const workbook =
         XLSX.utils.book_new();
-
 
     XLSX.utils.book_append_sheet(
         workbook,
@@ -2495,12 +2618,10 @@ function exportExcel(){
         "OOH Sites"
     );
 
-
     XLSX.writeFile(
         workbook,
         "My_Vision_OOH_Sites.xlsx"
     );
-
 
     showMessage(
         "Excel downloaded"
@@ -2509,9 +2630,37 @@ function exportExcel(){
 }
 
 
+/* =========================================================
+   PPT HELPERS
+   ========================================================= */
+
+function showExportProgress(text){
+
+    document.getElementById(
+        "exportText"
+    ).innerText =
+        text;
+
+    document.getElementById(
+        "exportProgress"
+    ).style.display =
+        "flex";
+
+}
+
+
+function hideExportProgress(){
+
+    document.getElementById(
+        "exportProgress"
+    ).style.display =
+        "none";
+
+}
+
 
 /* =========================================================
-   POWERPOINT
+   POWERPOINT EXPORT
    ========================================================= */
 
 async function exportPPT(){
@@ -2520,12 +2669,13 @@ async function exportPPT(){
         sites.filter(
             function(site){
 
-                return selectedSites.size === 0 ||
-                       selectedSites.has(site.id);
+                return (
+                    selectedSites.size === 0 ||
+                    selectedSites.has(site.id)
+                );
 
             }
         );
-
 
     if(!data.length){
 
@@ -2537,33 +2687,38 @@ async function exportPPT(){
 
     }
 
-
     if(
         typeof pptxgen === "undefined"
     ){
 
         alert(
-            "PowerPoint library did not load. Refresh the website."
+            "PowerPoint library did not load. Please refresh the page."
         );
 
         return;
 
     }
 
+    showExportProgress(
+        "Creating PowerPoint..."
+    );
 
     try{
 
         const ppt =
             new pptxgen();
 
-
         ppt.layout =
             "LAYOUT_WIDE";
-
 
         ppt.author =
             "MY VISION OOH";
 
+        ppt.company =
+            "MY VISION OOH";
+
+        ppt.subject =
+            "OOH Site Proposal";
 
         ppt.title =
             document.getElementById(
@@ -2571,32 +2726,64 @@ async function exportPPT(){
             ).value ||
             "OOH Site Proposal";
 
+        ppt.lang =
+            "en-IN";
 
-        /* COVER */
+        ppt.theme = {
+
+            headFontFace:
+                "Arial",
+
+            bodyFontFace:
+                "Arial",
+
+            lang:
+                "en-IN"
+
+        };
+
+
+        /* =================================================
+           COVER SLIDE
+           ================================================= */
 
         const cover =
             ppt.addSlide();
 
-
         cover.background =
             {
-                color:"111827"
+                color:"101827"
             };
 
-
         cover.addText(
-            "MY VISION OOH",
+            "MY VISION",
             {
                 x:.7,
-                y:2,
-                w:11,
-                h:.6,
-                fontSize:30,
+                y:1.8,
+                w:6,
+                h:.65,
+                fontFace:"Arial",
+                fontSize:32,
                 bold:true,
-                color:"FFFFFF"
+                color:"FFFFFF",
+                margin:0
             }
         );
 
+        cover.addText(
+            "OOH",
+            {
+                x:.7,
+                y:2.48,
+                w:3,
+                h:.55,
+                fontFace:"Arial",
+                fontSize:30,
+                bold:true,
+                color:"20AEF3",
+                margin:0
+            }
+        );
 
         cover.addText(
             document.getElementById(
@@ -2605,165 +2792,363 @@ async function exportPPT(){
             "OOH Site Proposal",
             {
                 x:.7,
-                y:2.8,
-                w:11,
-                h:.5,
-                fontSize:20,
-                color:"38BDF8"
+                y:3.25,
+                w:10.5,
+                h:.55,
+                fontSize:21,
+                bold:true,
+                color:"FFFFFF",
+                margin:0
             }
         );
-
 
         cover.addText(
             data.length+
-            " Selected Sites",
+            " Selected OOH Sites",
             {
                 x:.7,
-                y:3.5,
-                w:11,
+                y:4.05,
+                w:7,
                 h:.4,
                 fontSize:15,
-                color:"FFFFFF"
+                color:"CBD5E1",
+                margin:0
+            }
+        );
+
+        cover.addText(
+            "Prepared by MY VISION OOH",
+            {
+                x:.7,
+                y:6.4,
+                w:5,
+                h:.3,
+                fontSize:10,
+                color:"94A3B8",
+                margin:0
             }
         );
 
 
-        /* SITE SLIDES */
+        /* =================================================
+           SITE SLIDES
+           ================================================= */
 
-        data.forEach(
-            function(site,index){
+        for(
+            let index=0;
+            index<data.length;
+            index++
+        ){
 
-                const slide =
-                    ppt.addSlide();
+            const site =
+                data[index];
+
+            showExportProgress(
+                "Creating slide "+
+                (index+1)+
+                " of "+
+                data.length+"..."
+            );
+
+            const slide =
+                ppt.addSlide();
+
+            slide.background =
+                {
+                    color:"FFFFFF"
+                };
 
 
-                slide.addText(
-                    (index+1)+
-                    ". "+
-                    site.siteName,
-                    {
-                        x:.5,
-                        y:.35,
-                        w:7,
-                        h:.5,
-                        fontSize:23,
-                        bold:true
+            /* HEADER */
+
+            slide.addShape(
+                ppt.ShapeType.rect,
+                {
+                    x:0,
+                    y:0,
+                    w:13.333,
+                    h:.16,
+                    fill:{
+                        color:"20AEF3"
+                    },
+                    line:{
+                        color:"20AEF3"
                     }
-                );
+                }
+            );
+
+            slide.addText(
+                (index+1)+
+                ". "+
+                site.siteName,
+                {
+                    x:.55,
+                    y:.38,
+                    w:7.4,
+                    h:.45,
+                    fontSize:23,
+                    bold:true,
+                    color:"101827",
+                    margin:0
+                }
+            );
+
+            slide.addText(
+                site.location ||
+                "Location not specified",
+                {
+                    x:.55,
+                    y:.88,
+                    w:7.4,
+                    h:.4,
+                    fontSize:12,
+                    color:"64748B",
+                    margin:0
+                }
+            );
 
 
-                slide.addText(
-                    site.location ||
-                    "Location not specified",
-                    {
-                        x:.5,
-                        y:.9,
-                        w:7,
-                        h:.35,
-                        fontSize:14
-                    }
-                );
+            /* PHOTO */
 
+            if(site.photo){
 
-                if(site.photo){
+                try{
 
-                    try{
+                    slide.addImage(
+                        {
+                            data:
+                                site.photo,
 
-                        slide.addImage(
+                            x:.55,
+                            y:1.45,
+                            w:5.65,
+                            h:3.55,
+
+                            sizing:
                             {
-                                data:
-                                    site.photo,
-
-                                x:.5,
-                                y:1.4,
-                                w:5.6,
-                                h:3.8
+                                type:"contain",
+                                x:.55,
+                                y:1.45,
+                                w:5.65,
+                                h:3.55
                             }
-                        );
+                        }
+                    );
 
-                    }
-                    catch(error){
+                }
+                catch(error){
 
-                        console.log(
-                            "Photo error",
-                            error
-                        );
+                    console.warn(
+                        "Could not add photo:",
+                        error
+                    );
 
-                    }
+                    slide.addText(
+                        "SITE PHOTO",
+                        {
+                            x:.55,
+                            y:2.9,
+                            w:5.65,
+                            h:.4,
+                            align:"center",
+                            fontSize:18,
+                            color:"94A3B8"
+                        }
+                    );
 
                 }
 
+            }
+            else{
 
-                slide.addText(
-
-                    "LATITUDE: "+
-                    site.latitude+
-
-                    "\nLONGITUDE: "+
-                    site.longitude+
-
-                    "\n\nSIZE: "+
-                    site.width+
-                    " × "+
-                    site.height+
-                    " FT"+
-
-                    "\n\nMEDIA: "+
-                    site.mediaType+
-
-                    "\nILLUMINATION: "+
-                    site.illumination+
-
-                    "\n\nMONTHLY RATE: ₹"+
-                    Number(
-                        site.rate || 0
-                    ).toLocaleString(
-                        "en-IN"
-                    )+
-
-                    "\nSTATUS: "+
-                    site.status+
-
-                    "\n\nREMARKS: "+
-                    (site.remarks || "-"),
-
+                slide.addShape(
+                    ppt.ShapeType.rect,
                     {
-                        x:6.5,
-                        y:1.4,
-                        w:5.7,
-                        h:3.8,
-                        fontSize:14,
-                        valign:"top"
-                    }
-
-                );
-
-
-                slide.addText(
-                    "📍 Open Location in Google Maps",
-                    {
-                        x:6.5,
-                        y:5.45,
-                        w:4.5,
-                        h:.35,
-                        fontSize:12,
-                        color:"0563C1",
-                        underline:{
-                            style:"sng"
+                        x:.55,
+                        y:1.45,
+                        w:5.65,
+                        h:3.55,
+                        fill:{
+                            color:"F1F5F9"
                         },
-                        hyperlink:{
-                            url:
-                                "https://www.google.com/maps?q="+
-                                site.latitude+
-                                ","+
-                                site.longitude
+                        line:{
+                            color:"CBD5E1"
                         }
                     }
                 );
 
-            }
-        );
+                slide.addText(
+                    "NO SITE PHOTO",
+                    {
+                        x:.55,
+                        y:2.9,
+                        w:5.65,
+                        h:.4,
+                        align:"center",
+                        fontSize:18,
+                        color:"94A3B8"
+                    }
+                );
 
+            }
+
+
+            /* DETAILS BOX */
+
+            slide.addShape(
+                ppt.ShapeType.roundRect,
+                {
+                    x:6.55,
+                    y:1.45,
+                    w:6.2,
+                    h:3.55,
+                    rectRadius:.05,
+                    fill:{
+                        color:"F8FAFC"
+                    },
+                    line:{
+                        color:"E2E8F0"
+                    }
+                }
+            );
+
+
+            const details =
+
+                "LOCATION\n"+
+                (site.location || "-")+
+
+                "\n\nCOORDINATES\n"+
+                Number(site.latitude).toFixed(6)+
+                ", "+
+                Number(site.longitude).toFixed(6)+
+
+                "\n\nSIZE\n"+
+                site.width+
+                " × "+
+                site.height+
+                " FT"+
+
+                "\n\nMEDIA\n"+
+                (site.mediaType || "-")+
+
+                "\nILLUMINATION\n"+
+                (site.illumination || "-")+
+
+                "\n\nMONTHLY RATE\n₹"+
+                Number(
+                    site.rate || 0
+                ).toLocaleString(
+                    "en-IN"
+                )+
+
+                "\nSTATUS\n"+
+                (site.status || "-");
+
+
+            slide.addText(
+                details,
+                {
+                    x:6.85,
+                    y:1.72,
+                    w:5.55,
+                    h:3.0,
+                    fontSize:11,
+                    color:"334155",
+                    breakLine:false,
+                    valign:"top",
+                    margin:0.02,
+                    fit:"shrink"
+                }
+            );
+
+
+            /* REMARKS */
+
+            slide.addText(
+                "REMARKS",
+                {
+                    x:.55,
+                    y:5.35,
+                    w:1.3,
+                    h:.25,
+                    fontSize:10,
+                    bold:true,
+                    color:"64748B",
+                    margin:0
+                }
+            );
+
+            slide.addText(
+                site.remarks ||
+                "-",
+                {
+                    x:1.55,
+                    y:5.28,
+                    w:7.8,
+                    h:.5,
+                    fontSize:10,
+                    color:"334155",
+                    margin:0
+                }
+            );
+
+
+            /* GOOGLE MAPS LINK */
+
+            const mapsURL =
+                "https://www.google.com/maps?q="+
+                encodeURIComponent(
+                    site.latitude+
+                    ","+
+                    site.longitude
+                );
+
+            slide.addText(
+                "📍 OPEN LOCATION IN GOOGLE MAPS",
+                {
+                    x:9.45,
+                    y:5.3,
+                    w:3.25,
+                    h:.38,
+                    fontSize:10,
+                    bold:true,
+                    color:"0563C1",
+                    underline:{
+                        style:"sng"
+                    },
+                    hyperlink:{
+                        url:mapsURL
+                    },
+                    margin:0
+                }
+            );
+
+
+            /* FOOTER */
+
+            slide.addText(
+                "MY VISION OOH  •  Site "+
+                (index+1)+
+                " / "+
+                data.length,
+                {
+                    x:.55,
+                    y:7.05,
+                    w:5,
+                    h:.2,
+                    fontSize:8,
+                    color:"94A3B8",
+                    margin:0
+                }
+            );
+
+        }
+
+
+        /* =================================================
+           WRITE FILE
+           ================================================= */
 
         await ppt.writeFile(
             {
@@ -2772,6 +3157,7 @@ async function exportPPT(){
             }
         );
 
+        hideExportProgress();
 
         showMessage(
             "PPT downloaded successfully"
@@ -2780,17 +3166,21 @@ async function exportPPT(){
     }
     catch(error){
 
-        console.error(error);
+        console.error(
+            "PPT ERROR:",
+            error
+        );
+
+        hideExportProgress();
 
         alert(
-            "PPT export failed: "+
+            "PPT export failed.\n\n"+
             error.message
         );
 
     }
 
 }
-
 
 
 /* =========================================================
@@ -2822,49 +3212,77 @@ function escapeHTML(text){
 }
 
 
-
 /* =========================================================
-   START
+   START APPLICATION
    ========================================================= */
 
 async function startApp(){
 
-    try{
+    initializeMap();
 
-        await openDatabase();
+    /*
+      FIRST:
+      Try to load cloud sites.
+    */
 
+    const cloudLoaded =
+        await loadCloudSites();
 
-        /*
-           THIS LOADS YOUR EXISTING SAVED SITES.
-           NOTHING IS DELETED.
-        */
+    /*
+      SECOND:
+      If the old database contains your
+      54 sites, migrate them.
+    */
 
-        sites =
-            await getAllSites();
+    if(cloudLoaded){
 
+        const oldSites =
+            await getOldSites();
 
-        initializeMap();
+        if(
+            oldSites.length &&
+            sites.length === 0
+        ){
 
+            await migrateOldSites();
 
-        renderSites();
+            await loadCloudSites();
 
+        }
+        else if(
+            oldSites.length &&
+            sites.length < oldSites.length
+        ){
 
-        renderMarkers();
+            /*
+              This protects against a partial
+              previous migration.
+            */
 
+            await migrateOldSites();
+
+            await loadCloudSites();
+
+        }
+
+    }
+
+    /*
+      THIRD:
+      Start realtime sync.
+    */
+
+    startRealtime();
+
+    renderSites();
+
+    renderMarkers();
+
+    if(sites.length){
 
         showMessage(
             sites.length+
-            " saved site(s) loaded"
-        );
-
-    }
-    catch(error){
-
-        console.error(error);
-
-        alert(
-            "Could not load saved sites. "+
-            "Do NOT clear browser data."
+            " cloud site(s) loaded"
         );
 
     }
@@ -2872,9 +3290,14 @@ async function startApp(){
 }
 
 
+/* =========================================================
+   START
+   ========================================================= */
+
 startApp();
 
 </script>
 
 </body>
 </html>
+```
