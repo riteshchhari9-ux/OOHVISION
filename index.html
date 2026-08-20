@@ -1,5 +1,4 @@
 <!DOCTYPE html>
-
 <html lang="en">
 <head>
 <meta charset="UTF-8">
@@ -314,10 +313,11 @@ textarea{
 }
 
 </style>
-
 </head>
 
+
 <body>
+
 
 <header>
 
@@ -347,7 +347,9 @@ onclick="exportPPT()">
 
 <div class="main">
 
+
 <div class="sidebar">
+
 
 <!-- CAMPAIGN -->
 
@@ -358,8 +360,7 @@ onclick="exportPPT()">
 <input
 id="campaign"
 placeholder="Client / Campaign Name"
-
-
+>
 
 <div class="stats">
 
@@ -390,14 +391,14 @@ Selected
 <input
 id="locationSearch"
 placeholder="Bandra West, Mumbai"
-
-
+>
 
 <button
 class="btn-blue full"
 onclick="searchLocation()">
 SEARCH LOCATION
 </button>
+
 
 <label>Latitude & Longitude</label>
 
@@ -412,8 +413,7 @@ id="searchLat"
 type="number"
 step="any"
 placeholder="19.0596"
-
-
+>
 
 </div>
 
@@ -426,12 +426,12 @@ id="searchLng"
 type="number"
 step="any"
 placeholder="72.8295"
+>
 
-
+</div>
 
 </div>
 
-</div>
 
 <button
 class="btn-blue full"
@@ -439,11 +439,13 @@ onclick="searchCoordinates()">
 📍 FIND COORDINATES
 </button>
 
+
 <button
 class="btn-gray full"
 onclick="useMyLocation()">
 📌 USE MY LOCATION
 </button>
+
 
 <div
 id="locationResult"
@@ -465,7 +467,7 @@ class="location-result">
 <input
 id="editId"
 type="hidden"
-
+>
 
 
 <label>Site Name / ID</label>
@@ -473,7 +475,7 @@ type="hidden"
 <input
 id="siteName"
 placeholder="MUM-001"
-
+>
 
 
 <label>Location</label>
@@ -481,7 +483,7 @@ placeholder="MUM-001"
 <input
 id="siteLocation"
 placeholder="Bandra West, Mumbai"
-
+>
 
 
 <div class="row">
@@ -494,8 +496,7 @@ placeholder="Bandra West, Mumbai"
 id="latitude"
 type="number"
 step="any"
-
-
+>
 
 </div>
 
@@ -507,12 +508,12 @@ step="any"
 id="longitude"
 type="number"
 step="any"
+>
 
-
+</div>
 
 </div>
 
-</div>
 
 <div class="row">
 
@@ -524,8 +525,7 @@ step="any"
 id="width"
 type="number"
 value="40"
-
-
+>
 
 </div>
 
@@ -537,12 +537,12 @@ value="40"
 id="height"
 type="number"
 value="40"
+>
 
-
+</div>
 
 </div>
 
-</div>
 
 <div class="row">
 
@@ -561,6 +561,7 @@ value="40"
 
 </div>
 
+
 <div>
 
 <label>Illumination</label>
@@ -575,6 +576,7 @@ value="40"
 
 </div>
 
+
 <div class="row">
 
 <div>
@@ -585,8 +587,7 @@ value="40"
 id="rate"
 type="number"
 value="0"
-
-
+>
 
 </div>
 
@@ -605,6 +606,7 @@ value="0"
 
 </div>
 
+
 <label>Site Photo</label>
 
 <input
@@ -612,13 +614,12 @@ id="photo"
 type="file"
 accept="image/*"
 onchange="previewPhoto(event)"
-
-
+>
 
 <img
 id="photoPreview"
 class="photo-preview"
-
+>
 
 
 <label>Remarks</label>
@@ -628,11 +629,13 @@ id="remarks"
 placeholder="Facing direction, traffic, visibility etc."
 ></textarea>
 
+
 <button
 class="btn-blue full"
 onclick="saveSite()">
 💾 SAVE SITE
 </button>
+
 
 <button
 class="btn-gray full"
@@ -654,20 +657,22 @@ CLEAR FORM
 id="siteSearch"
 placeholder="Search site, location, lat, long, status..."
 oninput="renderSites()"
-
-
+>
 
 <div id="siteList"></div>
 
 </div>
 
+
 </div>
+
 
 <div class="map-container">
 
 <div id="map"></div>
 
 </div>
+
 
 </div>
 
@@ -682,6 +687,7 @@ oninput="renderSites()"
 <script src="https://cdn.jsdelivr.net/npm/xlsx@0.18.5/dist/xlsx.full.min.js"></script>
 
 <script src="https://cdn.jsdelivr.net/npm/pptxgenjs@3.12.0/dist/pptxgen.bundle.js"></script>
+
 
 <script>
 
