@@ -1,123 +1,85 @@
-```html
 <!DOCTYPE html>
 <html lang="en">
 <head>
 <meta charset="UTF-8">
-<meta name="viewport" content="width=device-width,initial-scale=1.0">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-<title>My Vision OOH — Smart Site Planner</title>
+<title>My Vision OOH — Professional Site Planner</title>
 
-<link rel="stylesheet"
-href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css"/>
+<link
+  rel="stylesheet"
+  href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css"
+/>
 
 <style>
-
-/* =========================================================
-   ROOT
-========================================================= */
-
 :root{
-  --bg:#eef4fb;
-  --card:rgba(255,255,255,.86);
-  --cardSolid:#ffffff;
-  --text:#142033;
-  --muted:#718096;
-  --blue:#087cf5;
-  --cyan:#13d8ff;
-  --purple:#725cff;
-  --green:#16b978;
-  --red:#ef476f;
-  --orange:#ff9f2d;
-  --border:rgba(150,170,195,.25);
-  --shadow:0 18px 50px rgba(28,53,82,.13);
-  --shadowSmall:0 7px 22px rgba(28,53,82,.10);
+  --bg:#020914;
+  --sidebar:#071525;
+  --sidebar2:#0b1c30;
+  --card:#0c2035;
+  --card2:#102942;
+  --line:#19344e;
+  --text:#f4f8ff;
+  --muted:#8296aa;
+  --blue:#00a8ff;
+  --cyan:#22d9ff;
+  --green:#20d391;
+  --red:#ff4568;
+  --yellow:#ffc247;
+  --shadow:0 15px 45px rgba(0,0,0,.35);
 }
 
 *{
   box-sizing:border-box;
 }
 
-html,body{
-  margin:0;
+html,
+body{
   width:100%;
   height:100%;
-  font-family:
-    Inter,
-    Segoe UI,
-    Roboto,
-    Arial,
-    sans-serif;
-  color:var(--text);
+  margin:0;
 }
 
 body{
+  font-family:
+    Inter,
+    Segoe UI,
+    Arial,
+    sans-serif;
+
+  background:var(--bg);
+  color:var(--text);
   overflow:hidden;
-  background:
-    radial-gradient(circle at 10% 10%,rgba(19,216,255,.16),transparent 28%),
-    radial-gradient(circle at 90% 0%,rgba(114,92,255,.14),transparent 30%),
-    linear-gradient(135deg,#edf5fc,#f7faff);
 }
 
-/* =========================================================
-   ANIMATED BACKGROUND
-========================================================= */
-
-body:before,
-body:after{
-  content:"";
-  position:fixed;
-  width:420px;
-  height:420px;
-  border-radius:50%;
-  filter:blur(80px);
-  pointer-events:none;
-  z-index:-1;
-  animation:floatOrb 12s ease-in-out infinite alternate;
-}
-
-body:before{
-  background:rgba(0,198,255,.13);
-  left:-150px;
-  top:100px;
-}
-
-body:after{
-  background:rgba(114,92,255,.10);
-  right:-150px;
-  bottom:-100px;
-  animation-delay:3s;
-}
-
-@keyframes floatOrb{
-  from{
-    transform:translate(0,0) scale(1);
-  }
-  to{
-    transform:translate(50px,-35px) scale(1.15);
-  }
-}
-
-/* =========================================================
-   HEADER
-========================================================= */
+/* =====================================================
+   TOP BAR
+===================================================== */
 
 .topbar{
-  height:72px;
+  height:54px;
+
+  background:
+    linear-gradient(
+      90deg,
+      #06111f,
+      #07192b 50%,
+      #06111f
+    );
+
+  border-bottom:1px solid #16304a;
+
   display:flex;
   align-items:center;
   justify-content:space-between;
-  padding:0 20px;
+
+  padding:0 16px;
+
   position:relative;
-  z-index:3000;
-
-  background:rgba(255,255,255,.80);
-  backdrop-filter:blur(22px);
-  -webkit-backdrop-filter:blur(22px);
-
-  border-bottom:1px solid rgba(150,170,195,.25);
+  z-index:5000;
 
   box-shadow:
-    0 8px 30px rgba(31,55,80,.09);
+    0 8px 30px rgba(0,0,0,.28);
 }
 
 .brand{
@@ -126,75 +88,40 @@ body:after{
   gap:12px;
 }
 
-.logoBox{
-  width:44px;
-  height:44px;
-  border-radius:14px;
-
-  display:flex;
-  align-items:center;
-  justify-content:center;
-
-  font-size:13px;
+.logo{
+  font-size:19px;
   font-weight:1000;
-  color:#fff;
-
-  background:
-    linear-gradient(135deg,
-      #087cf5,
-      #13d8ff 55%,
-      #725cff);
-
-  box-shadow:
-    0 9px 25px rgba(8,124,245,.30);
-
-  animation:logoFloat 4s ease-in-out infinite;
+  letter-spacing:-1px;
+  white-space:nowrap;
 }
 
-@keyframes logoFloat{
-  0%,100%{
-    transform:translateY(0) rotate(0deg);
-  }
-  50%{
-    transform:translateY(-3px) rotate(2deg);
-  }
-}
-
-.brandText{
-  font-size:21px;
-  font-weight:1000;
-  letter-spacing:-.8px;
-}
-
-.brandText span{
-  color:#08bfe8;
+.logo span{
+  color:var(--cyan);
 }
 
 .tagline{
-  color:var(--muted);
-  font-size:11px;
-  margin-top:2px;
+  color:#8196aa;
+  font-size:12px;
+  border-left:1px solid #28445e;
+  padding-left:12px;
 }
 
 .headerActions{
   display:flex;
-  gap:8px;
   align-items:center;
+  gap:8px;
 }
-
-/* =========================================================
-   BUTTONS
-========================================================= */
 
 .btn{
   border:0;
-  border-radius:12px;
-  padding:10px 14px;
-
-  font-weight:850;
-  font-size:12px;
-
   cursor:pointer;
+
+  border-radius:9px;
+
+  padding:9px 13px;
+
+  font-weight:800;
+  font-size:12px;
 
   display:flex;
   align-items:center;
@@ -204,125 +131,146 @@ body:after{
   transition:
     transform .2s ease,
     box-shadow .2s ease,
-    filter .2s ease;
-
-  white-space:nowrap;
+    background .2s ease;
 }
 
 .btn:hover{
   transform:translateY(-2px);
-  filter:brightness(1.03);
-  box-shadow:0 10px 24px rgba(0,0,0,.13);
 }
 
 .btn:active{
-  transform:translateY(0) scale(.98);
+  transform:scale(.96);
 }
 
 .btnBlue{
   color:white;
-  background:
-    linear-gradient(135deg,#087cf5,#00c9f5);
-  box-shadow:0 7px 20px rgba(8,124,245,.20);
-}
-
-.btnGreen{
-  color:white;
-  background:
-    linear-gradient(135deg,#0da96d,#20d28c);
-  box-shadow:0 7px 20px rgba(22,185,120,.18);
-}
-
-.btnPurple{
-  color:white;
-  background:
-    linear-gradient(135deg,#6552ef,#8a76ff);
-}
-
-.btnLight{
-  color:#334155;
-  background:rgba(255,255,255,.8);
-  border:1px solid var(--border);
-}
-
-.btnRed{
-  color:#e6395d;
-  background:#fff1f4;
-  border:1px solid #ffd4dd;
-}
-
-/* =========================================================
-   MAIN LAYOUT
-========================================================= */
-
-.app{
-  height:calc(100vh - 72px);
-  display:grid;
-  grid-template-columns:390px 1fr;
-}
-
-/* =========================================================
-   SIDEBAR
-========================================================= */
-
-.sidebar{
-  padding:15px;
-  overflow-y:auto;
-  z-index:1500;
 
   background:
     linear-gradient(
-      180deg,
-      rgba(248,252,255,.94),
-      rgba(237,245,252,.88)
+      135deg,
+      #008df0,
+      #15d4ff
     );
 
-  border-right:1px solid rgba(150,170,195,.20);
+  box-shadow:
+    0 7px 20px rgba(0,174,255,.22);
+}
+
+.btnGreen{
+  color:#001c13;
+
+  background:
+    linear-gradient(
+      135deg,
+      #19c989,
+      #45e6ae
+    );
+}
+
+.btnDark{
+  color:#d8e8f5;
+  background:#112940;
+  border:1px solid #21435e;
+}
+
+.btnRed{
+  color:white;
+  background:#d72e52;
+}
+
+/* =====================================================
+   MAIN LAYOUT
+===================================================== */
+
+.app{
+  height:calc(100vh - 54px);
+
+  display:grid;
+
+  grid-template-columns:
+    360px 1fr;
+}
+
+/* =====================================================
+   SIDEBAR
+===================================================== */
+
+.sidebar{
+  background:
+    linear-gradient(
+      180deg,
+      #071525 0%,
+      #061322 100%
+    );
+
+  border-right:1px solid #17324b;
+
+  overflow-y:auto;
+
+  padding:12px;
+
+  position:relative;
+  z-index:2000;
 }
 
 .sidebar::-webkit-scrollbar{
-  width:6px;
+  width:5px;
 }
 
 .sidebar::-webkit-scrollbar-thumb{
-  background:#c7d5e5;
+  background:#21445f;
   border-radius:20px;
 }
 
+.sidebar::-webkit-scrollbar-track{
+  background:transparent;
+}
+
+/* =====================================================
+   PANELS
+===================================================== */
+
 .section{
-  padding:15px;
-  margin-bottom:13px;
+  background:
+    linear-gradient(
+      145deg,
+      rgba(13,35,57,.98),
+      rgba(7,24,41,.98)
+    );
 
-  background:var(--card);
+  border:1px solid #18354e;
 
-  border:1px solid rgba(255,255,255,.8);
-  border-radius:18px;
+  border-radius:15px;
 
-  box-shadow:var(--shadowSmall);
+  padding:13px;
 
-  backdrop-filter:blur(16px);
-  -webkit-backdrop-filter:blur(16px);
+  margin-bottom:11px;
 
-  animation:sectionIn .45s ease both;
+  box-shadow:
+    0 8px 25px rgba(0,0,0,.22);
+
+  animation:
+    slideIn .45s ease both;
 }
 
 .section:nth-child(2){
-  animation-delay:.06s;
+  animation-delay:.05s;
 }
 
 .section:nth-child(3){
-  animation-delay:.12s;
+  animation-delay:.1s;
 }
 
 .section:nth-child(4){
-  animation-delay:.18s;
+  animation-delay:.15s;
 }
 
-@keyframes sectionIn{
+@keyframes slideIn{
   from{
     opacity:0;
-    transform:translateY(10px);
+    transform:translateY(12px);
   }
+
   to{
     opacity:1;
     transform:translateY(0);
@@ -330,79 +278,127 @@ body:after{
 }
 
 .sectionTitle{
-  color:#8090a5;
+  color:#71899f;
+
   font-size:10px;
-  font-weight:950;
-  letter-spacing:1px;
+
   text-transform:uppercase;
+
+  font-weight:900;
+
+  letter-spacing:1.2px;
+
+  margin-bottom:8px;
+}
+
+/* =====================================================
+   PROJECT
+===================================================== */
+
+.projectTitle{
+  display:flex;
+  align-items:center;
+  justify-content:space-between;
+
   margin-bottom:10px;
 }
 
-/* =========================================================
+.projectTitle strong{
+  font-size:16px;
+}
+
+.projectIcon{
+  width:28px;
+  height:28px;
+
+  display:flex;
+  align-items:center;
+  justify-content:center;
+
+  border-radius:8px;
+
+  background:#102e49;
+
+  color:#28d9ff;
+}
+
+/* =====================================================
    INPUTS
-========================================================= */
+===================================================== */
 
 .input{
   width:100%;
-  padding:11px 12px;
 
-  border-radius:11px;
-  border:1px solid #dce6f0;
+  border:
+    1px solid #1b3a55;
 
-  background:rgba(247,250,253,.88);
+  background:#061423;
 
-  color:var(--text);
-  font-size:13px;
+  color:#eaf4ff;
+
+  padding:
+    10px 11px;
+
+  border-radius:9px;
 
   outline:none;
 
+  font-size:12px;
+
   transition:
-    border-color .2s,
+    border .2s,
     box-shadow .2s,
-    transform .2s,
     background .2s;
 }
 
-.input:hover{
-  border-color:#bfd2e5;
+.input::placeholder{
+  color:#61778b;
 }
 
 .input:focus{
-  border-color:#28aaf5;
+  border-color:#00aef5;
 
-  background:white;
+  background:#081a2b;
 
   box-shadow:
-    0 0 0 4px rgba(8,124,245,.08),
-    0 5px 16px rgba(8,124,245,.07);
+    0 0 0 3px rgba(0,174,245,.10);
+}
 
-  transform:translateY(-1px);
+select.input{
+  cursor:pointer;
 }
 
 textarea.input{
   resize:vertical;
 }
 
-/* =========================================================
+/* =====================================================
    STATS
-========================================================= */
+===================================================== */
 
 .stats{
   display:grid;
-  grid-template-columns:repeat(3,1fr);
-  gap:7px;
+
+  grid-template-columns:
+    repeat(3,1fr);
+
+  gap:6px;
 }
 
 .stat{
-  padding:12px 7px;
-  border-radius:13px;
-
   background:
-    linear-gradient(145deg,
-      rgba(255,255,255,.95),
-      rgba(235,244,252,.85));
+    linear-gradient(
+      145deg,
+      #102942,
+      #0b2035
+    );
 
-  border:1px solid #e0eaf3;
+  border:
+    1px solid #1a3a54;
+
+  border-radius:10px;
+
+  padding:9px 5px;
 
   text-align:center;
 
@@ -411,151 +407,178 @@ textarea.input{
 
 .stat:hover{
   transform:translateY(-3px);
-  box-shadow:0 9px 20px rgba(30,60,90,.09);
+
+  border-color:#24749c;
 }
 
 .statNum{
-  font-size:21px;
+  font-size:20px;
   font-weight:1000;
 }
 
 .statLabel{
-  margin-top:3px;
-  font-size:9px;
-  color:#8492a6;
-  font-weight:850;
+  color:#6f879b;
+  font-size:8px;
   text-transform:uppercase;
+  font-weight:900;
+  margin-top:2px;
 }
+
+/* =====================================================
+   CLOUD STATUS
+===================================================== */
 
 .cloudStatus{
   display:flex;
   align-items:center;
   gap:7px;
 
+  color:#38d99a;
+
   font-size:10px;
-  font-weight:850;
-  color:#12a96d;
+  font-weight:800;
 }
 
 .cloudDot{
-  width:8px;
-  height:8px;
+  width:7px;
+  height:7px;
+
+  background:#2fe3a1;
+
   border-radius:50%;
-  background:#16c77b;
 
   box-shadow:
-    0 0 0 4px rgba(22,199,123,.12);
+    0 0 0 4px rgba(47,227,161,.10),
+    0 0 15px rgba(47,227,161,.55);
 
-  animation:pulseCloud 2s infinite;
+  animation:pulse 1.8s infinite;
 }
 
-@keyframes pulseCloud{
+@keyframes pulse{
   0%,100%{
-    box-shadow:0 0 0 3px rgba(22,199,123,.10);
+    box-shadow:
+      0 0 0 4px rgba(47,227,161,.10),
+      0 0 15px rgba(47,227,161,.55);
   }
+
   50%{
-    box-shadow:0 0 0 7px rgba(22,199,123,.02);
+    box-shadow:
+      0 0 0 7px rgba(47,227,161,.03),
+      0 0 22px rgba(47,227,161,.85);
   }
 }
 
-/* =========================================================
+/* =====================================================
    FORM
-========================================================= */
+===================================================== */
 
 .formGrid{
   display:grid;
-  grid-template-columns:1fr 1fr;
-  gap:8px;
+
+  grid-template-columns:
+    1fr 1fr;
+
+  gap:7px;
 }
 
 .formFull{
   grid-column:1/-1;
 }
 
-/* =========================================================
-   SELECTED SITE LIST
-========================================================= */
+.addButton{
+  width:100%;
+
+  margin-top:2px;
+
+  height:38px;
+
+  font-size:12px;
+}
+
+/* =====================================================
+   SELECTED SITES
+===================================================== */
 
 .selectedHeader{
   display:flex;
-  justify-content:space-between;
   align-items:center;
+  justify-content:space-between;
+
   margin-bottom:9px;
 }
 
 .selectedHeader h3{
   margin:0;
-  font-size:16px;
+
+  font-size:15px;
 }
 
 .siteList{
   display:flex;
   flex-direction:column;
-  gap:8px;
+  gap:7px;
 
-  max-height:420px;
+  max-height:340px;
+
   overflow-y:auto;
 }
 
 .siteList::-webkit-scrollbar{
-  width:5px;
+  width:4px;
 }
 
 .siteList::-webkit-scrollbar-thumb{
-  background:#cbd8e5;
-  border-radius:10px;
+  background:#264b67;
+  border-radius:20px;
 }
 
 .siteCard{
-  position:relative;
-
-  display:flex;
-  gap:9px;
-
-  padding:8px;
-
   background:
     linear-gradient(
-      135deg,
-      rgba(255,255,255,.98),
-      rgba(244,249,253,.92)
+      145deg,
+      #0c233a,
+      #091b2e
     );
 
-  border:1px solid #dce6f0;
-  border-radius:14px;
+  border:1px solid #183a54;
+
+  border-radius:10px;
+
+  padding:6px;
+
+  display:flex;
+
+  gap:8px;
 
   cursor:pointer;
 
-  box-shadow:0 4px 13px rgba(30,60,90,.06);
-
   transition:
-    transform .22s ease,
-    box-shadow .22s ease,
-    border-color .22s ease;
+    transform .2s,
+    border .2s,
+    box-shadow .2s;
 }
 
 .siteCard:hover{
   transform:
-    translateY(-3px)
-    scale(1.008);
+    translateX(4px);
 
-  border-color:#75c3fb;
+  border-color:#00aef5;
 
   box-shadow:
-    0 13px 28px rgba(8,124,245,.14);
+    0 7px 20px rgba(0,157,238,.14);
 }
 
 .siteThumb{
-  width:62px;
-  height:57px;
-
-  flex-shrink:0;
+  width:53px;
+  height:49px;
 
   object-fit:cover;
 
-  border-radius:9px;
+  border-radius:7px;
 
-  background:#e7eef5;
+  background:#10253a;
+
+  flex-shrink:0;
 }
 
 .siteInfo{
@@ -565,110 +588,110 @@ textarea.input{
 
 .siteName{
   font-size:11px;
-  font-weight:950;
+
+  font-weight:900;
 
   white-space:nowrap;
+
   overflow:hidden;
+
   text-overflow:ellipsis;
 }
 
 .siteLocation{
-  margin-top:3px;
-
-  color:#77859a;
   font-size:9px;
 
+  color:#71889c;
+
+  margin-top:3px;
+
   white-space:nowrap;
+
   overflow:hidden;
+
   text-overflow:ellipsis;
 }
 
 .siteMeta{
   display:flex;
+
   gap:4px;
+
   flex-wrap:wrap;
+
   margin-top:5px;
 }
 
 .badge{
-  padding:3px 6px;
-
-  border-radius:5px;
-
-  background:#edf6ff;
-  color:#087cf5;
-
   font-size:8px;
+
   font-weight:900;
+
+  color:#59d9ff;
+
+  background:#0b3049;
+
+  border:1px solid #174a67;
+
+  padding:2px 5px;
+
+  border-radius:4px;
 }
 
 .removeBtn{
-  width:24px;
-  height:24px;
+  width:23px;
+  height:23px;
+
+  flex-shrink:0;
 
   border:0;
-  border-radius:7px;
 
-  background:#fff0f3;
-  color:#e6395d;
+  border-radius:6px;
+
+  background:#3a1724;
+
+  color:#ff5a7b;
 
   cursor:pointer;
 
-  font-weight:1000;
+  font-size:16px;
+
+  font-weight:900;
 
   transition:.2s;
 }
 
 .removeBtn:hover{
-  transform:scale(1.1) rotate(5deg);
-  background:#ffe0e7;
+  background:#ff4568;
+  color:white;
 }
 
-/* =========================================================
+/* =====================================================
    MAP AREA
-========================================================= */
+===================================================== */
 
 .mapArea{
   position:relative;
-  padding:11px;
 
-  background:
-    radial-gradient(
-      circle at 80% 20%,
-      rgba(0,198,255,.08),
-      transparent 35%
-    ),
-    linear-gradient(135deg,#dce8f3,#f7fafc);
+  padding:8px;
+
+  background:#020a13;
 }
 
 .mapFrame{
-  height:100%;
   width:100%;
-
-  overflow:hidden;
+  height:100%;
 
   position:relative;
 
-  border-radius:23px;
+  overflow:hidden;
 
-  border:1px solid rgba(255,255,255,.9);
+  border-radius:13px;
+
+  border:1px solid #23425a;
 
   box-shadow:
-    0 25px 70px rgba(31,55,80,.18),
-    0 5px 20px rgba(31,55,80,.08);
-
-  animation:mapAppear .7s ease both;
-}
-
-@keyframes mapAppear{
-  from{
-    opacity:0;
-    transform:scale(.985);
-  }
-  to{
-    opacity:1;
-    transform:scale(1);
-  }
+    0 15px 50px rgba(0,0,0,.5);
 }
 
 #map{
@@ -676,38 +699,42 @@ textarea.input{
   height:100%;
 }
 
-/* =========================================================
-   MAP TOP GLASS PANEL
-========================================================= */
+/* =====================================================
+   MAP TOP CARD
+===================================================== */
 
 .mapTopCard{
   position:absolute;
 
-  top:18px;
-  left:18px;
+  top:13px;
+  left:13px;
 
   z-index:1000;
 
-  padding:12px 15px;
+  background:
+    rgba(7,23,39,.92);
 
-  border-radius:15px;
+  backdrop-filter:blur(12px);
 
-  background:rgba(255,255,255,.84);
+  border:
+    1px solid #294a62;
 
-  backdrop-filter:blur(18px);
+  border-radius:11px;
 
-  border:1px solid rgba(255,255,255,.9);
+  padding:9px 12px;
 
   box-shadow:
-    0 12px 30px rgba(25,55,85,.16);
+    0 8px 25px rgba(0,0,0,.30);
 
-  animation:cardFloat 4s ease-in-out infinite;
+  animation:
+    floatCard 3s ease-in-out infinite;
 }
 
-@keyframes cardFloat{
+@keyframes floatCard{
   0%,100%{
     transform:translateY(0);
   }
+
   50%{
     transform:translateY(-3px);
   }
@@ -719,207 +746,251 @@ textarea.input{
 }
 
 .mapTopSub{
+  color:#7890a4;
+  font-size:9px;
   margin-top:3px;
-  color:#718096;
+}
+
+/* =====================================================
+   MAP GLOW
+===================================================== */
+
+.mapFrame::after{
+  content:"";
+
+  pointer-events:none;
+
+  position:absolute;
+
+  inset:0;
+
+  z-index:500;
+
+  box-shadow:
+    inset 0 0 80px rgba(0,105,160,.12);
+
+  border-radius:13px;
+}
+
+/* =====================================================
+   LEAFLET
+===================================================== */
+
+.leaflet-control-zoom{
+  border:0 !important;
+
+  box-shadow:
+    0 7px 20px rgba(0,0,0,.25) !important;
+}
+
+.leaflet-control-zoom a{
+  background:#fff !important;
+
+  color:#172033 !important;
+
+  border:0 !important;
+
+  font-weight:900;
+}
+
+.leaflet-control-attribution{
   font-size:9px;
 }
 
-/* =========================================================
-   MAP MODE BUTTON
-========================================================= */
+/* =====================================================
+   CUSTOM MARKER
+===================================================== */
 
-.mapMode{
-  position:absolute;
+.ooh-marker{
+  width:36px;
+  height:36px;
 
-  top:18px;
-  right:18px;
-
-  z-index:1000;
-
-  display:flex;
-  gap:5px;
-
-  padding:5px;
-
-  border-radius:13px;
-
-  background:rgba(255,255,255,.82);
-  backdrop-filter:blur(16px);
-
-  box-shadow:0 10px 25px rgba(30,60,90,.14);
-
-  border:1px solid rgba(255,255,255,.9);
-}
-
-.mapMode button{
-  border:0;
-  border-radius:9px;
-
-  padding:7px 10px;
-
-  font-size:10px;
-  font-weight:850;
-
-  cursor:pointer;
-
-  background:transparent;
-  color:#64748b;
-
-  transition:.2s;
-}
-
-.mapMode button:hover{
-  background:#eef6ff;
-  color:#087cf5;
-}
-
-.mapMode button.active{
-  background:#087cf5;
-  color:white;
-
-  box-shadow:0 5px 13px rgba(8,124,245,.22);
-}
-
-/* =========================================================
-   CUSTOM MARKERS
-========================================================= */
-
-.customMarkerWrap{
   position:relative;
-}
-
-.customMarker{
-  width:34px;
-  height:34px;
-
-  border-radius:50% 50% 50% 0;
 
   transform:rotate(-45deg);
+
+  border-radius:
+    50% 50% 50% 0;
 
   background:
     linear-gradient(
       135deg,
-      #087cf5,
+      #007ff0,
       #00d9ff
     );
 
-  border:3px solid white;
+  border:
+    3px solid white;
 
   box-shadow:
-    0 7px 18px rgba(8,124,245,.35);
+    0 7px 18px rgba(0,111,255,.45);
 
-  animation:markerPop .35s ease both;
+  animation:
+    markerPulse 2s infinite;
 }
 
-.customMarker:after{
+.ooh-marker::after{
   content:"";
-
-  position:absolute;
 
   width:9px;
   height:9px;
 
-  left:10px;
-  top:10px;
+  position:absolute;
 
-  border-radius:50%;
+  top:10px;
+  left:10px;
 
   background:white;
+
+  border-radius:50%;
 }
 
-@keyframes markerPop{
-  from{
-    opacity:0;
-    transform:
-      rotate(-45deg)
-      scale(.3);
+@keyframes markerPulse{
+  0%,100%{
+    filter:drop-shadow(
+      0 0 0 rgba(0,190,255,.4)
+    );
   }
-  to{
-    opacity:1;
-    transform:
-      rotate(-45deg)
-      scale(1);
+
+  50%{
+    filter:drop-shadow(
+      0 0 12px rgba(0,190,255,.85)
+    );
   }
 }
 
-/* =========================================================
+/* =====================================================
+   POPUP
+===================================================== */
+
+.leaflet-popup-content-wrapper{
+  border-radius:12px !important;
+
+  box-shadow:
+    0 12px 35px rgba(0,0,0,.25) !important;
+}
+
+.leaflet-popup-content{
+  margin:12px !important;
+}
+
+/* =====================================================
    TOAST
-========================================================= */
+===================================================== */
 
 #toast{
   position:fixed;
 
-  right:24px;
-  bottom:24px;
+  right:20px;
+  bottom:20px;
 
   z-index:99999;
 
-  min-width:220px;
+  background:
+    linear-gradient(
+      135deg,
+      #0d263d,
+      #071827
+    );
 
-  padding:13px 17px;
-
-  border-radius:13px;
+  border:
+    1px solid #24506d;
 
   color:white;
 
-  background:
-    linear-gradient(135deg,#142033,#253651);
+  padding:11px 16px;
 
-  box-shadow:
-    0 18px 40px rgba(0,0,0,.22);
+  border-radius:10px;
 
   font-size:12px;
+
   font-weight:800;
 
+  box-shadow:
+    0 15px 40px rgba(0,0,0,.35);
+
   transform:
-    translateY(30px)
-    scale(.96);
+    translateY(80px);
 
   opacity:0;
 
   pointer-events:none;
 
-  transition:.3s;
+  transition:
+    .3s ease;
 }
 
 #toast.show{
   transform:
-    translateY(0)
-    scale(1);
+    translateY(0);
 
   opacity:1;
 }
 
-/* =========================================================
-   LEAFLET
-========================================================= */
+/* =====================================================
+   LOADING
+===================================================== */
 
-.leaflet-control-zoom{
-  border:0!important;
-  box-shadow:0 8px 20px rgba(20,40,70,.16)!important;
+#loading{
+  position:fixed;
+
+  inset:0;
+
+  z-index:100000;
+
+  display:none;
+
+  align-items:center;
+  justify-content:center;
+
+  background:
+    rgba(2,9,20,.75);
+
+  backdrop-filter:blur(8px);
 }
 
-.leaflet-control-zoom a{
-  border:0!important;
-  background:rgba(255,255,255,.90)!important;
-  backdrop-filter:blur(10px);
-  color:#172033!important;
+.loadingBox{
+  background:#0b2035;
+
+  border:1px solid #214660;
+
+  padding:25px 35px;
+
+  border-radius:15px;
+
+  text-align:center;
+
+  box-shadow:var(--shadow);
 }
 
-.leaflet-popup-content-wrapper{
-  border-radius:15px!important;
-  box-shadow:0 15px 35px rgba(20,40,70,.20)!important;
+.spinner{
+  width:35px;
+  height:35px;
+
+  border:
+    3px solid #1b405a;
+
+  border-top-color:#1bd8ff;
+
+  border-radius:50%;
+
+  animation:
+    spin .8s linear infinite;
+
+  margin:auto auto 12px;
 }
 
-.leaflet-popup-content{
-  margin:13px!important;
+@keyframes spin{
+  to{
+    transform:rotate(360deg);
+  }
 }
 
-/* =========================================================
-   RESPONSIVE
-========================================================= */
+/* =====================================================
+   MOBILE
+===================================================== */
 
-@media(max-width:1000px){
+@media(max-width:900px){
 
   body{
     overflow:auto;
@@ -927,10 +998,14 @@ textarea.input{
 
   .topbar{
     height:auto;
-    min-height:70px;
+
+    min-height:55px;
+
     flex-wrap:wrap;
-    gap:8px;
-    padding:10px;
+
+    gap:7px;
+
+    padding:8px 10px;
   }
 
   .tagline{
@@ -939,71 +1014,97 @@ textarea.input{
 
   .headerActions{
     width:100%;
+
     justify-content:flex-end;
   }
 
   .app{
     height:auto;
+
     display:flex;
+
     flex-direction:column;
   }
 
   .sidebar{
     width:100%;
+
     max-height:none;
   }
 
   .mapArea{
     height:650px;
+
+    padding:5px;
   }
 }
 
+/* =====================================================
+   EXTRA ANIMATION
+===================================================== */
+
+.btnBlue::before{
+  content:"";
+}
+
+.section:hover{
+  border-color:#1e4561;
+}
+
+/* =====================================================
+   NO SELECT
+===================================================== */
+
+button,
+input,
+select,
+textarea{
+  font-family:inherit;
+}
 </style>
 </head>
 
 <body>
 
-<!-- =======================================================
-     HEADER
-======================================================= -->
+<!-- =====================================================
+     TOP BAR
+===================================================== -->
 
 <header class="topbar">
 
   <div class="brand">
 
-    <div class="logoBox">
-      MV
+    <div class="logo">
+      MY VISION <span>OOH</span>
     </div>
 
-    <div>
-
-      <div class="brandText">
-        MY VISION <span>OOH</span>
-      </div>
-
-      <div class="tagline">
-        Professional Outdoor Advertising Site Planner
-      </div>
-
+    <div class="tagline">
+      Professional Outdoor Advertising Site Planner
     </div>
 
   </div>
 
   <div class="headerActions">
 
-    <button class="btn btnLight"
-      onclick="exportExcel()">
+    <button
+      class="btn btnDark"
+      onclick="exportExcel()"
+    >
       📊 Excel
     </button>
 
-    <button class="btn btnPurple"
-      onclick="exportPPT()">
+    <button
+      class="btn btnBlue"
+      onclick="exportPPT()"
+    >
       📑 PPT
     </button>
 
-    <button class="btn btnGreen"
-      onclick="saveCurrentSite()">
-      ☁ Save to Cloud
+    <button
+      class="btn btnGreen"
+      onclick="saveCurrentSite()"
+    >
+      ☁ Save
     </button>
 
   </div>
@@ -1011,256 +1112,315 @@ textarea.input{
 </header>
 
 
+<!-- =====================================================
+     APP
+===================================================== -->
+
 <div class="app">
 
-<!-- =======================================================
+
+<!-- =====================================================
      SIDEBAR
-======================================================= -->
+===================================================== -->
 
 <aside class="sidebar">
 
-  <!-- PROJECT -->
 
-  <div class="section">
+<!-- PROJECT -->
 
-    <div class="sectionTitle">
-      Project Dashboard
-    </div>
+<div class="section">
 
-    <input
-      id="campaignName"
-      class="input"
-      placeholder="Client / Campaign Name">
+  <div class="sectionTitle">
+    Project
+  </div>
 
-    <div style="height:11px"></div>
+  <div class="projectTitle">
 
-    <div class="stats">
+    <strong>
+      OOH Site Planner
+    </strong>
 
-      <div class="stat">
-        <div class="statNum"
-          id="totalCount">0</div>
-        <div class="statLabel">
-          Total
-        </div>
-      </div>
-
-      <div class="stat">
-        <div class="statNum"
-          id="selectedCount">0</div>
-        <div class="statLabel">
-          Selected
-        </div>
-      </div>
-
-      <div class="stat">
-        <div class="statNum"
-          id="cloudCount">0</div>
-        <div class="statLabel">
-          Cloud
-        </div>
-      </div>
-
-    </div>
-
-    <div style="height:11px"></div>
-
-    <div class="cloudStatus">
-      <span class="cloudDot"></span>
-      Cloud database connected
+    <div class="projectIcon">
+      🗺️
     </div>
 
   </div>
 
+  <input
+    id="campaignName"
+    class="input"
+    placeholder="Client / Campaign Name"
+  >
 
-  <!-- ADD SITE -->
+  <div style="height:10px"></div>
 
-  <div class="section">
+  <div class="stats">
 
-    <div class="sectionTitle">
-      Add OOH Site
-    </div>
+    <div class="stat">
 
-    <div class="formGrid">
+      <div
+        id="totalCount"
+        class="statNum"
+      >
+        0
+      </div>
 
-      <input
-        id="siteName"
-        class="input formFull"
-        placeholder="Site Name">
-
-      <input
-        id="location"
-        class="input formFull"
-        placeholder="Location">
-
-      <input
-        id="latitude"
-        class="input"
-        placeholder="Latitude">
-
-      <input
-        id="longitude"
-        class="input"
-        placeholder="Longitude">
-
-      <input
-        id="width"
-        class="input"
-        type="number"
-        placeholder="Width (ft)">
-
-      <input
-        id="height"
-        class="input"
-        type="number"
-        placeholder="Height (ft)">
-
-      <input
-        id="mediaType"
-        class="input"
-        placeholder="Media Type">
-
-      <select
-        id="illumination"
-        class="input">
-
-        <option value="">
-          Illumination
-        </option>
-
-        <option value="F-LIT">
-          F-LIT
-        </option>
-
-        <option value="Backlit">
-          Backlit
-        </option>
-
-        <option value="Non-Lit">
-          Non-Lit
-        </option>
-
-        <option value="LED">
-          LED
-        </option>
-
-        <option value="Digital">
-          Digital
-        </option>
-
-      </select>
-
-      <input
-        id="rate"
-        class="input"
-        type="number"
-        placeholder="Rate ₹">
-
-      <select
-        id="status"
-        class="input">
-
-        <option value="Available">
-          Available
-        </option>
-
-        <option value="Booked">
-          Booked
-        </option>
-
-        <option value="Hold">
-          Hold
-        </option>
-
-      </select>
-
-      <input
-        id="photo"
-        class="input formFull"
-        placeholder="Photo URL">
-
-      <textarea
-        id="remarks"
-        class="input formFull"
-        rows="3"
-        placeholder="Remarks"></textarea>
+      <div class="statLabel">
+        Total
+      </div>
 
     </div>
 
-    <div style="height:9px"></div>
+
+    <div class="stat">
+
+      <div
+        id="selectedCount"
+        class="statNum"
+      >
+        0
+      </div>
+
+      <div class="statLabel">
+        Selected
+      </div>
+
+    </div>
+
+
+    <div class="stat">
+
+      <div
+        id="cloudCount"
+        class="statNum"
+      >
+        0
+      </div>
+
+      <div class="statLabel">
+        Cloud
+      </div>
+
+    </div>
+
+  </div>
+
+  <div style="height:10px"></div>
+
+  <div class="cloudStatus">
+
+    <span class="cloudDot"></span>
+
+    Cloud synced
+
+  </div>
+
+</div>
+
+
+<!-- =====================================================
+     ADD SITE
+===================================================== -->
+
+<div class="section">
+
+  <div class="sectionTitle">
+    Add / Edit Site
+  </div>
+
+  <div class="formGrid">
+
+    <input
+      id="siteName"
+      class="input formFull"
+      placeholder="Site Name"
+    >
+
+    <input
+      id="location"
+      class="input formFull"
+      placeholder="Location"
+    >
+
+    <input
+      id="latitude"
+      class="input"
+      placeholder="Latitude"
+    >
+
+    <input
+      id="longitude"
+      class="input"
+      placeholder="Longitude"
+    >
+
+    <input
+      id="width"
+      class="input"
+      type="number"
+      placeholder="Width (ft)"
+    >
+
+    <input
+      id="height"
+      class="input"
+      type="number"
+      placeholder="Height (ft)"
+    >
+
+    <input
+      id="mediaType"
+      class="input"
+      placeholder="Media Type"
+    >
+
+    <select
+      id="illumination"
+      class="input"
+    >
+
+      <option value="">
+        Illumination
+      </option>
+
+      <option value="F-LIT">
+        F-LIT
+      </option>
+
+      <option value="Backlit">
+        Backlit
+      </option>
+
+      <option value="Non-Lit">
+        Non-Lit
+      </option>
+
+      <option value="LED">
+        LED
+      </option>
+
+      <option value="Digital">
+        Digital
+      </option>
+
+    </select>
+
+    <input
+      id="rate"
+      class="input"
+      type="number"
+      placeholder="Rate ₹"
+    >
+
+    <select
+      id="status"
+      class="input"
+    >
+
+      <option value="Available">
+        Available
+      </option>
+
+      <option value="Booked">
+        Booked
+      </option>
+
+      <option value="Hold">
+        Hold
+      </option>
+
+    </select>
+
+    <input
+      id="photo"
+      class="input formFull"
+      placeholder="Photo URL"
+    >
+
+    <textarea
+      id="remarks"
+      class="input formFull"
+      rows="2"
+      placeholder="Remarks"
+    ></textarea>
+
+  </div>
+
+  <button
+    class="btn btnBlue addButton"
+    onclick="addSite()"
+  >
+    📍 Add Site
+  </button>
+
+</div>
+
+
+<!-- =====================================================
+     SELECTED SITES
+===================================================== -->
+
+<div class="section">
+
+  <div class="selectedHeader">
+
+    <h3>
+      Selected Sites
+    </h3>
 
     <button
-      class="btn btnBlue"
-      style="width:100%"
-      onclick="addSite()">
-
-      📍 Add Site
-
+      class="btn btnRed"
+      style="padding:6px 9px;font-size:9px"
+      onclick="clearSelected()"
+    >
+      CLEAR
     </button>
 
   </div>
 
+  <div
+    id="siteList"
+    class="siteList"
+  ></div>
 
-  <!-- SELECTED SITES -->
+</div>
 
-  <div class="section">
 
-    <div class="selectedHeader">
+<!-- =====================================================
+     SEARCH
+===================================================== -->
 
-      <h3>
-        Selected Sites
-      </h3>
+<div class="section">
 
-      <button
-        class="btn btnRed"
-        style="padding:7px 10px"
-        onclick="clearSelected()">
-
-        CLEAR
-
-      </button>
-
-    </div>
-
-    <div
-      id="siteList"
-      class="siteList">
-    </div>
-
+  <div class="sectionTitle">
+    Map Search
   </div>
 
+  <input
+    id="searchLocation"
+    class="input"
+    placeholder="Search location..."
+  >
 
-  <!-- SEARCH -->
+  <div style="height:7px"></div>
 
-  <div class="section">
+  <button
+    class="btn btnBlue"
+    style="width:100%"
+    onclick="searchLocation()"
+  >
+    🔎 Search Location
+  </button>
 
-    <div class="sectionTitle">
-      Search Map
-    </div>
+</div>
 
-    <input
-      id="searchLocation"
-      class="input"
-      placeholder="Search Bandra, Andheri, Mumbai...">
-
-    <div style="height:8px"></div>
-
-    <button
-      class="btn btnBlue"
-      style="width:100%"
-      onclick="searchLocation()">
-
-      🔎 Search Location
-
-    </button>
-
-  </div>
 
 </aside>
 
 
-<!-- =======================================================
+<!-- =====================================================
      MAP
-======================================================= -->
+===================================================== -->
 
 <main class="mapArea">
 
@@ -1269,37 +1429,14 @@ textarea.input{
     <div class="mapTopCard">
 
       <div class="mapTopTitle">
-        🗺️ MY VISION OOH MAP
+        🗺️ OOH SITE MAP
       </div>
 
       <div class="mapTopSub">
-        Click anywhere to place an OOH site
+        Click anywhere on map to place a site
       </div>
 
     </div>
-
-
-    <div class="mapMode">
-
-      <button
-        id="standardBtn"
-        class="active"
-        onclick="setMapMode('standard')">
-
-        Standard
-
-      </button>
-
-      <button
-        id="satelliteBtn"
-        onclick="setMapMode('satellite')">
-
-        Satellite
-
-      </button>
-
-    </div>
-
 
     <div id="map"></div>
 
@@ -1310,12 +1447,35 @@ textarea.input{
 </div>
 
 
+<!-- =====================================================
+     TOAST
+===================================================== -->
+
 <div id="toast"></div>
 
 
-<!-- =======================================================
+<!-- =====================================================
+     LOADING
+===================================================== -->
+
+<div id="loading">
+
+  <div class="loadingBox">
+
+    <div class="spinner"></div>
+
+    <b>
+      Loading cloud sites...
+    </b>
+
+  </div>
+
+</div>
+
+
+<!-- =====================================================
      LIBRARIES
-======================================================= -->
+===================================================== -->
 
 <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
 
@@ -1328,179 +1488,130 @@ textarea.input{
 
 <script>
 
-/* =========================================================
+/* =====================================================
    SUPABASE
-========================================================= */
+===================================================== */
 
 const SUPABASE_URL =
-"https://fdrdswbrjuigzzmskpru.supabase.co";
-
+  "https://fdrdswbrjuigzzmskpru.supabase.co";
 
 /*
-=========================================================
-IMPORTANT
+  IMPORTANT:
 
-Replace the value below with your Supabase
-PUBLISHABLE KEY / anon public key.
+  Put your Supabase PUBLISHABLE / ANON key here.
 
-DO NOT USE service_role.
-=========================================================
+  Example:
+
+  const SUPABASE_KEY =
+    "eyJhbGciOiJIUzI1NiIs...";
+
+  NEVER put your service_role key here.
 */
 
 const SUPABASE_KEY =
-"YOUR_SUPABASE_PUBLISHABLE_KEY";
+  "YOUR_SUPABASE_PUBLISHABLE_KEY";
 
 
 const supabaseClient =
-window.supabase.createClient(
-  SUPABASE_URL,
-  SUPABASE_KEY
-);
+  window.supabase.createClient(
+    SUPABASE_URL,
+    SUPABASE_KEY
+  );
 
 
-/* =========================================================
+/* =====================================================
    DATA
-========================================================= */
+===================================================== */
 
 let sites = [];
+
 let selectedSites = [];
+
 let markers = {};
 
 let map;
 
-let standardLayer;
-let satelliteLayer;
 
-
-/* =========================================================
+/* =====================================================
    MAP
-========================================================= */
+===================================================== */
 
 map =
-L.map("map",{
-  zoomControl:true,
-  preferCanvas:true
-}).setView(
-  [19.0760,72.8777],
-  11
-);
+  L.map(
+    "map",
+    {
+      zoomControl:true,
+      preferCanvas:true
+    }
+  ).setView(
+    [19.0760,72.8777],
+    12
+  );
 
 
-/* STANDARD MAP */
-
-standardLayer =
 L.tileLayer(
   "https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png",
   {
     maxZoom:19,
+
     attribution:
-    '&copy; OpenStreetMap contributors'
+      '&copy; OpenStreetMap contributors'
   }
 ).addTo(map);
 
 
-/* SATELLITE */
-
-satelliteLayer =
-L.tileLayer(
-  "https://server.arcgisonline.com/ArcGIS/rest/services/World_Imagery/MapServer/tile/{z}/{y}/{x}",
-  {
-    maxZoom:19,
-    attribution:
-    "Tiles &copy; Esri"
-  }
-);
-
-
-/* =========================================================
-   MAP MODE
-========================================================= */
-
-function setMapMode(mode){
-
-  const standardBtn =
-    document.getElementById("standardBtn");
-
-  const satelliteBtn =
-    document.getElementById("satelliteBtn");
-
-
-  if(mode==="satellite"){
-
-    if(map.hasLayer(standardLayer))
-      map.removeLayer(standardLayer);
-
-    satelliteLayer.addTo(map);
-
-    satelliteBtn.classList.add("active");
-    standardBtn.classList.remove("active");
-
-    showToast("🛰️ Satellite view enabled");
-
-  }else{
-
-    if(map.hasLayer(satelliteLayer))
-      map.removeLayer(satelliteLayer);
-
-    standardLayer.addTo(map);
-
-    standardBtn.classList.add("active");
-    satelliteBtn.classList.remove("active");
-
-    showToast("🗺️ Standard map enabled");
-  }
-}
-
-
-/* =========================================================
-   CREATE MARKER
-========================================================= */
+/* =====================================================
+   MARKER
+===================================================== */
 
 function createMarker(site){
 
   const icon =
-  L.divIcon({
+    L.divIcon({
 
-    className:"customMarkerWrap",
+      className:"",
 
-    html:`
-      <div class="customMarker"></div>
-    `,
+      html:
+        `<div class="ooh-marker"></div>`,
 
-    iconSize:[34,34],
-    iconAnchor:[17,34],
-    popupAnchor:[0,-30]
+      iconSize:[36,36],
 
-  });
+      iconAnchor:[18,36],
+
+      popupAnchor:[0,-32]
+
+    });
 
 
   const marker =
-  L.marker(
-    [
-      Number(site.latitude),
-      Number(site.longitude)
-    ],
-    {icon}
-  ).addTo(map);
+    L.marker(
+      [
+        Number(site.latitude),
+        Number(site.longitude)
+      ],
+      {
+        icon
+      }
+    ).addTo(map);
 
 
   marker.bindPopup(`
 
-    <div style="min-width:230px">
+    <div style="min-width:220px">
 
       <div style="
-        font-size:16px;
         font-weight:900;
-        color:#142033;
+        font-size:15px;
+        margin-bottom:4px;
       ">
         ${escapeHtml(
-          site.site_name || "OOH Site"
+          site.site_name ||
+          "OOH Site"
         )}
       </div>
 
       <div style="
-        margin-top:5px;
-        color:#718096;
+        color:#64748b;
         font-size:11px;
       ">
         ${escapeHtml(
@@ -1508,22 +1619,18 @@ function createMarker(site){
         )}
       </div>
 
-      <hr style="
-        border:0;
-        border-top:1px solid #e5edf4;
-      ">
+      <hr>
 
       <div style="
-        line-height:1.8;
-        font-size:11px;
+        font-size:12px;
+        line-height:1.7;
       ">
 
         📐
-        <b>
-          ${site.width || 0}
-          ×
-          ${site.height || 0} ft
-        </b>
+        ${site.width || 0}
+        ×
+        ${site.height || 0}
+        ft
 
         <br>
 
@@ -1534,7 +1641,7 @@ function createMarker(site){
 
         <br>
 
-        🎞️
+        📺
         ${escapeHtml(
           site.media_type || "-"
         )}
@@ -1561,10 +1668,13 @@ function createMarker(site){
           src="${escapeAttr(site.photo)}"
           style="
             width:100%;
-            height:130px;
+            height:125px;
             object-fit:cover;
-            border-radius:10px;
             margin-top:8px;
+            border-radius:8px;
+          "
+          onerror="
+            this.style.display='none'
           "
         >
         `
@@ -1585,23 +1695,23 @@ function createMarker(site){
 }
 
 
-/* =========================================================
+/* =====================================================
    MAP CLICK
-========================================================= */
+===================================================== */
 
 map.on(
   "click",
   function(e){
 
-    document.getElementById(
-      "latitude"
-    ).value =
+    document
+      .getElementById("latitude")
+      .value =
       e.latlng.lat.toFixed(6);
 
 
-    document.getElementById(
-      "longitude"
-    ).value =
+    document
+      .getElementById("longitude")
+      .value =
       e.latlng.lng.toFixed(6);
 
 
@@ -1613,9 +1723,9 @@ map.on(
 );
 
 
-/* =========================================================
+/* =====================================================
    ADD SITE
-========================================================= */
+===================================================== */
 
 async function addSite(){
 
@@ -1626,58 +1736,83 @@ async function addSite(){
       Date.now() +
       "_" +
       Math.random()
-      .toString(36)
-      .substring(2,8),
+        .toString(36)
+        .substring(2,8),
 
     site_name:
-      getValue("siteName"),
+      document
+        .getElementById("siteName")
+        .value
+        .trim(),
 
     location:
-      getValue("location"),
+      document
+        .getElementById("location")
+        .value
+        .trim(),
 
     latitude:
       parseFloat(
-        getValue("latitude")
+        document
+          .getElementById("latitude")
+          .value
       ),
 
     longitude:
       parseFloat(
-        getValue("longitude")
+        document
+          .getElementById("longitude")
+          .value
       ),
 
     width:
       Number(
-        getValue("width")
+        document
+          .getElementById("width")
+          .value
       ) || 0,
 
     height:
       Number(
-        getValue("height")
+        document
+          .getElementById("height")
+          .value
       ) || 0,
 
     media_type:
-      getValue("mediaType"),
+      document
+        .getElementById("mediaType")
+        .value
+        .trim(),
 
     illumination:
-      getValue("illumination"),
+      document
+        .getElementById("illumination")
+        .value,
 
     rate:
       Number(
-        getValue("rate")
+        document
+          .getElementById("rate")
+          .value
       ) || 0,
 
     status:
-      getValue("status") ||
-      "Available",
+      document
+        .getElementById("status")
+        .value,
 
     photo:
-      getValue("photo"),
+      document
+        .getElementById("photo")
+        .value
+        .trim(),
 
     remarks:
-      getValue("remarks"),
-
-    updated:
-      new Date().toISOString()
+      document
+        .getElementById("remarks")
+        .value
+        .trim()
 
   };
 
@@ -1698,7 +1833,7 @@ async function addSite(){
   ){
 
     showToast(
-      "⚠️ Select coordinates on map"
+      "⚠️ Select map coordinates"
     );
 
     return;
@@ -1709,7 +1844,6 @@ async function addSite(){
 
   selectedSites.push(site);
 
-
   createMarker(site);
 
   renderSites();
@@ -1718,28 +1852,15 @@ async function addSite(){
 
   clearForm();
 
-
-  map.flyTo(
-    [
-      site.latitude,
-      site.longitude
-    ],
-    16,
-    {
-      duration:1.1
-    }
-  );
-
-
   showToast(
-    "✨ OOH site added"
+    "✅ Site added"
   );
 }
 
 
-/* =========================================================
-   SAVE TO SUPABASE
-========================================================= */
+/* =====================================================
+   SAVE TO CLOUD
+===================================================== */
 
 async function saveCurrentSite(){
 
@@ -1756,26 +1877,19 @@ async function saveCurrentSite(){
   try{
 
     const {
-      data,
-      error:userError
+      data:{
+        user
+      }
     } =
       await supabaseClient
-      .auth
-      .getUser();
-
-
-    if(userError)
-      throw userError;
-
-
-    const user =
-      data?.user;
+        .auth
+        .getUser();
 
 
     if(!user){
 
       showToast(
-        "⚠️ Please login to the website first"
+        "⚠️ Please login to Supabase"
       );
 
       return;
@@ -1783,54 +1897,71 @@ async function saveCurrentSite(){
 
 
     const rows =
-      selectedSites.map(site => ({
+      selectedSites.map(
+        site => ({
 
-        id:site.id,
+          id:
+            site.id,
 
-        user_id:user.id,
+          user_id:
+            user.id,
 
-        site_name:site.site_name,
+          site_name:
+            site.site_name,
 
-        location:site.location,
+          location:
+            site.location,
 
-        latitude:site.latitude,
+          latitude:
+            site.latitude,
 
-        longitude:site.longitude,
+          longitude:
+            site.longitude,
 
-        width:site.width,
+          width:
+            site.width,
 
-        height:site.height,
+          height:
+            site.height,
 
-        media_type:site.media_type,
+          media_type:
+            site.media_type,
 
-        illumination:site.illumination,
+          illumination:
+            site.illumination,
 
-        rate:site.rate,
+          rate:
+            site.rate,
 
-        status:site.status,
+          status:
+            site.status,
 
-        photo:site.photo,
+          photo:
+            site.photo,
 
-        remarks:site.remarks,
+          remarks:
+            site.remarks,
 
-        updated:
-          new Date().toISOString()
+          updated:
+            new Date()
+              .toISOString()
 
-      }));
+        })
+      );
 
 
     const {
       error
     } =
       await supabaseClient
-      .from("ooh_sites")
-      .upsert(
-        rows,
-        {
-          onConflict:
-            "user_id,id"
-        }
-      );
+        .from("ooh_sites")
+        .upsert(
+          rows,
+          {
+            onConflict:
+              "user_id,id"
+          }
+        );
 
 
     if(error)
@@ -1841,9 +1972,6 @@ async function saveCurrentSite(){
       `☁️ ${rows.length} site(s) saved`
     );
 
-
-    updateStats();
-
   }
   catch(error){
 
@@ -1852,34 +1980,26 @@ async function saveCurrentSite(){
     showToast(
       "❌ Cloud save failed"
     );
-
   }
 }
 
 
-/* =========================================================
-   LOAD SAVED SITES
-========================================================= */
+/* =====================================================
+   LOAD CLOUD SITES
+===================================================== */
 
 async function loadSavedSites(){
 
   try{
 
     const {
-      data,
-      error:userError
+      data:{
+        user
+      }
     } =
       await supabaseClient
-      .auth
-      .getUser();
-
-
-    if(userError)
-      throw userError;
-
-
-    const user =
-      data?.user;
+        .auth
+        .getUser();
 
 
     if(!user){
@@ -1891,22 +2011,22 @@ async function loadSavedSites(){
 
 
     const {
-      data:cloudSites,
+      data,
       error
     } =
       await supabaseClient
-      .from("ooh_sites")
-      .select("*")
-      .eq(
-        "user_id",
-        user.id
-      )
-      .order(
-        "updated",
-        {
-          ascending:false
-        }
-      );
+        .from("ooh_sites")
+        .select("*")
+        .eq(
+          "user_id",
+          user.id
+        )
+        .order(
+          "updated",
+          {
+            ascending:false
+          }
+        );
 
 
     if(error)
@@ -1914,48 +2034,47 @@ async function loadSavedSites(){
 
 
     sites =
-      cloudSites || [];
+      data || [];
 
 
-    /*
-      IMPORTANT:
-      Cloud sites are also displayed in the
-      Selected Sites panel so they appear
-      on another device.
-    */
-
-    selectedSites =
-      [...sites];
+    selectedSites = [];
 
 
-    Object.values(markers)
-    .forEach(marker => {
+    Object
+      .values(markers)
+      .forEach(
+        marker => {
 
-      if(map.hasLayer(marker))
-        map.removeLayer(marker);
+          try{
+            map.removeLayer(marker);
+          }
+          catch(e){}
 
-    });
+        }
+      );
 
 
     markers = {};
 
 
-    sites.forEach(site => {
+    sites.forEach(
+      site => {
 
-      if(
-        Number.isFinite(
-          Number(site.latitude)
-        ) &&
-        Number.isFinite(
-          Number(site.longitude)
-        )
-      ){
+        if(
+          Number.isFinite(
+            Number(site.latitude)
+          ) &&
+          Number.isFinite(
+            Number(site.longitude)
+          )
+        ){
 
-        createMarker(site);
+          createMarker(site);
+
+        }
 
       }
-
-    });
+    );
 
 
     renderSites();
@@ -1966,7 +2085,7 @@ async function loadSavedSites(){
     if(sites.length){
 
       showToast(
-        `☁️ ${sites.length} cloud site(s) loaded`
+        `☁️ ${sites.length} saved sites loaded`
       );
 
     }
@@ -1987,9 +2106,9 @@ async function loadSavedSites(){
 }
 
 
-/* =========================================================
-   RENDER SITES
-========================================================= */
+/* =====================================================
+   RENDER
+===================================================== */
 
 function renderSites(){
 
@@ -2003,7 +2122,7 @@ function renderSites(){
 
 
   selectedSites.forEach(
-    (site,index) => {
+    site => {
 
       const card =
         document.createElement(
@@ -2015,25 +2134,16 @@ function renderSites(){
         "siteCard";
 
 
-      card.style.animation =
-        `sectionIn .35s ease ${index*.035}s both`;
-
-
-      const fallback =
-        "https://images.unsplash.com/photo-1519501025264-65ba15a82390?w=400";
-
-
       card.innerHTML = `
 
         <img
           class="siteThumb"
           src="${
-            escapeAttr(
-              site.photo || fallback
-            )
+            site.photo ||
+            "https://images.unsplash.com/photo-1519501025264-65ba15a82390?w=300"
           }"
           onerror="
-            this.src='${fallback}'
+            this.src='https://images.unsplash.com/photo-1519501025264-65ba15a82390?w=300'
           "
         >
 
@@ -2060,20 +2170,25 @@ function renderSites(){
           <div class="siteMeta">
 
             <span class="badge">
+
               ${
                 site.width || 0
               }
               ×
               ${
                 site.height || 0
-              } ft
+              }
+              ft
+
             </span>
 
             <span class="badge">
+
               ${escapeHtml(
                 site.illumination ||
                 "-"
               )}
+
             </span>
 
           </div>
@@ -2084,7 +2199,9 @@ function renderSites(){
           class="removeBtn"
           onclick="
             event.stopPropagation();
-            removeSelected('${escapeAttr(site.id)}')
+            removeSelected(
+              '${escapeAttr(site.id)}'
+            )
           "
         >
           ×
@@ -2094,39 +2211,45 @@ function renderSites(){
 
 
       card.onclick =
-        function(){
+        () => {
+
+          const lat =
+            Number(site.latitude);
+
+          const lng =
+            Number(site.longitude);
+
 
           if(
-            Number.isFinite(
-              Number(site.latitude)
-            ) &&
-            Number.isFinite(
-              Number(site.longitude)
-            )
+            Number.isFinite(lat) &&
+            Number.isFinite(lng)
           ){
 
-            map.flyTo(
-              [
-                Number(site.latitude),
-                Number(site.longitude)
-              ],
-              17,
+            map.setView(
+              [lat,lng],
+              16,
               {
-                duration:1
+                animate:true
               }
             );
 
 
-            setTimeout(
-              () => {
+            if(
+              markers[site.id]
+            ){
 
-                if(markers[site.id])
-                  markers[site.id]
-                  .openPopup();
+              setTimeout(
+                () => {
 
-              },
-              500
-            );
+                  markers[
+                    site.id
+                  ].openPopup();
+
+                },
+                400
+              );
+
+            }
 
           }
 
@@ -2143,9 +2266,9 @@ function renderSites(){
 }
 
 
-/* =========================================================
-   REMOVE SELECTED
-========================================================= */
+/* =====================================================
+   REMOVE
+===================================================== */
 
 function removeSelected(id){
 
@@ -2158,15 +2281,16 @@ function removeSelected(id){
 
   renderSites();
 
+
   showToast(
     "Site removed from selection"
   );
 }
 
 
-/* =========================================================
+/* =====================================================
    CLEAR
-========================================================= */
+===================================================== */
 
 function clearSelected(){
 
@@ -2180,16 +2304,19 @@ function clearSelected(){
 }
 
 
-/* =========================================================
+/* =====================================================
    SEARCH LOCATION
-========================================================= */
+===================================================== */
 
 async function searchLocation(){
 
   const query =
-    getValue(
-      "searchLocation"
-    );
+    document
+      .getElementById(
+        "searchLocation"
+      )
+      .value
+      .trim();
 
 
   if(!query){
@@ -2226,7 +2353,7 @@ async function searchLocation(){
     if(!results.length){
 
       showToast(
-        "❌ Location not found"
+        "Location not found"
       );
 
       return;
@@ -2244,30 +2371,36 @@ async function searchLocation(){
       Number(result.lon);
 
 
-    map.flyTo(
+    map.setView(
       [lat,lon],
       15,
       {
-        duration:1.2
+        animate:true
       }
     );
 
 
-    document.getElementById(
-      "latitude"
-    ).value =
+    document
+      .getElementById(
+        "latitude"
+      )
+      .value =
       lat.toFixed(6);
 
 
-    document.getElementById(
-      "longitude"
-    ).value =
+    document
+      .getElementById(
+        "longitude"
+      )
+      .value =
       lon.toFixed(6);
 
 
-    document.getElementById(
-      "location"
-    ).value =
+    document
+      .getElementById(
+        "location"
+      )
+      .value =
       result.display_name;
 
 
@@ -2288,26 +2421,29 @@ async function searchLocation(){
 }
 
 
-/* =========================================================
-   EXCEL EXPORT
-========================================================= */
+/* =====================================================
+   EXCEL
+===================================================== */
 
 function exportExcel(){
 
   if(!selectedSites.length){
 
     showToast(
-      "⚠️ Select sites first"
+      "Select sites first"
     );
 
     return;
   }
 
 
-  if(typeof XLSX==="undefined"){
+  if(
+    typeof XLSX ===
+    "undefined"
+  ){
 
     showToast(
-      "❌ Excel library unavailable"
+      "Excel library not loaded"
     );
 
     return;
@@ -2351,9 +2487,6 @@ function exportExcel(){
         "Status":
           s.status || "",
 
-        "Photo":
-          s.photo || "",
-
         "Remarks":
           s.remarks || ""
 
@@ -2371,25 +2504,6 @@ function exportExcel(){
     );
 
 
-  worksheet["!cols"] = [
-
-    {wch:7},
-    {wch:30},
-    {wch:45},
-    {wch:14},
-    {wch:14},
-    {wch:12},
-    {wch:12},
-    {wch:18},
-    {wch:15},
-    {wch:15},
-    {wch:15},
-    {wch:55},
-    {wch:45}
-
-  ];
-
-
   XLSX.utils.book_append_sheet(
     workbook,
     worksheet,
@@ -2397,107 +2511,28 @@ function exportExcel(){
   );
 
 
-  const name =
-    getValue(
-      "campaignName"
-    ) ||
-    "My_Vision_OOH";
-
-
   XLSX.writeFile(
     workbook,
-    name.replace(
-      /[^a-z0-9]/gi,
-      "_"
-    ) +
-    "_Sites.xlsx"
+    "My_Vision_OOH_Sites.xlsx"
   );
 
 
   showToast(
-    "📊 Excel exported successfully"
+    "📊 Excel exported"
   );
 }
 
 
-/* =========================================================
-   IMAGE -> DATA URI
-   Helps PPT export with remote photos
-========================================================= */
-
-async function imageToDataUri(url){
-
-  if(!url)
-    return null;
-
-
-  try{
-
-    const response =
-      await fetch(
-        url,
-        {
-          mode:"cors"
-        }
-      );
-
-
-    if(!response.ok)
-      return null;
-
-
-    const blob =
-      await response.blob();
-
-
-    return await new Promise(
-      resolve => {
-
-        const reader =
-          new FileReader();
-
-
-        reader.onloadend =
-          () => resolve(
-            reader.result
-          );
-
-
-        reader.onerror =
-          () => resolve(null);
-
-
-        reader.readAsDataURL(
-          blob
-        );
-
-      }
-    );
-
-  }
-  catch(error){
-
-    console.warn(
-      "Image could not be loaded:",
-      url
-    );
-
-    return null;
-
-  }
-}
-
-
-/* =========================================================
-   PPT EXPORT
-========================================================= */
+/* =====================================================
+   PPT
+===================================================== */
 
 async function exportPPT(){
 
   if(!selectedSites.length){
 
     showToast(
-      "⚠️ Select sites first"
+      "Select sites first"
     );
 
     return;
@@ -2510,7 +2545,7 @@ async function exportPPT(){
   ){
 
     showToast(
-      "❌ PPT library unavailable"
+      "❌ PPT library not loaded"
     );
 
     return;
@@ -2519,11 +2554,6 @@ async function exportPPT(){
 
   try{
 
-    showToast(
-      "⏳ Preparing PowerPoint..."
-    );
-
-
     const pptx =
       new PptxGenJS();
 
@@ -2531,81 +2561,85 @@ async function exportPPT(){
     pptx.layout =
       "LAYOUT_WIDE";
 
+
     pptx.author =
       "My Vision OOH";
 
-    pptx.company =
-      "My Vision OOH";
 
     pptx.subject =
-      "Outdoor Advertising Site Proposal";
-
-    pptx.title =
-      getValue(
-        "campaignName"
-      ) ||
       "OOH Site Proposal";
 
 
-    /* =====================================================
-       COVER
-    ===================================================== */
+    pptx.title =
+      document
+        .getElementById(
+          "campaignName"
+        )
+        .value ||
+      "OOH Site Proposal";
+
+
+    /* COVER */
 
     let slide =
       pptx.addSlide();
 
 
     slide.background = {
-      color:"F4F8FC"
+      color:"071525"
     };
-
-
-    slide.addShape(
-      pptx.ShapeType.rect,
-      {
-        x:0,
-        y:0,
-        w:13.333,
-        h:1.15,
-        fill:{
-          color:"087CF5"
-        },
-        line:{
-          color:"087CF5"
-        }
-      }
-    );
 
 
     slide.addText(
       "MY VISION OOH",
       {
-        x:.65,
-        y:1.65,
-        w:7,
+        x:.7,
+        y:1.3,
+        w:11,
         h:.6,
-        fontSize:32,
+
+        fontSize:30,
+
         bold:true,
-        color:"087CF5",
-        margin:0
+
+        color:"FFFFFF"
       }
     );
 
 
     slide.addText(
-      getValue(
-        "campaignName"
-      ) ||
-      "Outdoor Advertising Site Proposal",
+      "Professional Outdoor Advertising Site Proposal",
       {
-        x:.65,
-        y:2.45,
+        x:.7,
+        y:2.05,
         w:10,
-        h:.7,
+        h:.5,
+
+        fontSize:18,
+
+        color:"25D8FF"
+      }
+    );
+
+
+    slide.addText(
+      document
+        .getElementById(
+          "campaignName"
+        )
+        .value ||
+      "OOH Campaign",
+      {
+        x:.7,
+        y:2.8,
+        w:10,
+        h:.5,
+
         fontSize:25,
+
         bold:true,
-        color:"142033",
-        margin:0
+
+        color:"FFFFFF"
       }
     );
 
@@ -2613,269 +2647,170 @@ async function exportPPT(){
     slide.addText(
       `${selectedSites.length} Selected OOH Sites`,
       {
-        x:.65,
-        y:3.35,
-        w:6,
+        x:.7,
+        y:3.5,
+        w:7,
         h:.4,
-        fontSize:17,
-        color:"718096",
-        margin:0
+
+        fontSize:14,
+
+        color:"8EA5B9"
       }
     );
 
 
-    slide.addText(
-      "Professional Outdoor Advertising Site Planning",
-      {
-        x:.65,
-        y:4.0,
-        w:8,
-        h:.35,
-        fontSize:12,
-        color:"8a98aa",
-        margin:0
-      }
-    );
+    /* SITE SLIDES */
+
+    selectedSites.forEach(
+      (site,index) => {
+
+        slide =
+          pptx.addSlide();
 
 
-    slide.addText(
-      "MY VISION OOH",
-      {
-        x:.65,
-        y:6.85,
-        w:3,
-        h:.25,
-        fontSize:9,
-        bold:true,
-        color:"087CF5",
-        margin:0
-      }
-    );
+        slide.background = {
+          color:"FFFFFF"
+        };
 
 
-    /* =====================================================
-       SITE SLIDES
-    ===================================================== */
+        slide.addText(
+          `OOH SITE ${index+1}`,
+          {
+            x:.5,
+            y:.35,
+            w:3,
+            h:.3,
 
-    for(
-      let index=0;
-      index<selectedSites.length;
-      index++
-    ){
+            fontSize:10,
 
-      const site =
-        selectedSites[index];
+            bold:true,
 
-
-      slide =
-        pptx.addSlide();
-
-
-      slide.background = {
-        color:"FFFFFF"
-      };
-
-
-      slide.addText(
-        `OOH SITE ${index+1}`,
-        {
-          x:.55,
-          y:.35,
-          w:3,
-          h:.3,
-          fontSize:10,
-          bold:true,
-          color:"087CF5",
-          margin:0
-        }
-      );
-
-
-      slide.addText(
-        site.site_name ||
-        "OOH Site",
-        {
-          x:.55,
-          y:.72,
-          w:6.5,
-          h:.55,
-          fontSize:23,
-          bold:true,
-          color:"142033",
-          margin:0
-        }
-      );
-
-
-      slide.addText(
-        site.location || "",
-        {
-          x:.55,
-          y:1.32,
-          w:6.5,
-          h:.45,
-          fontSize:11,
-          color:"718096",
-          margin:0
-        }
-      );
-
-
-      slide.addShape(
-        pptx.ShapeType.roundRect,
-        {
-          x:.55,
-          y:1.95,
-          w:5.65,
-          h:3.55,
-          rectRadius:.08,
-          fill:{
-            color:"F5F9FD"
-          },
-          line:{
-            color:"E0EAF3"
+            color:"008FF0"
           }
-        }
-      );
+        );
 
 
-      const details =
-`DIMENSIONS
-${site.width || 0} × ${site.height || 0} ft
+        slide.addText(
+          site.site_name ||
+          "OOH Site",
+          {
+            x:.5,
+            y:.75,
+            w:7,
+            h:.55,
 
-MEDIA TYPE
-${site.media_type || "-"}
+            fontSize:22,
 
-ILLUMINATION
-${site.illumination || "-"}
+            bold:true,
 
-RATE
-₹${site.rate || 0}
-
-STATUS
-${site.status || "-"}
-
-COORDINATES
-${site.latitude || "-"}, ${site.longitude || "-"}`;
+            color:"172033"
+          }
+        );
 
 
-      slide.addText(
-        details,
-        {
-          x:.85,
-          y:2.25,
-          w:5,
-          h:2.9,
-          fontSize:12,
-          color:"334155",
-          breakLine:false,
-          margin:0.03,
-          valign:"top"
-        }
-      );
+        slide.addText(
+          site.location || "",
+          {
+            x:.5,
+            y:1.35,
+            w:7,
+            h:.5,
+
+            fontSize:11,
+
+            color:"718096"
+          }
+        );
 
 
-      /* PHOTO */
+        const details =
 
-      if(site.photo){
+`Dimensions: ${site.width || 0} × ${site.height || 0} ft
 
-        const imageData =
-          await imageToDataUri(
-            site.photo
-          );
+Media Type: ${site.media_type || "-"}
+
+Illumination: ${site.illumination || "-"}
+
+Rate: ₹${site.rate || 0}
+
+Status: ${site.status || "-"}
+
+Coordinates:
+${site.latitude || "-"}, ${site.longitude || "-"}
+
+Remarks:
+${site.remarks || "-"}`;
 
 
-        if(imageData){
+        slide.addText(
+          details,
+          {
+            x:.6,
+            y:2,
+            w:5.5,
+            h:3.8,
+
+            fontSize:13,
+
+            color:"334155",
+
+            margin:.05
+          }
+        );
+
+
+        /*
+          Photo export.
+
+          Only use valid remote image URLs.
+        */
+
+        if(site.photo){
 
           slide.addImage({
-            data:imageData,
-            x:6.75,
-            y:1.05,
-            w:5.95,
-            h:4.45,
-            sizingContain:true
+
+            path:site.photo,
+
+            x:7.1,
+            y:1.1,
+            w:5.4,
+            h:4.1
+
           });
 
         }
-        else{
 
-          slide.addText(
-            "Site Photo",
-            {
-              x:7,
-              y:3,
-              w:5,
-              h:.4,
-              fontSize:16,
-              bold:true,
-              color:"94a3b8",
-              align:"center"
-            }
-          );
-
-        }
-
-      }
-
-
-      if(site.remarks){
 
         slide.addText(
-          "Remarks: " +
-          site.remarks,
+          "MY VISION OOH",
           {
-            x:.65,
-            y:5.75,
-            w:11.5,
-            h:.5,
-            fontSize:11,
-            color:"64748b",
-            margin:0
+            x:.6,
+            y:6.8,
+            w:3,
+            h:.25,
+
+            fontSize:9,
+
+            bold:true,
+
+            color:"008FF0"
           }
         );
 
       }
-
-
-      slide.addText(
-        "MY VISION OOH",
-        {
-          x:.65,
-          y:6.85,
-          w:3,
-          h:.25,
-          fontSize:9,
-          bold:true,
-          color:"087CF5",
-          margin:0
-        }
-      );
-
-    }
-
-
-    const fileName =
-      (
-        getValue(
-          "campaignName"
-        ) ||
-        "My_Vision_OOH"
-      )
-      .replace(
-        /[^a-z0-9]/gi,
-        "_"
-      );
+    );
 
 
     await pptx.writeFile({
+
       fileName:
-        fileName +
-        "_Proposal.pptx"
+        "My_Vision_OOH_Proposal.pptx"
+
     });
 
 
     showToast(
-      "📑 PowerPoint exported successfully"
+      "📑 PPT exported successfully"
     );
 
   }
@@ -2889,17 +2824,17 @@ ${site.latitude || "-"}, ${site.longitude || "-"}`;
 
     alert(
       "PPT export failed.\n\n" +
-      "If a site photo is causing the problem, " +
-      "try exporting without that photo URL."
+      "If the PPT contains online photos, " +
+      "try exporting without the photo URL."
     );
 
   }
 }
 
 
-/* =========================================================
+/* =====================================================
    CLEAR FORM
-========================================================= */
+===================================================== */
 
 function clearForm(){
 
@@ -2914,63 +2849,67 @@ function clearForm(){
     "rate",
     "photo",
     "remarks"
-  ]
-  .forEach(
+  ].forEach(
     id => {
 
-      const el =
-        document.getElementById(
-          id
-        );
-
-      if(el)
-        el.value = "";
+      document
+        .getElementById(id)
+        .value = "";
 
     }
   );
 
 
-  document.getElementById(
-    "illumination"
-  ).value = "";
+  document
+    .getElementById(
+      "illumination"
+    )
+    .value = "";
 
 
-  document.getElementById(
-    "status"
-  ).value =
+  document
+    .getElementById(
+      "status"
+    )
+    .value =
     "Available";
 }
 
 
-/* =========================================================
+/* =====================================================
    STATS
-========================================================= */
+===================================================== */
 
 function updateStats(){
 
-  document.getElementById(
-    "totalCount"
-  ).textContent =
+  document
+    .getElementById(
+      "totalCount"
+    )
+    .textContent =
     sites.length;
 
 
-  document.getElementById(
-    "selectedCount"
-  ).textContent =
+  document
+    .getElementById(
+      "selectedCount"
+    )
+    .textContent =
     selectedSites.length;
 
 
-  document.getElementById(
-    "cloudCount"
-  ).textContent =
+  document
+    .getElementById(
+      "cloudCount"
+    )
+    .textContent =
     sites.length;
-
 }
 
 
-/* =========================================================
+/* =====================================================
    TOAST
-========================================================= */
+===================================================== */
 
 let toastTimer;
 
@@ -3008,28 +2947,12 @@ function showToast(message){
       },
       3000
     );
-
 }
 
 
-/* =========================================================
-   HELPERS
-========================================================= */
-
-function getValue(id){
-
-  const el =
-    document.getElementById(
-      id
-    );
-
-
-  return el
-    ? el.value.trim()
-    : "";
-
-}
-
+/* =====================================================
+   SECURITY
+===================================================== */
 
 function escapeHtml(value){
 
@@ -3056,58 +2979,81 @@ function escapeHtml(value){
     "'",
     "&#039;"
   );
-
 }
 
 
 function escapeAttr(value){
 
-  return escapeHtml(
-    value
-  );
-
+  return escapeHtml(value);
 }
 
 
-/* =========================================================
-   INITIAL
-========================================================= */
+/* =====================================================
+   KEYBOARD SHORTCUT
+===================================================== */
+
+document.addEventListener(
+  "keydown",
+  function(e){
+
+    /*
+      Ctrl + S
+      saves selected sites
+    */
+
+    if(
+      e.ctrlKey &&
+      e.key.toLowerCase() === "s"
+    ){
+
+      e.preventDefault();
+
+      saveCurrentSite();
+
+    }
+
+  }
+);
+
+
+/* =====================================================
+   START
+===================================================== */
 
 updateStats();
 
 
 window.addEventListener(
   "load",
-  () => {
+  function(){
 
     setTimeout(
       loadSavedSites,
-      800
+      700
     );
 
   }
 );
 
 
-/* =========================================================
-   SUPABASE AUTH LISTENER
-========================================================= */
+/* =====================================================
+   AUTH LISTENER
+===================================================== */
 
 supabaseClient
-.auth
-.onAuthStateChange(
-  () => {
+  .auth
+  .onAuthStateChange(
+    function(){
 
-    setTimeout(
-      loadSavedSites,
-      500
-    );
+      setTimeout(
+        loadSavedSites,
+        500
+      );
 
-  }
-);
+    }
+  );
 
 </script>
 
 </body>
 </html>
-```
