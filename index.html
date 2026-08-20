@@ -1,62 +1,123 @@
+```html
 <!DOCTYPE html>
 <html lang="en">
 <head>
 <meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="viewport" content="width=device-width,initial-scale=1.0">
 
-<title>My Vision OOH — Professional Site Planner</title>
+<title>My Vision OOH — Smart Site Planner</title>
 
-<link
-  rel="stylesheet"
-  href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css"
-/>
+<link rel="stylesheet"
+href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css"/>
 
 <style>
+
+/* =========================================================
+   ROOT
+========================================================= */
+
 :root{
-  --bg:#eef3f8;
-  --panel:#ffffff;
-  --panel2:#f7f9fc;
-  --text:#172033;
+  --bg:#eef4fb;
+  --card:rgba(255,255,255,.86);
+  --cardSolid:#ffffff;
+  --text:#142033;
   --muted:#718096;
-  --primary:#087cf5;
-  --primary2:#00c6ff;
-  --green:#18a86b;
-  --orange:#ff9d2e;
+  --blue:#087cf5;
+  --cyan:#13d8ff;
+  --purple:#725cff;
+  --green:#16b978;
   --red:#ef476f;
-  --border:#dce5ef;
-  --shadow:0 12px 35px rgba(38,62,90,.12);
-  --shadow2:0 5px 18px rgba(38,62,90,.10);
+  --orange:#ff9f2d;
+  --border:rgba(150,170,195,.25);
+  --shadow:0 18px 50px rgba(28,53,82,.13);
+  --shadowSmall:0 7px 22px rgba(28,53,82,.10);
 }
 
 *{
   box-sizing:border-box;
 }
 
-body{
+html,body{
   margin:0;
-  font-family:Inter,Segoe UI,Arial,sans-serif;
-  background:
-    radial-gradient(circle at 10% 0%,rgba(0,198,255,.10),transparent 30%),
-    radial-gradient(circle at 90% 10%,rgba(8,124,245,.10),transparent 30%),
-    var(--bg);
+  width:100%;
+  height:100%;
+  font-family:
+    Inter,
+    Segoe UI,
+    Roboto,
+    Arial,
+    sans-serif;
   color:var(--text);
-  overflow:hidden;
 }
 
-/* HEADER */
+body{
+  overflow:hidden;
+  background:
+    radial-gradient(circle at 10% 10%,rgba(19,216,255,.16),transparent 28%),
+    radial-gradient(circle at 90% 0%,rgba(114,92,255,.14),transparent 30%),
+    linear-gradient(135deg,#edf5fc,#f7faff);
+}
+
+/* =========================================================
+   ANIMATED BACKGROUND
+========================================================= */
+
+body:before,
+body:after{
+  content:"";
+  position:fixed;
+  width:420px;
+  height:420px;
+  border-radius:50%;
+  filter:blur(80px);
+  pointer-events:none;
+  z-index:-1;
+  animation:floatOrb 12s ease-in-out infinite alternate;
+}
+
+body:before{
+  background:rgba(0,198,255,.13);
+  left:-150px;
+  top:100px;
+}
+
+body:after{
+  background:rgba(114,92,255,.10);
+  right:-150px;
+  bottom:-100px;
+  animation-delay:3s;
+}
+
+@keyframes floatOrb{
+  from{
+    transform:translate(0,0) scale(1);
+  }
+  to{
+    transform:translate(50px,-35px) scale(1.15);
+  }
+}
+
+/* =========================================================
+   HEADER
+========================================================= */
 
 .topbar{
   height:72px;
-  background:rgba(255,255,255,.94);
-  backdrop-filter:blur(16px);
-  border-bottom:1px solid var(--border);
   display:flex;
   align-items:center;
   justify-content:space-between;
-  padding:0 22px;
+  padding:0 20px;
   position:relative;
-  z-index:2000;
-  box-shadow:0 3px 18px rgba(30,60,90,.08);
+  z-index:3000;
+
+  background:rgba(255,255,255,.80);
+  backdrop-filter:blur(22px);
+  -webkit-backdrop-filter:blur(22px);
+
+  border-bottom:1px solid rgba(150,170,195,.25);
+
+  box-shadow:
+    0 8px 30px rgba(31,55,80,.09);
 }
 
 .brand{
@@ -66,80 +127,133 @@ body{
 }
 
 .logoBox{
-  width:42px;
-  height:42px;
-  border-radius:13px;
-  background:linear-gradient(135deg,#087cf5,#00d4ff);
+  width:44px;
+  height:44px;
+  border-radius:14px;
+
   display:flex;
   align-items:center;
   justify-content:center;
-  color:white;
-  font-weight:900;
-  box-shadow:0 7px 18px rgba(8,124,245,.30);
+
+  font-size:13px;
+  font-weight:1000;
+  color:#fff;
+
+  background:
+    linear-gradient(135deg,
+      #087cf5,
+      #13d8ff 55%,
+      #725cff);
+
+  box-shadow:
+    0 9px 25px rgba(8,124,245,.30);
+
+  animation:logoFloat 4s ease-in-out infinite;
+}
+
+@keyframes logoFloat{
+  0%,100%{
+    transform:translateY(0) rotate(0deg);
+  }
+  50%{
+    transform:translateY(-3px) rotate(2deg);
+  }
 }
 
 .brandText{
   font-size:21px;
-  font-weight:900;
-  letter-spacing:-.6px;
+  font-weight:1000;
+  letter-spacing:-.8px;
 }
 
 .brandText span{
-  color:#00aeea;
+  color:#08bfe8;
 }
 
 .tagline{
-  color:#718096;
-  font-size:13px;
-  margin-left:4px;
+  color:var(--muted);
+  font-size:11px;
+  margin-top:2px;
 }
 
 .headerActions{
   display:flex;
-  gap:9px;
+  gap:8px;
   align-items:center;
 }
 
+/* =========================================================
+   BUTTONS
+========================================================= */
+
 .btn{
   border:0;
-  border-radius:11px;
-  padding:11px 16px;
-  font-weight:800;
+  border-radius:12px;
+  padding:10px 14px;
+
+  font-weight:850;
+  font-size:12px;
+
   cursor:pointer;
-  transition:.2s;
+
   display:flex;
   align-items:center;
+  justify-content:center;
   gap:7px;
+
+  transition:
+    transform .2s ease,
+    box-shadow .2s ease,
+    filter .2s ease;
+
+  white-space:nowrap;
 }
 
 .btn:hover{
   transform:translateY(-2px);
-  box-shadow:0 8px 18px rgba(0,0,0,.12);
+  filter:brightness(1.03);
+  box-shadow:0 10px 24px rgba(0,0,0,.13);
+}
+
+.btn:active{
+  transform:translateY(0) scale(.98);
 }
 
 .btnBlue{
-  background:linear-gradient(135deg,#087cf5,#00bdf5);
   color:white;
+  background:
+    linear-gradient(135deg,#087cf5,#00c9f5);
+  box-shadow:0 7px 20px rgba(8,124,245,.20);
 }
 
 .btnGreen{
-  background:linear-gradient(135deg,#13a765,#27c889);
   color:white;
+  background:
+    linear-gradient(135deg,#0da96d,#20d28c);
+  box-shadow:0 7px 20px rgba(22,185,120,.18);
+}
+
+.btnPurple{
+  color:white;
+  background:
+    linear-gradient(135deg,#6552ef,#8a76ff);
 }
 
 .btnLight{
-  background:white;
   color:#334155;
+  background:rgba(255,255,255,.8);
   border:1px solid var(--border);
 }
 
 .btnRed{
-  background:#fff0f3;
   color:#e6395d;
-  border:1px solid #ffd2dc;
+  background:#fff1f4;
+  border:1px solid #ffd4dd;
 }
 
-/* LAYOUT */
+/* =========================================================
+   MAIN LAYOUT
+========================================================= */
 
 .app{
   height:calc(100vh - 72px);
@@ -147,14 +261,23 @@ body{
   grid-template-columns:390px 1fr;
 }
 
-/* SIDEBAR */
+/* =========================================================
+   SIDEBAR
+========================================================= */
 
 .sidebar{
-  background:rgba(255,255,255,.94);
-  border-right:1px solid var(--border);
+  padding:15px;
   overflow-y:auto;
-  padding:17px;
-  z-index:1000;
+  z-index:1500;
+
+  background:
+    linear-gradient(
+      180deg,
+      rgba(248,252,255,.94),
+      rgba(237,245,252,.88)
+    );
+
+  border-right:1px solid rgba(150,170,195,.20);
 }
 
 .sidebar::-webkit-scrollbar{
@@ -162,232 +285,182 @@ body{
 }
 
 .sidebar::-webkit-scrollbar-thumb{
-  background:#cbd5e1;
-  border-radius:10px;
+  background:#c7d5e5;
+  border-radius:20px;
 }
 
 .section{
-  background:var(--panel);
-  border:1px solid var(--border);
+  padding:15px;
+  margin-bottom:13px;
+
+  background:var(--card);
+
+  border:1px solid rgba(255,255,255,.8);
   border-radius:18px;
-  padding:16px;
-  margin-bottom:14px;
-  box-shadow:var(--shadow2);
+
+  box-shadow:var(--shadowSmall);
+
+  backdrop-filter:blur(16px);
+  -webkit-backdrop-filter:blur(16px);
+
+  animation:sectionIn .45s ease both;
+}
+
+.section:nth-child(2){
+  animation-delay:.06s;
+}
+
+.section:nth-child(3){
+  animation-delay:.12s;
+}
+
+.section:nth-child(4){
+  animation-delay:.18s;
+}
+
+@keyframes sectionIn{
+  from{
+    opacity:0;
+    transform:translateY(10px);
+  }
+  to{
+    opacity:1;
+    transform:translateY(0);
+  }
 }
 
 .sectionTitle{
-  font-size:13px;
-  font-weight:900;
-  letter-spacing:.8px;
-  text-transform:uppercase;
   color:#8090a5;
-  margin-bottom:12px;
+  font-size:10px;
+  font-weight:950;
+  letter-spacing:1px;
+  text-transform:uppercase;
+  margin-bottom:10px;
 }
+
+/* =========================================================
+   INPUTS
+========================================================= */
 
 .input{
   width:100%;
-  border:1px solid var(--border);
-  background:#f8fafc;
-  padding:12px 13px;
+  padding:11px 12px;
+
   border-radius:11px;
-  outline:none;
-  font-size:14px;
+  border:1px solid #dce6f0;
+
+  background:rgba(247,250,253,.88);
+
   color:var(--text);
-  transition:.2s;
+  font-size:13px;
+
+  outline:none;
+
+  transition:
+    border-color .2s,
+    box-shadow .2s,
+    transform .2s,
+    background .2s;
+}
+
+.input:hover{
+  border-color:#bfd2e5;
 }
 
 .input:focus{
-  border-color:#36aaf7;
-  box-shadow:0 0 0 4px rgba(8,124,245,.09);
+  border-color:#28aaf5;
+
   background:white;
+
+  box-shadow:
+    0 0 0 4px rgba(8,124,245,.08),
+    0 5px 16px rgba(8,124,245,.07);
+
+  transform:translateY(-1px);
 }
+
+textarea.input{
+  resize:vertical;
+}
+
+/* =========================================================
+   STATS
+========================================================= */
 
 .stats{
   display:grid;
   grid-template-columns:repeat(3,1fr);
-  gap:8px;
+  gap:7px;
 }
 
 .stat{
-  padding:13px 9px;
+  padding:12px 7px;
   border-radius:13px;
-  background:linear-gradient(145deg,#f8fbff,#edf4fa);
-  border:1px solid #e1eaf3;
+
+  background:
+    linear-gradient(145deg,
+      rgba(255,255,255,.95),
+      rgba(235,244,252,.85));
+
+  border:1px solid #e0eaf3;
+
   text-align:center;
+
+  transition:.25s;
+}
+
+.stat:hover{
+  transform:translateY(-3px);
+  box-shadow:0 9px 20px rgba(30,60,90,.09);
 }
 
 .statNum{
-  font-size:22px;
-  font-weight:900;
+  font-size:21px;
+  font-weight:1000;
 }
 
 .statLabel{
-  font-size:10px;
-  text-transform:uppercase;
-  color:#8492a6;
-  font-weight:800;
   margin-top:3px;
+  font-size:9px;
+  color:#8492a6;
+  font-weight:850;
+  text-transform:uppercase;
 }
 
-/* SELECTED SITES */
-
-.selectedHeader{
+.cloudStatus{
   display:flex;
   align-items:center;
-  justify-content:space-between;
-  margin-bottom:10px;
-}
+  gap:7px;
 
-.selectedHeader h3{
-  margin:0;
-  font-size:17px;
-}
-
-.siteList{
-  display:flex;
-  flex-direction:column;
-  gap:9px;
-  max-height:430px;
-  overflow-y:auto;
-}
-
-.siteList::-webkit-scrollbar{
-  width:5px;
-}
-
-.siteList::-webkit-scrollbar-thumb{
-  background:#ccd7e4;
-  border-radius:10px;
-}
-
-.siteCard{
-  background:white;
-  border:1px solid #dce5ef;
-  border-radius:14px;
-  padding:8px;
-  display:flex;
-  gap:10px;
-  cursor:pointer;
-  transition:.2s;
-  box-shadow:0 4px 13px rgba(30,60,90,.06);
-}
-
-.siteCard:hover{
-  transform:translateY(-2px);
-  border-color:#69b8fa;
-  box-shadow:0 9px 20px rgba(8,124,245,.12);
-}
-
-.siteThumb{
-  width:66px;
-  height:58px;
-  object-fit:cover;
-  border-radius:9px;
-  background:#e9eef4;
-  flex-shrink:0;
-}
-
-.siteInfo{
-  min-width:0;
-  flex:1;
-}
-
-.siteName{
-  font-size:12px;
-  font-weight:900;
-  white-space:nowrap;
-  overflow:hidden;
-  text-overflow:ellipsis;
-}
-
-.siteLocation{
   font-size:10px;
-  color:#77859a;
-  white-space:nowrap;
-  overflow:hidden;
-  text-overflow:ellipsis;
-  margin-top:4px;
+  font-weight:850;
+  color:#12a96d;
 }
 
-.siteMeta{
-  display:flex;
-  gap:5px;
-  flex-wrap:wrap;
-  margin-top:6px;
-}
+.cloudDot{
+  width:8px;
+  height:8px;
+  border-radius:50%;
+  background:#16c77b;
 
-.badge{
-  padding:3px 6px;
-  border-radius:5px;
-  background:#eef6ff;
-  color:#087cf5;
-  font-size:9px;
-  font-weight:800;
-}
-
-.removeBtn{
-  border:0;
-  background:#fff1f3;
-  color:#e6395d;
-  width:25px;
-  height:25px;
-  border-radius:7px;
-  cursor:pointer;
-  font-weight:900;
-}
-
-/* MAP */
-
-.mapArea{
-  position:relative;
-  padding:12px;
-  background:
-    linear-gradient(135deg,#dfeaf4,#f6f9fc);
-}
-
-.mapFrame{
-  height:100%;
-  border-radius:22px;
-  overflow:hidden;
-  position:relative;
   box-shadow:
-    0 20px 55px rgba(31,55,80,.20),
-    inset 0 0 0 1px rgba(255,255,255,.8);
-  border:1px solid rgba(255,255,255,.9);
+    0 0 0 4px rgba(22,199,123,.12);
+
+  animation:pulseCloud 2s infinite;
 }
 
-#map{
-  width:100%;
-  height:100%;
+@keyframes pulseCloud{
+  0%,100%{
+    box-shadow:0 0 0 3px rgba(22,199,123,.10);
+  }
+  50%{
+    box-shadow:0 0 0 7px rgba(22,199,123,.02);
+  }
 }
 
-/* 3D MAP CONTROL */
-
-.mapTopCard{
-  position:absolute;
-  top:18px;
-  left:20px;
-  z-index:900;
-  background:rgba(255,255,255,.92);
-  backdrop-filter:blur(12px);
-  border:1px solid rgba(255,255,255,.9);
-  border-radius:15px;
-  padding:11px 14px;
-  box-shadow:0 10px 30px rgba(25,55,85,.16);
-}
-
-.mapTopTitle{
-  font-size:12px;
-  font-weight:900;
-}
-
-.mapTopSub{
-  color:#718096;
-  font-size:10px;
-  margin-top:3px;
-}
-
-/* SITE FORM */
+/* =========================================================
+   FORM
+========================================================= */
 
 .formGrid{
   display:grid;
@@ -399,52 +472,454 @@ body{
   grid-column:1/-1;
 }
 
-/* TOAST */
+/* =========================================================
+   SELECTED SITE LIST
+========================================================= */
+
+.selectedHeader{
+  display:flex;
+  justify-content:space-between;
+  align-items:center;
+  margin-bottom:9px;
+}
+
+.selectedHeader h3{
+  margin:0;
+  font-size:16px;
+}
+
+.siteList{
+  display:flex;
+  flex-direction:column;
+  gap:8px;
+
+  max-height:420px;
+  overflow-y:auto;
+}
+
+.siteList::-webkit-scrollbar{
+  width:5px;
+}
+
+.siteList::-webkit-scrollbar-thumb{
+  background:#cbd8e5;
+  border-radius:10px;
+}
+
+.siteCard{
+  position:relative;
+
+  display:flex;
+  gap:9px;
+
+  padding:8px;
+
+  background:
+    linear-gradient(
+      135deg,
+      rgba(255,255,255,.98),
+      rgba(244,249,253,.92)
+    );
+
+  border:1px solid #dce6f0;
+  border-radius:14px;
+
+  cursor:pointer;
+
+  box-shadow:0 4px 13px rgba(30,60,90,.06);
+
+  transition:
+    transform .22s ease,
+    box-shadow .22s ease,
+    border-color .22s ease;
+}
+
+.siteCard:hover{
+  transform:
+    translateY(-3px)
+    scale(1.008);
+
+  border-color:#75c3fb;
+
+  box-shadow:
+    0 13px 28px rgba(8,124,245,.14);
+}
+
+.siteThumb{
+  width:62px;
+  height:57px;
+
+  flex-shrink:0;
+
+  object-fit:cover;
+
+  border-radius:9px;
+
+  background:#e7eef5;
+}
+
+.siteInfo{
+  min-width:0;
+  flex:1;
+}
+
+.siteName{
+  font-size:11px;
+  font-weight:950;
+
+  white-space:nowrap;
+  overflow:hidden;
+  text-overflow:ellipsis;
+}
+
+.siteLocation{
+  margin-top:3px;
+
+  color:#77859a;
+  font-size:9px;
+
+  white-space:nowrap;
+  overflow:hidden;
+  text-overflow:ellipsis;
+}
+
+.siteMeta{
+  display:flex;
+  gap:4px;
+  flex-wrap:wrap;
+  margin-top:5px;
+}
+
+.badge{
+  padding:3px 6px;
+
+  border-radius:5px;
+
+  background:#edf6ff;
+  color:#087cf5;
+
+  font-size:8px;
+  font-weight:900;
+}
+
+.removeBtn{
+  width:24px;
+  height:24px;
+
+  border:0;
+  border-radius:7px;
+
+  background:#fff0f3;
+  color:#e6395d;
+
+  cursor:pointer;
+
+  font-weight:1000;
+
+  transition:.2s;
+}
+
+.removeBtn:hover{
+  transform:scale(1.1) rotate(5deg);
+  background:#ffe0e7;
+}
+
+/* =========================================================
+   MAP AREA
+========================================================= */
+
+.mapArea{
+  position:relative;
+  padding:11px;
+
+  background:
+    radial-gradient(
+      circle at 80% 20%,
+      rgba(0,198,255,.08),
+      transparent 35%
+    ),
+    linear-gradient(135deg,#dce8f3,#f7fafc);
+}
+
+.mapFrame{
+  height:100%;
+  width:100%;
+
+  overflow:hidden;
+
+  position:relative;
+
+  border-radius:23px;
+
+  border:1px solid rgba(255,255,255,.9);
+
+  box-shadow:
+    0 25px 70px rgba(31,55,80,.18),
+    0 5px 20px rgba(31,55,80,.08);
+
+  animation:mapAppear .7s ease both;
+}
+
+@keyframes mapAppear{
+  from{
+    opacity:0;
+    transform:scale(.985);
+  }
+  to{
+    opacity:1;
+    transform:scale(1);
+  }
+}
+
+#map{
+  width:100%;
+  height:100%;
+}
+
+/* =========================================================
+   MAP TOP GLASS PANEL
+========================================================= */
+
+.mapTopCard{
+  position:absolute;
+
+  top:18px;
+  left:18px;
+
+  z-index:1000;
+
+  padding:12px 15px;
+
+  border-radius:15px;
+
+  background:rgba(255,255,255,.84);
+
+  backdrop-filter:blur(18px);
+
+  border:1px solid rgba(255,255,255,.9);
+
+  box-shadow:
+    0 12px 30px rgba(25,55,85,.16);
+
+  animation:cardFloat 4s ease-in-out infinite;
+}
+
+@keyframes cardFloat{
+  0%,100%{
+    transform:translateY(0);
+  }
+  50%{
+    transform:translateY(-3px);
+  }
+}
+
+.mapTopTitle{
+  font-size:11px;
+  font-weight:1000;
+}
+
+.mapTopSub{
+  margin-top:3px;
+  color:#718096;
+  font-size:9px;
+}
+
+/* =========================================================
+   MAP MODE BUTTON
+========================================================= */
+
+.mapMode{
+  position:absolute;
+
+  top:18px;
+  right:18px;
+
+  z-index:1000;
+
+  display:flex;
+  gap:5px;
+
+  padding:5px;
+
+  border-radius:13px;
+
+  background:rgba(255,255,255,.82);
+  backdrop-filter:blur(16px);
+
+  box-shadow:0 10px 25px rgba(30,60,90,.14);
+
+  border:1px solid rgba(255,255,255,.9);
+}
+
+.mapMode button{
+  border:0;
+  border-radius:9px;
+
+  padding:7px 10px;
+
+  font-size:10px;
+  font-weight:850;
+
+  cursor:pointer;
+
+  background:transparent;
+  color:#64748b;
+
+  transition:.2s;
+}
+
+.mapMode button:hover{
+  background:#eef6ff;
+  color:#087cf5;
+}
+
+.mapMode button.active{
+  background:#087cf5;
+  color:white;
+
+  box-shadow:0 5px 13px rgba(8,124,245,.22);
+}
+
+/* =========================================================
+   CUSTOM MARKERS
+========================================================= */
+
+.customMarkerWrap{
+  position:relative;
+}
+
+.customMarker{
+  width:34px;
+  height:34px;
+
+  border-radius:50% 50% 50% 0;
+
+  transform:rotate(-45deg);
+
+  background:
+    linear-gradient(
+      135deg,
+      #087cf5,
+      #00d9ff
+    );
+
+  border:3px solid white;
+
+  box-shadow:
+    0 7px 18px rgba(8,124,245,.35);
+
+  animation:markerPop .35s ease both;
+}
+
+.customMarker:after{
+  content:"";
+
+  position:absolute;
+
+  width:9px;
+  height:9px;
+
+  left:10px;
+  top:10px;
+
+  border-radius:50%;
+
+  background:white;
+}
+
+@keyframes markerPop{
+  from{
+    opacity:0;
+    transform:
+      rotate(-45deg)
+      scale(.3);
+  }
+  to{
+    opacity:1;
+    transform:
+      rotate(-45deg)
+      scale(1);
+  }
+}
+
+/* =========================================================
+   TOAST
+========================================================= */
 
 #toast{
   position:fixed;
-  right:25px;
-  bottom:25px;
-  z-index:9999;
-  background:#172033;
+
+  right:24px;
+  bottom:24px;
+
+  z-index:99999;
+
+  min-width:220px;
+
+  padding:13px 17px;
+
+  border-radius:13px;
+
   color:white;
-  padding:13px 18px;
-  border-radius:12px;
-  box-shadow:0 15px 35px rgba(0,0,0,.22);
-  transform:translateY(100px);
+
+  background:
+    linear-gradient(135deg,#142033,#253651);
+
+  box-shadow:
+    0 18px 40px rgba(0,0,0,.22);
+
+  font-size:12px;
+  font-weight:800;
+
+  transform:
+    translateY(30px)
+    scale(.96);
+
   opacity:0;
+
+  pointer-events:none;
+
   transition:.3s;
-  font-size:13px;
-  font-weight:700;
 }
 
 #toast.show{
-  transform:translateY(0);
+  transform:
+    translateY(0)
+    scale(1);
+
   opacity:1;
 }
 
-/* CLOUD */
+/* =========================================================
+   LEAFLET
+========================================================= */
 
-.cloudStatus{
-  display:flex;
-  align-items:center;
-  gap:7px;
-  font-size:11px;
-  font-weight:800;
-  color:#18a86b;
+.leaflet-control-zoom{
+  border:0!important;
+  box-shadow:0 8px 20px rgba(20,40,70,.16)!important;
 }
 
-.cloudDot{
-  width:8px;
-  height:8px;
-  background:#18c77d;
-  border-radius:50%;
-  box-shadow:0 0 0 4px rgba(24,199,125,.12);
+.leaflet-control-zoom a{
+  border:0!important;
+  background:rgba(255,255,255,.90)!important;
+  backdrop-filter:blur(10px);
+  color:#172033!important;
 }
 
-/* RESPONSIVE */
+.leaflet-popup-content-wrapper{
+  border-radius:15px!important;
+  box-shadow:0 15px 35px rgba(20,40,70,.20)!important;
+}
 
-@media(max-width:900px){
+.leaflet-popup-content{
+  margin:13px!important;
+}
+
+/* =========================================================
+   RESPONSIVE
+========================================================= */
+
+@media(max-width:1000px){
 
   body{
     overflow:auto;
@@ -454,12 +929,17 @@ body{
     height:auto;
     min-height:70px;
     flex-wrap:wrap;
-    padding:10px;
     gap:8px;
+    padding:10px;
   }
 
   .tagline{
     display:none;
+  }
+
+  .headerActions{
+    width:100%;
+    justify-content:flex-end;
   }
 
   .app{
@@ -474,46 +954,56 @@ body{
   }
 
   .mapArea{
-    height:600px;
-  }
-
-  .headerActions{
-    width:100%;
-    justify-content:flex-end;
+    height:650px;
   }
 }
+
 </style>
 </head>
 
 <body>
 
+<!-- =======================================================
+     HEADER
+======================================================= -->
+
 <header class="topbar">
 
   <div class="brand">
-    <div class="logoBox">MV</div>
+
+    <div class="logoBox">
+      MV
+    </div>
 
     <div>
+
       <div class="brandText">
         MY VISION <span>OOH</span>
       </div>
+
       <div class="tagline">
         Professional Outdoor Advertising Site Planner
       </div>
+
     </div>
+
   </div>
 
   <div class="headerActions">
 
-    <button class="btn btnLight" onclick="exportExcel()">
+    <button class="btn btnLight"
+      onclick="exportExcel()">
       📊 Excel
     </button>
 
-    <button class="btn btnBlue" onclick="exportPPT()">
+    <button class="btn btnPurple"
+      onclick="exportPPT()">
       📑 PPT
     </button>
 
-    <button class="btn btnGreen" onclick="saveCurrentSite()">
-      ☁ Save Site
+    <button class="btn btnGreen"
+      onclick="saveCurrentSite()">
+      ☁ Save to Cloud
     </button>
 
   </div>
@@ -523,238 +1013,309 @@ body{
 
 <div class="app">
 
-  <!-- SIDEBAR -->
+<!-- =======================================================
+     SIDEBAR
+======================================================= -->
 
-  <aside class="sidebar">
+<aside class="sidebar">
 
-    <div class="section">
+  <!-- PROJECT -->
 
-      <div class="sectionTitle">
-        Project
+  <div class="section">
+
+    <div class="sectionTitle">
+      Project Dashboard
+    </div>
+
+    <input
+      id="campaignName"
+      class="input"
+      placeholder="Client / Campaign Name">
+
+    <div style="height:11px"></div>
+
+    <div class="stats">
+
+      <div class="stat">
+        <div class="statNum"
+          id="totalCount">0</div>
+        <div class="statLabel">
+          Total
+        </div>
       </div>
+
+      <div class="stat">
+        <div class="statNum"
+          id="selectedCount">0</div>
+        <div class="statLabel">
+          Selected
+        </div>
+      </div>
+
+      <div class="stat">
+        <div class="statNum"
+          id="cloudCount">0</div>
+        <div class="statLabel">
+          Cloud
+        </div>
+      </div>
+
+    </div>
+
+    <div style="height:11px"></div>
+
+    <div class="cloudStatus">
+      <span class="cloudDot"></span>
+      Cloud database connected
+    </div>
+
+  </div>
+
+
+  <!-- ADD SITE -->
+
+  <div class="section">
+
+    <div class="sectionTitle">
+      Add OOH Site
+    </div>
+
+    <div class="formGrid">
 
       <input
-        id="campaignName"
+        id="siteName"
+        class="input formFull"
+        placeholder="Site Name">
+
+      <input
+        id="location"
+        class="input formFull"
+        placeholder="Location">
+
+      <input
+        id="latitude"
         class="input"
-        placeholder="Client / Campaign Name"
-      >
+        placeholder="Latitude">
 
-      <div style="height:12px"></div>
+      <input
+        id="longitude"
+        class="input"
+        placeholder="Longitude">
 
-      <div class="stats">
+      <input
+        id="width"
+        class="input"
+        type="number"
+        placeholder="Width (ft)">
 
-        <div class="stat">
-          <div class="statNum" id="totalCount">0</div>
-          <div class="statLabel">Total</div>
-        </div>
+      <input
+        id="height"
+        class="input"
+        type="number"
+        placeholder="Height (ft)">
 
-        <div class="stat">
-          <div class="statNum" id="selectedCount">0</div>
-          <div class="statLabel">Selected</div>
-        </div>
+      <input
+        id="mediaType"
+        class="input"
+        placeholder="Media Type">
 
-        <div class="stat">
-          <div class="statNum" id="cloudCount">0</div>
-          <div class="statLabel">Cloud</div>
-        </div>
+      <select
+        id="illumination"
+        class="input">
 
+        <option value="">
+          Illumination
+        </option>
+
+        <option value="F-LIT">
+          F-LIT
+        </option>
+
+        <option value="Backlit">
+          Backlit
+        </option>
+
+        <option value="Non-Lit">
+          Non-Lit
+        </option>
+
+        <option value="LED">
+          LED
+        </option>
+
+        <option value="Digital">
+          Digital
+        </option>
+
+      </select>
+
+      <input
+        id="rate"
+        class="input"
+        type="number"
+        placeholder="Rate ₹">
+
+      <select
+        id="status"
+        class="input">
+
+        <option value="Available">
+          Available
+        </option>
+
+        <option value="Booked">
+          Booked
+        </option>
+
+        <option value="Hold">
+          Hold
+        </option>
+
+      </select>
+
+      <input
+        id="photo"
+        class="input formFull"
+        placeholder="Photo URL">
+
+      <textarea
+        id="remarks"
+        class="input formFull"
+        rows="3"
+        placeholder="Remarks"></textarea>
+
+    </div>
+
+    <div style="height:9px"></div>
+
+    <button
+      class="btn btnBlue"
+      style="width:100%"
+      onclick="addSite()">
+
+      📍 Add Site
+
+    </button>
+
+  </div>
+
+
+  <!-- SELECTED SITES -->
+
+  <div class="section">
+
+    <div class="selectedHeader">
+
+      <h3>
+        Selected Sites
+      </h3>
+
+      <button
+        class="btn btnRed"
+        style="padding:7px 10px"
+        onclick="clearSelected()">
+
+        CLEAR
+
+      </button>
+
+    </div>
+
+    <div
+      id="siteList"
+      class="siteList">
+    </div>
+
+  </div>
+
+
+  <!-- SEARCH -->
+
+  <div class="section">
+
+    <div class="sectionTitle">
+      Search Map
+    </div>
+
+    <input
+      id="searchLocation"
+      class="input"
+      placeholder="Search Bandra, Andheri, Mumbai...">
+
+    <div style="height:8px"></div>
+
+    <button
+      class="btn btnBlue"
+      style="width:100%"
+      onclick="searchLocation()">
+
+      🔎 Search Location
+
+    </button>
+
+  </div>
+
+</aside>
+
+
+<!-- =======================================================
+     MAP
+======================================================= -->
+
+<main class="mapArea">
+
+  <div class="mapFrame">
+
+    <div class="mapTopCard">
+
+      <div class="mapTopTitle">
+        🗺️ MY VISION OOH MAP
       </div>
 
-      <div style="height:12px"></div>
-
-      <div class="cloudStatus">
-        <span class="cloudDot"></span>
-        Cloud synced
+      <div class="mapTopSub">
+        Click anywhere to place an OOH site
       </div>
 
     </div>
 
 
-    <!-- SITE FORM -->
-
-    <div class="section">
-
-      <div class="sectionTitle">
-        Add / Edit Site
-      </div>
-
-      <div class="formGrid">
-
-        <input
-          id="siteName"
-          class="input formFull"
-          placeholder="Site Name"
-        >
-
-        <input
-          id="location"
-          class="input formFull"
-          placeholder="Location"
-        >
-
-        <input
-          id="latitude"
-          class="input"
-          placeholder="Latitude"
-        >
-
-        <input
-          id="longitude"
-          class="input"
-          placeholder="Longitude"
-        >
-
-        <input
-          id="width"
-          class="input"
-          type="number"
-          placeholder="Width (ft)"
-        >
-
-        <input
-          id="height"
-          class="input"
-          type="number"
-          placeholder="Height (ft)"
-        >
-
-        <input
-          id="mediaType"
-          class="input"
-          placeholder="Media Type"
-        >
-
-        <select id="illumination" class="input">
-          <option value="">Illumination</option>
-          <option value="F-LIT">F-LIT</option>
-          <option value="Backlit">Backlit</option>
-          <option value="Non-Lit">Non-Lit</option>
-          <option value="LED">LED</option>
-          <option value="Digital">Digital</option>
-        </select>
-
-        <input
-          id="rate"
-          class="input"
-          type="number"
-          placeholder="Rate ₹"
-        >
-
-        <select id="status" class="input">
-          <option value="Available">Available</option>
-          <option value="Booked">Booked</option>
-          <option value="Hold">Hold</option>
-        </select>
-
-        <input
-          id="photo"
-          class="input formFull"
-          placeholder="Photo URL"
-        >
-
-        <textarea
-          id="remarks"
-          class="input formFull"
-          rows="3"
-          placeholder="Remarks"
-        ></textarea>
-
-      </div>
-
-      <div style="height:10px"></div>
+    <div class="mapMode">
 
       <button
-        class="btn btnBlue"
-        style="width:100%;justify-content:center"
-        onclick="addSite()"
-      >
-        📍 Add Site
+        id="standardBtn"
+        class="active"
+        onclick="setMapMode('standard')">
+
+        Standard
+
+      </button>
+
+      <button
+        id="satelliteBtn"
+        onclick="setMapMode('satellite')">
+
+        Satellite
+
       </button>
 
     </div>
 
 
-    <!-- SELECTED -->
+    <div id="map"></div>
 
-    <div class="section">
+  </div>
 
-      <div class="selectedHeader">
-
-        <h3>Selected Sites</h3>
-
-        <button
-          class="btn btnRed"
-          style="padding:7px 10px"
-          onclick="clearSelected()"
-        >
-          CLEAR
-        </button>
-
-      </div>
-
-      <div id="siteList" class="siteList"></div>
-
-    </div>
-
-
-    <!-- SEARCH -->
-
-    <div class="section">
-
-      <div class="sectionTitle">
-        Map Search
-      </div>
-
-      <input
-        id="searchLocation"
-        class="input"
-        placeholder="Search location..."
-      >
-
-      <div style="height:8px"></div>
-
-      <button
-        class="btn btnBlue"
-        style="width:100%;justify-content:center"
-        onclick="searchLocation()"
-      >
-        🔎 Search Location
-      </button>
-
-    </div>
-
-  </aside>
-
-
-  <!-- MAP -->
-
-  <main class="mapArea">
-
-    <div class="mapFrame">
-
-      <div class="mapTopCard">
-
-        <div class="mapTopTitle">
-          🗺️ OOH SITE MAP
-        </div>
-
-        <div class="mapTopSub">
-          Click anywhere on the map to place a site
-        </div>
-
-      </div>
-
-      <div id="map"></div>
-
-    </div>
-
-  </main>
+</main>
 
 </div>
 
 
 <div id="toast"></div>
 
+
+<!-- =======================================================
+     LIBRARIES
+======================================================= -->
 
 <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
 
@@ -772,27 +1333,33 @@ body{
 ========================================================= */
 
 const SUPABASE_URL =
-  "https://fdrdswbrjuigzzmskpru.supabase.co";
+"https://fdrdswbrjuigzzmskpru.supabase.co";
+
 
 /*
-  IMPORTANT:
-  Put your Supabase PUBLISHABLE key below.
+=========================================================
+IMPORTANT
 
-  Do NOT put a service-role/secret key here.
+Replace the value below with your Supabase
+PUBLISHABLE KEY / anon public key.
+
+DO NOT USE service_role.
+=========================================================
 */
 
 const SUPABASE_KEY =
-  "YOUR_SUPABASE_PUBLISHABLE_KEY";
+"YOUR_SUPABASE_PUBLISHABLE_KEY";
+
 
 const supabaseClient =
-  window.supabase.createClient(
-    SUPABASE_URL,
-    SUPABASE_KEY
-  );
+window.supabase.createClient(
+  SUPABASE_URL,
+  SUPABASE_KEY
+);
 
 
 /* =========================================================
-   APP DATA
+   DATA
 ========================================================= */
 
 let sites = [];
@@ -801,12 +1368,16 @@ let markers = {};
 
 let map;
 
+let standardLayer;
+let satelliteLayer;
+
 
 /* =========================================================
    MAP
 ========================================================= */
 
-map = L.map("map", {
+map =
+L.map("map",{
   zoomControl:true,
   preferCanvas:true
 }).setView(
@@ -814,96 +1385,201 @@ map = L.map("map", {
   11
 );
 
+
+/* STANDARD MAP */
+
+standardLayer =
 L.tileLayer(
   "https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png",
   {
     maxZoom:19,
     attribution:
-      '&copy; OpenStreetMap contributors'
+    '&copy; OpenStreetMap contributors'
   }
 ).addTo(map);
 
 
+/* SATELLITE */
+
+satelliteLayer =
+L.tileLayer(
+  "https://server.arcgisonline.com/ArcGIS/rest/services/World_Imagery/MapServer/tile/{z}/{y}/{x}",
+  {
+    maxZoom:19,
+    attribution:
+    "Tiles &copy; Esri"
+  }
+);
+
+
 /* =========================================================
-   MARKER STYLE
+   MAP MODE
+========================================================= */
+
+function setMapMode(mode){
+
+  const standardBtn =
+    document.getElementById("standardBtn");
+
+  const satelliteBtn =
+    document.getElementById("satelliteBtn");
+
+
+  if(mode==="satellite"){
+
+    if(map.hasLayer(standardLayer))
+      map.removeLayer(standardLayer);
+
+    satelliteLayer.addTo(map);
+
+    satelliteBtn.classList.add("active");
+    standardBtn.classList.remove("active");
+
+    showToast("🛰️ Satellite view enabled");
+
+  }else{
+
+    if(map.hasLayer(satelliteLayer))
+      map.removeLayer(satelliteLayer);
+
+    standardLayer.addTo(map);
+
+    standardBtn.classList.add("active");
+    satelliteBtn.classList.remove("active");
+
+    showToast("🗺️ Standard map enabled");
+  }
+}
+
+
+/* =========================================================
+   CREATE MARKER
 ========================================================= */
 
 function createMarker(site){
 
-  const icon = L.divIcon({
+  const icon =
+  L.divIcon({
 
-    className:"custom-marker",
+    className:"customMarkerWrap",
 
     html:`
-      <div style="
-        width:30px;
-        height:30px;
-        border-radius:50% 50% 50% 0;
-        background:linear-gradient(135deg,#087cf5,#00c6ff);
-        transform:rotate(-45deg);
-        border:3px solid white;
-        box-shadow:0 6px 15px rgba(0,0,0,.25);
-      ">
-        <div style="
-          width:8px;
-          height:8px;
-          background:white;
-          border-radius:50%;
-          position:absolute;
-          top:8px;
-          left:8px;
-        "></div>
-      </div>
+      <div class="customMarker"></div>
     `,
 
-    iconSize:[30,30],
-    iconAnchor:[15,30]
+    iconSize:[34,34],
+    iconAnchor:[17,34],
+    popupAnchor:[0,-30]
+
   });
 
+
   const marker =
-    L.marker(
-      [site.latitude,site.longitude],
-      {icon}
-    ).addTo(map);
+  L.marker(
+    [
+      Number(site.latitude),
+      Number(site.longitude)
+    ],
+    {icon}
+  ).addTo(map);
+
 
   marker.bindPopup(`
-    <div style="min-width:220px">
 
-      <b style="font-size:15px">
-        ${escapeHtml(site.site_name || "OOH Site")}
-      </b>
+    <div style="min-width:230px">
 
-      <div style="margin-top:5px;color:#64748b">
-        ${escapeHtml(site.location || "")}
+      <div style="
+        font-size:16px;
+        font-weight:900;
+        color:#142033;
+      ">
+        ${escapeHtml(
+          site.site_name || "OOH Site"
+        )}
       </div>
 
-      <hr>
-
-      <div>
-        📐 ${site.width || 0} × ${site.height || 0} ft
+      <div style="
+        margin-top:5px;
+        color:#718096;
+        font-size:11px;
+      ">
+        ${escapeHtml(
+          site.location || ""
+        )}
       </div>
 
-      <div>
-        💡 ${escapeHtml(site.illumination || "-")}
-      </div>
+      <hr style="
+        border:0;
+        border-top:1px solid #e5edf4;
+      ">
 
-      <div>
-        💰 ₹${site.rate || 0}
+      <div style="
+        line-height:1.8;
+        font-size:11px;
+      ">
+
+        📐
+        <b>
+          ${site.width || 0}
+          ×
+          ${site.height || 0} ft
+        </b>
+
+        <br>
+
+        💡
+        ${escapeHtml(
+          site.illumination || "-"
+        )}
+
+        <br>
+
+        🎞️
+        ${escapeHtml(
+          site.media_type || "-"
+        )}
+
+        <br>
+
+        💰
+        ₹${site.rate || 0}
+
+        <br>
+
+        📌
+        ${escapeHtml(
+          site.status || "-"
+        )}
+
       </div>
 
       ${
         site.photo
         ?
-        `<img src="${escapeAttr(site.photo)}"
-          style="width:100%;margin-top:8px;border-radius:8px">`
+        `
+        <img
+          src="${escapeAttr(site.photo)}"
+          style="
+            width:100%;
+            height:130px;
+            object-fit:cover;
+            border-radius:10px;
+            margin-top:8px;
+          "
+        >
+        `
         :
         ""
       }
 
     </div>
+
   `);
 
-  markers[site.id] = marker;
+
+  markers[site.id] =
+    marker;
+
 
   return marker;
 }
@@ -913,16 +1589,28 @@ function createMarker(site){
    MAP CLICK
 ========================================================= */
 
-map.on("click",function(e){
+map.on(
+  "click",
+  function(e){
 
-  document.getElementById("latitude").value =
-    e.latlng.lat.toFixed(6);
+    document.getElementById(
+      "latitude"
+    ).value =
+      e.latlng.lat.toFixed(6);
 
-  document.getElementById("longitude").value =
-    e.latlng.lng.toFixed(6);
 
-  showToast("📍 Coordinates selected");
-});
+    document.getElementById(
+      "longitude"
+    ).value =
+      e.latlng.lng.toFixed(6);
+
+
+    showToast(
+      "📍 Coordinates selected"
+    );
+
+  }
+);
 
 
 /* =========================================================
@@ -938,67 +1626,81 @@ async function addSite(){
       Date.now() +
       "_" +
       Math.random()
-        .toString(36)
-        .substring(2,8),
+      .toString(36)
+      .substring(2,8),
 
     site_name:
-      document.getElementById("siteName").value.trim(),
+      getValue("siteName"),
 
     location:
-      document.getElementById("location").value.trim(),
+      getValue("location"),
 
     latitude:
       parseFloat(
-        document.getElementById("latitude").value
+        getValue("latitude")
       ),
 
     longitude:
       parseFloat(
-        document.getElementById("longitude").value
+        getValue("longitude")
       ),
 
     width:
       Number(
-        document.getElementById("width").value
+        getValue("width")
       ) || 0,
 
     height:
       Number(
-        document.getElementById("height").value
+        getValue("height")
       ) || 0,
 
     media_type:
-      document.getElementById("mediaType").value,
+      getValue("mediaType"),
 
     illumination:
-      document.getElementById("illumination").value,
+      getValue("illumination"),
 
     rate:
       Number(
-        document.getElementById("rate").value
+        getValue("rate")
       ) || 0,
 
     status:
-      document.getElementById("status").value,
+      getValue("status") ||
+      "Available",
 
     photo:
-      document.getElementById("photo").value,
+      getValue("photo"),
 
     remarks:
-      document.getElementById("remarks").value
+      getValue("remarks"),
+
+    updated:
+      new Date().toISOString()
+
   };
 
 
   if(!site.site_name){
-    showToast("⚠️ Enter site name");
+
+    showToast(
+      "⚠️ Enter site name"
+    );
+
     return;
   }
+
 
   if(
     !Number.isFinite(site.latitude) ||
     !Number.isFinite(site.longitude)
   ){
-    showToast("⚠️ Select coordinates");
+
+    showToast(
+      "⚠️ Select coordinates on map"
+    );
+
     return;
   }
 
@@ -1006,6 +1708,7 @@ async function addSite(){
   sites.push(site);
 
   selectedSites.push(site);
+
 
   createMarker(site);
 
@@ -1015,7 +1718,22 @@ async function addSite(){
 
   clearForm();
 
-  showToast("✅ Site added");
+
+  map.flyTo(
+    [
+      site.latitude,
+      site.longitude
+    ],
+    16,
+    {
+      duration:1.1
+    }
+  );
+
+
+  showToast(
+    "✨ OOH site added"
+  );
 }
 
 
@@ -1026,25 +1744,38 @@ async function addSite(){
 async function saveCurrentSite(){
 
   if(!selectedSites.length){
-    showToast("⚠️ Select/add a site first");
+
+    showToast(
+      "⚠️ Add/select a site first"
+    );
+
     return;
   }
+
 
   try{
 
     const {
-      data:{
-        user
-      }
+      data,
+      error:userError
     } =
       await supabaseClient
-        .auth
-        .getUser();
+      .auth
+      .getUser();
+
+
+    if(userError)
+      throw userError;
+
+
+    const user =
+      data?.user;
+
 
     if(!user){
 
       showToast(
-        "⚠️ Login to Supabase first"
+        "⚠️ Please login to the website first"
       );
 
       return;
@@ -1082,7 +1813,8 @@ async function saveCurrentSite(){
 
         remarks:site.remarks,
 
-        updated:new Date().toISOString()
+        updated:
+          new Date().toISOString()
 
       }));
 
@@ -1091,13 +1823,14 @@ async function saveCurrentSite(){
       error
     } =
       await supabaseClient
-        .from("ooh_sites")
-        .upsert(
-          rows,
-          {
-            onConflict:"user_id,id"
-          }
-        );
+      .from("ooh_sites")
+      .upsert(
+        rows,
+        {
+          onConflict:
+            "user_id,id"
+        }
+      );
 
 
     if(error)
@@ -1105,8 +1838,9 @@ async function saveCurrentSite(){
 
 
     showToast(
-      `☁️ ${rows.length} site(s) saved to cloud`
+      `☁️ ${rows.length} site(s) saved`
     );
+
 
     updateStats();
 
@@ -1118,6 +1852,7 @@ async function saveCurrentSite(){
     showToast(
       "❌ Cloud save failed"
     );
+
   }
 }
 
@@ -1131,49 +1866,76 @@ async function loadSavedSites(){
   try{
 
     const {
-      data:{
-        user
-      }
+      data,
+      error:userError
     } =
       await supabaseClient
-        .auth
-        .getUser();
+      .auth
+      .getUser();
+
+
+    if(userError)
+      throw userError;
+
+
+    const user =
+      data?.user;
 
 
     if(!user){
 
-      showToast(
-        "Login required to load cloud sites"
-      );
+      updateStats();
 
       return;
     }
 
 
     const {
-      data,
+      data:cloudSites,
       error
     } =
       await supabaseClient
-        .from("ooh_sites")
-        .select("*")
-        .eq("user_id",user.id)
-        .order("updated",{ascending:false});
+      .from("ooh_sites")
+      .select("*")
+      .eq(
+        "user_id",
+        user.id
+      )
+      .order(
+        "updated",
+        {
+          ascending:false
+        }
+      );
 
 
     if(error)
       throw error;
 
 
-    sites = data || [];
+    sites =
+      cloudSites || [];
 
-    selectedSites = [];
+
+    /*
+      IMPORTANT:
+      Cloud sites are also displayed in the
+      Selected Sites panel so they appear
+      on another device.
+    */
+
+    selectedSites =
+      [...sites];
 
 
     Object.values(markers)
-      .forEach(marker =>
-        map.removeLayer(marker)
-      );
+    .forEach(marker => {
+
+      if(map.hasLayer(marker))
+        map.removeLayer(marker);
+
+    });
+
 
     markers = {};
 
@@ -1181,8 +1943,12 @@ async function loadSavedSites(){
     sites.forEach(site => {
 
       if(
-        Number.isFinite(site.latitude) &&
-        Number.isFinite(site.longitude)
+        Number.isFinite(
+          Number(site.latitude)
+        ) &&
+        Number.isFinite(
+          Number(site.longitude)
+        )
       ){
 
         createMarker(site);
@@ -1200,13 +1966,7 @@ async function loadSavedSites(){
     if(sites.length){
 
       showToast(
-        `☁️ ${sites.length} saved sites loaded`
-      );
-
-    }else{
-
-      showToast(
-        "☁️ No saved sites found"
+        `☁️ ${sites.length} cloud site(s) loaded`
       );
 
     }
@@ -1214,10 +1974,13 @@ async function loadSavedSites(){
   }
   catch(error){
 
-    console.error(error);
+    console.error(
+      "LOAD ERROR:",
+      error
+    );
 
     showToast(
-      "❌ Could not load saved sites"
+      "❌ Could not load cloud sites"
     );
 
   }
@@ -1225,94 +1988,155 @@ async function loadSavedSites(){
 
 
 /* =========================================================
-   RENDER SELECTED
+   RENDER SITES
 ========================================================= */
 
 function renderSites(){
 
   const list =
-    document.getElementById("siteList");
+    document.getElementById(
+      "siteList"
+    );
+
 
   list.innerHTML = "";
 
 
-  selectedSites.forEach(site => {
+  selectedSites.forEach(
+    (site,index) => {
 
-    const card =
-      document.createElement("div");
-
-    card.className =
-      "siteCard";
-
-
-    card.innerHTML = `
-
-      <img
-        class="siteThumb"
-        src="${site.photo || "https://images.unsplash.com/photo-1519501025264-65ba15a82390?w=300"}"
-        onerror="this.src='https://images.unsplash.com/photo-1519501025264-65ba15a82390?w=300'"
-      >
-
-      <div class="siteInfo">
-
-        <div class="siteName">
-          ${escapeHtml(site.site_name || "OOH Site")}
-        </div>
-
-        <div class="siteLocation">
-          ${escapeHtml(site.location || "Location not available")}
-        </div>
-
-        <div class="siteMeta">
-
-          <span class="badge">
-            ${site.width || 0} × ${site.height || 0} ft
-          </span>
-
-          <span class="badge">
-            ${escapeHtml(site.illumination || "-")}
-          </span>
-
-        </div>
-
-      </div>
-
-      <button
-        class="removeBtn"
-        onclick="event.stopPropagation();removeSelected('${escapeAttr(site.id)}')"
-      >
-        ×
-      </button>
-
-    `;
-
-
-    card.onclick = () => {
-
-      if(
-        Number.isFinite(site.latitude) &&
-        Number.isFinite(site.longitude)
-      ){
-
-        map.setView(
-          [site.latitude,site.longitude],
-          16,
-          {
-            animate:true
-          }
+      const card =
+        document.createElement(
+          "div"
         );
 
-        if(markers[site.id])
-          markers[site.id].openPopup();
 
-      }
-
-    };
+      card.className =
+        "siteCard";
 
 
-    list.appendChild(card);
+      card.style.animation =
+        `sectionIn .35s ease ${index*.035}s both`;
 
-  });
+
+      const fallback =
+        "https://images.unsplash.com/photo-1519501025264-65ba15a82390?w=400";
+
+
+      card.innerHTML = `
+
+        <img
+          class="siteThumb"
+          src="${
+            escapeAttr(
+              site.photo || fallback
+            )
+          }"
+          onerror="
+            this.src='${fallback}'
+          "
+        >
+
+        <div class="siteInfo">
+
+          <div class="siteName">
+
+            ${escapeHtml(
+              site.site_name ||
+              "OOH Site"
+            )}
+
+          </div>
+
+          <div class="siteLocation">
+
+            ${escapeHtml(
+              site.location ||
+              "Location not available"
+            )}
+
+          </div>
+
+          <div class="siteMeta">
+
+            <span class="badge">
+              ${
+                site.width || 0
+              }
+              ×
+              ${
+                site.height || 0
+              } ft
+            </span>
+
+            <span class="badge">
+              ${escapeHtml(
+                site.illumination ||
+                "-"
+              )}
+            </span>
+
+          </div>
+
+        </div>
+
+        <button
+          class="removeBtn"
+          onclick="
+            event.stopPropagation();
+            removeSelected('${escapeAttr(site.id)}')
+          "
+        >
+          ×
+        </button>
+
+      `;
+
+
+      card.onclick =
+        function(){
+
+          if(
+            Number.isFinite(
+              Number(site.latitude)
+            ) &&
+            Number.isFinite(
+              Number(site.longitude)
+            )
+          ){
+
+            map.flyTo(
+              [
+                Number(site.latitude),
+                Number(site.longitude)
+              ],
+              17,
+              {
+                duration:1
+              }
+            );
+
+
+            setTimeout(
+              () => {
+
+                if(markers[site.id])
+                  markers[site.id]
+                  .openPopup();
+
+              },
+              500
+            );
+
+          }
+
+        };
+
+
+      list.appendChild(card);
+
+    }
+  );
 
 
   updateStats();
@@ -1327,12 +2151,16 @@ function removeSelected(id){
 
   selectedSites =
     selectedSites.filter(
-      s => s.id !== id
+      site =>
+        site.id !== id
     );
+
 
   renderSites();
 
-  showToast("Site removed from selection");
+  showToast(
+    "Site removed from selection"
+  );
 }
 
 
@@ -1346,26 +2174,33 @@ function clearSelected(){
 
   renderSites();
 
-  showToast("Selection cleared");
+  showToast(
+    "Selection cleared"
+  );
 }
 
 
 /* =========================================================
-   SEARCH
+   SEARCH LOCATION
 ========================================================= */
 
 async function searchLocation(){
 
   const query =
-    document
-      .getElementById("searchLocation")
-      .value
-      .trim();
+    getValue(
+      "searchLocation"
+    );
+
 
   if(!query){
-    showToast("Enter a location");
+
+    showToast(
+      "Enter a location"
+    );
+
     return;
   }
+
 
   try{
 
@@ -1373,11 +2208,16 @@ async function searchLocation(){
       await fetch(
         "https://nominatim.openstreetmap.org/search?" +
         new URLSearchParams({
+
           q:query,
+
           format:"json",
+
           limit:1
+
         })
       );
+
 
     const results =
       await response.json();
@@ -1386,7 +2226,7 @@ async function searchLocation(){
     if(!results.length){
 
       showToast(
-        "Location not found"
+        "❌ Location not found"
       );
 
       return;
@@ -1397,25 +2237,37 @@ async function searchLocation(){
       results[0];
 
 
-    map.setView(
-      [
-        Number(result.lat),
-        Number(result.lon)
-      ],
+    const lat =
+      Number(result.lat);
+
+    const lon =
+      Number(result.lon);
+
+
+    map.flyTo(
+      [lat,lon],
       15,
       {
-        animate:true
+        duration:1.2
       }
     );
 
 
-    document.getElementById("latitude").value =
-      Number(result.lat).toFixed(6);
+    document.getElementById(
+      "latitude"
+    ).value =
+      lat.toFixed(6);
 
-    document.getElementById("longitude").value =
-      Number(result.lon).toFixed(6);
 
-    document.getElementById("location").value =
+    document.getElementById(
+      "longitude"
+    ).value =
+      lon.toFixed(6);
+
+
+    document.getElementById(
+      "location"
+    ).value =
       result.display_name;
 
 
@@ -1426,8 +2278,10 @@ async function searchLocation(){
   }
   catch(error){
 
+    console.error(error);
+
     showToast(
-      "Search failed"
+      "❌ Search failed"
     );
 
   }
@@ -1443,7 +2297,17 @@ function exportExcel(){
   if(!selectedSites.length){
 
     showToast(
-      "Select sites first"
+      "⚠️ Select sites first"
+    );
+
+    return;
+  }
+
+
+  if(typeof XLSX==="undefined"){
+
+    showToast(
+      "❌ Excel library unavailable"
     );
 
     return;
@@ -1451,51 +2315,79 @@ function exportExcel(){
 
 
   const rows =
-    selectedSites.map((s,index)=>({
+    selectedSites.map(
+      (s,index) => ({
 
-      "Sr No":index+1,
+        "Sr No":
+          index + 1,
 
-      "Site Name":
-        s.site_name || "",
+        "Site Name":
+          s.site_name || "",
 
-      "Location":
-        s.location || "",
+        "Location":
+          s.location || "",
 
-      "Latitude":
-        s.latitude || "",
+        "Latitude":
+          s.latitude || "",
 
-      "Longitude":
-        s.longitude || "",
+        "Longitude":
+          s.longitude || "",
 
-      "Width (ft)":
-        s.width || 0,
+        "Width (ft)":
+          s.width || 0,
 
-      "Height (ft)":
-        s.height || 0,
+        "Height (ft)":
+          s.height || 0,
 
-      "Media Type":
-        s.media_type || "",
+        "Media Type":
+          s.media_type || "",
 
-      "Illumination":
-        s.illumination || "",
+        "Illumination":
+          s.illumination || "",
 
-      "Rate":
-        s.rate || 0,
+        "Rate":
+          s.rate || 0,
 
-      "Status":
-        s.status || "",
+        "Status":
+          s.status || "",
 
-      "Remarks":
-        s.remarks || ""
+        "Photo":
+          s.photo || "",
 
-    }));
+        "Remarks":
+          s.remarks || ""
+
+      })
+    );
 
 
   const workbook =
     XLSX.utils.book_new();
 
+
   const worksheet =
-    XLSX.utils.json_to_sheet(rows);
+    XLSX.utils.json_to_sheet(
+      rows
+    );
+
+
+  worksheet["!cols"] = [
+
+    {wch:7},
+    {wch:30},
+    {wch:45},
+    {wch:14},
+    {wch:14},
+    {wch:12},
+    {wch:12},
+    {wch:18},
+    {wch:15},
+    {wch:15},
+    {wch:15},
+    {wch:55},
+    {wch:45}
+
+  ];
 
 
   XLSX.utils.book_append_sheet(
@@ -1505,15 +2397,94 @@ function exportExcel(){
   );
 
 
+  const name =
+    getValue(
+      "campaignName"
+    ) ||
+    "My_Vision_OOH";
+
+
   XLSX.writeFile(
     workbook,
-    "My_Vision_OOH_Sites.xlsx"
+    name.replace(
+      /[^a-z0-9]/gi,
+      "_"
+    ) +
+    "_Sites.xlsx"
   );
 
 
   showToast(
-    "📊 Excel exported"
+    "📊 Excel exported successfully"
   );
+}
+
+
+/* =========================================================
+   IMAGE -> DATA URI
+   Helps PPT export with remote photos
+========================================================= */
+
+async function imageToDataUri(url){
+
+  if(!url)
+    return null;
+
+
+  try{
+
+    const response =
+      await fetch(
+        url,
+        {
+          mode:"cors"
+        }
+      );
+
+
+    if(!response.ok)
+      return null;
+
+
+    const blob =
+      await response.blob();
+
+
+    return await new Promise(
+      resolve => {
+
+        const reader =
+          new FileReader();
+
+
+        reader.onloadend =
+          () => resolve(
+            reader.result
+          );
+
+
+        reader.onerror =
+          () => resolve(null);
+
+
+        reader.readAsDataURL(
+          blob
+        );
+
+      }
+    );
+
+  }
+  catch(error){
+
+    console.warn(
+      "Image could not be loaded:",
+      url
+    );
+
+    return null;
+
+  }
 }
 
 
@@ -1526,7 +2497,7 @@ async function exportPPT(){
   if(!selectedSites.length){
 
     showToast(
-      "Select sites first"
+      "⚠️ Select sites first"
     );
 
     return;
@@ -1539,7 +2510,7 @@ async function exportPPT(){
   ){
 
     showToast(
-      "❌ PPT library did not load. Refresh once."
+      "❌ PPT library unavailable"
     );
 
     return;
@@ -1547,6 +2518,11 @@ async function exportPPT(){
 
 
   try{
+
+    showToast(
+      "⏳ Preparing PowerPoint..."
+    );
+
 
     const pptx =
       new PptxGenJS();
@@ -1558,53 +2534,78 @@ async function exportPPT(){
     pptx.author =
       "My Vision OOH";
 
+    pptx.company =
+      "My Vision OOH";
+
     pptx.subject =
-      "OOH Site Proposal";
+      "Outdoor Advertising Site Proposal";
 
     pptx.title =
-      document.getElementById(
+      getValue(
         "campaignName"
-      ).value ||
+      ) ||
       "OOH Site Proposal";
 
 
-    /* COVER */
+    /* =====================================================
+       COVER
+    ===================================================== */
 
     let slide =
       pptx.addSlide();
 
+
     slide.background = {
-      color:"F3F7FB"
+      color:"F4F8FC"
     };
 
 
-    slide.addText(
-      "MY VISION OOH",
+    slide.addShape(
+      pptx.ShapeType.rect,
       {
-        x:.6,
-        y:1.3,
-        w:12,
-        h:.6,
-        fontSize:30,
-        bold:true,
-        color:"087CF5"
+        x:0,
+        y:0,
+        w:13.333,
+        h:1.15,
+        fill:{
+          color:"087CF5"
+        },
+        line:{
+          color:"087CF5"
+        }
       }
     );
 
 
     slide.addText(
-      document.getElementById(
+      "MY VISION OOH",
+      {
+        x:.65,
+        y:1.65,
+        w:7,
+        h:.6,
+        fontSize:32,
+        bold:true,
+        color:"087CF5",
+        margin:0
+      }
+    );
+
+
+    slide.addText(
+      getValue(
         "campaignName"
-      ).value ||
+      ) ||
       "Outdoor Advertising Site Proposal",
       {
-        x:.6,
-        y:2,
-        w:11,
-        h:.6,
-        fontSize:24,
+        x:.65,
+        y:2.45,
+        w:10,
+        h:.7,
+        fontSize:25,
         bold:true,
-        color:"172033"
+        color:"142033",
+        margin:0
       }
     );
 
@@ -1612,19 +2613,59 @@ async function exportPPT(){
     slide.addText(
       `${selectedSites.length} Selected OOH Sites`,
       {
-        x:.6,
-        y:2.8,
+        x:.65,
+        y:3.35,
         w:6,
         h:.4,
-        fontSize:16,
-        color:"718096"
+        fontSize:17,
+        color:"718096",
+        margin:0
       }
     );
 
 
-    /* SITE SLIDES */
+    slide.addText(
+      "Professional Outdoor Advertising Site Planning",
+      {
+        x:.65,
+        y:4.0,
+        w:8,
+        h:.35,
+        fontSize:12,
+        color:"8a98aa",
+        margin:0
+      }
+    );
 
-    selectedSites.forEach((site,index)=>{
+
+    slide.addText(
+      "MY VISION OOH",
+      {
+        x:.65,
+        y:6.85,
+        w:3,
+        h:.25,
+        fontSize:9,
+        bold:true,
+        color:"087CF5",
+        margin:0
+      }
+    );
+
+
+    /* =====================================================
+       SITE SLIDES
+    ===================================================== */
+
+    for(
+      let index=0;
+      index<selectedSites.length;
+      index++
+    ){
+
+      const site =
+        selectedSites[index];
+
 
       slide =
         pptx.addSlide();
@@ -1638,27 +2679,30 @@ async function exportPPT(){
       slide.addText(
         `OOH SITE ${index+1}`,
         {
-          x:.5,
+          x:.55,
           y:.35,
           w:3,
           h:.3,
-          fontSize:11,
+          fontSize:10,
           bold:true,
-          color:"087CF5"
+          color:"087CF5",
+          margin:0
         }
       );
 
 
       slide.addText(
-        site.site_name || "OOH Site",
+        site.site_name ||
+        "OOH Site",
         {
-          x:.5,
-          y:.75,
-          w:7,
+          x:.55,
+          y:.72,
+          w:6.5,
           h:.55,
           fontSize:23,
           bold:true,
-          color:"172033"
+          color:"142033",
+          margin:0
         }
       );
 
@@ -1666,70 +2710,107 @@ async function exportPPT(){
       slide.addText(
         site.location || "",
         {
-          x:.5,
-          y:1.35,
-          w:7,
+          x:.55,
+          y:1.32,
+          w:6.5,
           h:.45,
-          fontSize:12,
-          color:"718096"
+          fontSize:11,
+          color:"718096",
+          margin:0
         }
       );
 
 
-      let details =
+      slide.addShape(
+        pptx.ShapeType.roundRect,
+        {
+          x:.55,
+          y:1.95,
+          w:5.65,
+          h:3.55,
+          rectRadius:.08,
+          fill:{
+            color:"F5F9FD"
+          },
+          line:{
+            color:"E0EAF3"
+          }
+        }
+      );
 
-`Dimensions: ${site.width || 0} × ${site.height || 0} ft
 
-Media Type: ${site.media_type || "-"}
+      const details =
+`DIMENSIONS
+${site.width || 0} × ${site.height || 0} ft
 
-Illumination: ${site.illumination || "-"}
+MEDIA TYPE
+${site.media_type || "-"}
 
-Rate: ₹${site.rate || 0}
+ILLUMINATION
+${site.illumination || "-"}
 
-Status: ${site.status || "-"}
+RATE
+₹${site.rate || 0}
 
-Coordinates:
-${site.latitude || "-"}, ${site.longitude || "-"}
+STATUS
+${site.status || "-"}
 
-Remarks:
-${site.remarks || "-"}`;
+COORDINATES
+${site.latitude || "-"}, ${site.longitude || "-"}`;
 
 
       slide.addText(
         details,
         {
-          x:.6,
-          y:2,
-          w:5.5,
-          h:3.6,
-          fontSize:13,
+          x:.85,
+          y:2.25,
+          w:5,
+          h:2.9,
+          fontSize:12,
           color:"334155",
           breakLine:false,
-          margin:.05
+          margin:0.03,
+          valign:"top"
         }
       );
 
 
+      /* PHOTO */
+
       if(site.photo){
 
-        try{
+        const imageData =
+          await imageToDataUri(
+            site.photo
+          );
+
+
+        if(imageData){
 
           slide.addImage({
-
-            path:site.photo,
-
-            x:7.1,
-            y:1.1,
-            w:5.4,
-            h:4.1
-
+            data:imageData,
+            x:6.75,
+            y:1.05,
+            w:5.95,
+            h:4.45,
+            sizingContain:true
           });
 
-        }catch(e){
+        }
+        else{
 
-          console.log(
-            "Image skipped",
-            e
+          slide.addText(
+            "Site Photo",
+            {
+              x:7,
+              y:3,
+              w:5,
+              h:.4,
+              fontSize:16,
+              bold:true,
+              color:"94a3b8",
+              align:"center"
+            }
           );
 
         }
@@ -1737,30 +2818,64 @@ ${site.remarks || "-"}`;
       }
 
 
+      if(site.remarks){
+
+        slide.addText(
+          "Remarks: " +
+          site.remarks,
+          {
+            x:.65,
+            y:5.75,
+            w:11.5,
+            h:.5,
+            fontSize:11,
+            color:"64748b",
+            margin:0
+          }
+        );
+
+      }
+
+
       slide.addText(
         "MY VISION OOH",
         {
-          x:.6,
-          y:6.8,
+          x:.65,
+          y:6.85,
           w:3,
           h:.25,
           fontSize:9,
           bold:true,
-          color:"087CF5"
+          color:"087CF5",
+          margin:0
         }
       );
 
-    });
+    }
+
+
+    const fileName =
+      (
+        getValue(
+          "campaignName"
+        ) ||
+        "My_Vision_OOH"
+      )
+      .replace(
+        /[^a-z0-9]/gi,
+        "_"
+      );
 
 
     await pptx.writeFile({
       fileName:
-        "My_Vision_OOH_Proposal.pptx"
+        fileName +
+        "_Proposal.pptx"
     });
 
 
     showToast(
-      "📑 PPT exported successfully"
+      "📑 PowerPoint exported successfully"
     );
 
   }
@@ -1771,9 +2886,11 @@ ${site.remarks || "-"}`;
       error
     );
 
+
     alert(
       "PPT export failed.\n\n" +
-      "Please refresh the website once and try again."
+      "If a site photo is causing the problem, " +
+      "try exporting without that photo URL."
     );
 
   }
@@ -1781,7 +2898,7 @@ ${site.remarks || "-"}`;
 
 
 /* =========================================================
-   FORM CLEAR
+   CLEAR FORM
 ========================================================= */
 
 function clearForm(){
@@ -1798,20 +2915,30 @@ function clearForm(){
     "photo",
     "remarks"
   ]
-  .forEach(id => {
+  .forEach(
+    id => {
 
-    document.getElementById(id).value = "";
+      const el =
+        document.getElementById(
+          id
+        );
 
-  });
+      if(el)
+        el.value = "";
+
+    }
+  );
 
 
   document.getElementById(
     "illumination"
   ).value = "";
 
+
   document.getElementById(
     "status"
-  ).value = "Available";
+  ).value =
+    "Available";
 }
 
 
@@ -1826,15 +2953,18 @@ function updateStats(){
   ).textContent =
     sites.length;
 
+
   document.getElementById(
     "selectedCount"
   ).textContent =
     selectedSites.length;
 
+
   document.getElementById(
     "cloudCount"
   ).textContent =
     sites.length;
+
 }
 
 
@@ -1844,52 +2974,107 @@ function updateStats(){
 
 let toastTimer;
 
+
 function showToast(message){
 
   const toast =
-    document.getElementById("toast");
+    document.getElementById(
+      "toast"
+    );
+
 
   toast.textContent =
     message;
 
-  toast.classList.add("show");
+
+  toast.classList.add(
+    "show"
+  );
 
 
-  clearTimeout(toastTimer);
+  clearTimeout(
+    toastTimer
+  );
+
 
   toastTimer =
     setTimeout(
-      () => toast.classList.remove("show"),
+      () => {
+
+        toast.classList.remove(
+          "show"
+        );
+
+      },
       3000
     );
+
 }
 
 
 /* =========================================================
-   SECURITY HELPERS
+   HELPERS
 ========================================================= */
+
+function getValue(id){
+
+  const el =
+    document.getElementById(
+      id
+    );
+
+
+  return el
+    ? el.value.trim()
+    : "";
+
+}
+
 
 function escapeHtml(value){
 
-  return String(value ?? "")
-    .replaceAll("&","&amp;")
-    .replaceAll("<","&lt;")
-    .replaceAll(">","&gt;")
-    .replaceAll('"',"&quot;")
-    .replaceAll("'","&#039;");
+  return String(
+    value ?? ""
+  )
+  .replaceAll(
+    "&",
+    "&amp;"
+  )
+  .replaceAll(
+    "<",
+    "&lt;"
+  )
+  .replaceAll(
+    ">",
+    "&gt;"
+  )
+  .replaceAll(
+    '"',
+    "&quot;"
+  )
+  .replaceAll(
+    "'",
+    "&#039;"
+  );
+
 }
+
 
 function escapeAttr(value){
 
-  return escapeHtml(value);
+  return escapeHtml(
+    value
+  );
+
 }
 
 
 /* =========================================================
-   START
+   INITIAL
 ========================================================= */
 
 updateStats();
+
 
 window.addEventListener(
   "load",
@@ -1897,29 +3082,32 @@ window.addEventListener(
 
     setTimeout(
       loadSavedSites,
-      700
+      800
     );
 
   }
 );
 
 
-/* AUTH STATE */
+/* =========================================================
+   SUPABASE AUTH LISTENER
+========================================================= */
 
 supabaseClient
-  .auth
-  .onAuthStateChange(
-    () => {
+.auth
+.onAuthStateChange(
+  () => {
 
-      setTimeout(
-        loadSavedSites,
-        300
-      );
+    setTimeout(
+      loadSavedSites,
+      500
+    );
 
-    }
-  );
+  }
+);
 
 </script>
 
 </body>
 </html>
+```
