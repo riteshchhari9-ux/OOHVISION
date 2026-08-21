@@ -44,12 +44,6 @@ header{
   gap:8px;
 }
 
-.user-email{
-  font-size:12px;
-  color:#cbd5e1;
-  margin-right:8px;
-}
-
 button{
   border:0;
   border-radius:7px;
@@ -271,70 +265,14 @@ textarea{
   text-align:center;
 }
 
-#loginScreen{
-  position:fixed;
-  inset:0;
-  background:#101827;
-  display:flex;
-  align-items:center;
-  justify-content:center;
-  z-index:100000;
-}
-
-.login-box{
-  width:380px;
-  max-width:92%;
-  background:white;
-  border-radius:14px;
-  padding:28px;
-  box-shadow:0 20px 60px rgba(0,0,0,.3);
-}
-
-.login-logo{
-  text-align:center;
-  font-size:27px;
-  font-weight:800;
-  margin-bottom:8px;
-}
-
-.login-logo span{
-  color:#0787c8;
-}
-
-.login-subtitle{
-  text-align:center;
-  color:#64748b;
-  font-size:13px;
-  margin-bottom:20px;
-}
-
-.auth-message{
-  margin-top:10px;
-  font-size:13px;
-  text-align:center;
-  color:#dc2626;
-}
-
-.auth-switch{
-  text-align:center;
-  margin-top:15px;
-  font-size:13px;
-  color:#64748b;
-}
-
-.auth-switch span{
-  color:#0787c8;
-  font-weight:bold;
-  cursor:pointer;
-}
-
-.hidden{
-  display:none !important;
-}
-
-.loading{
-  opacity:.6;
-  pointer-events:none;
+#locationResult{
+  display:none;
+  background:#eff6ff;
+  border:1px solid #bfdbfe;
+  border-radius:7px;
+  padding:9px;
+  margin-top:9px;
+  font-size:12px;
 }
 
 @media(max-width:850px){
@@ -362,112 +300,11 @@ textarea{
   #map{
     height:60vh;
   }
-
-  .user-email{
-    display:none;
-  }
 }
 </style>
 </head>
 
 <body>
-
-<!-- =========================================================
-     LOGIN SCREEN
-========================================================= -->
-
-<div id="loginScreen">
-
-  <div class="login-box">
-
-    <div class="login-logo">
-      MY VISION <span>OOH</span>
-    </div>
-
-    <div class="login-subtitle">
-      OOH Site Management System
-    </div>
-
-    <!-- LOGIN -->
-
-    <div id="loginForm">
-
-      <label>Email</label>
-
-      <input
-        id="email"
-        type="email"
-        placeholder="your@email.com"
-        autocomplete="email"
-      >
-
-      <label>Password</label>
-
-      <input
-        id="password"
-        type="password"
-        placeholder="Password"
-        autocomplete="current-password"
-      >
-
-      <button
-        id="loginButton"
-        class="btn-blue full"
-        onclick="loginUser()"
-      >
-        LOGIN
-      </button>
-
-      <div class="auth-switch">
-        Don't have an account?
-        <span onclick="showSignup()">Create account</span>
-      </div>
-
-    </div>
-
-    <!-- SIGNUP -->
-
-    <div id="signupForm" class="hidden">
-
-      <label>Email</label>
-
-      <input
-        id="signupEmail"
-        type="email"
-        placeholder="your@email.com"
-        autocomplete="email"
-      >
-
-      <label>Password</label>
-
-      <input
-        id="signupPassword"
-        type="password"
-        placeholder="Minimum 6 characters"
-        autocomplete="new-password"
-      >
-
-      <button
-        id="signupButton"
-        class="btn-green full"
-        onclick="signupUser()"
-      >
-        CREATE ACCOUNT
-      </button>
-
-      <div class="auth-switch">
-        Already have an account?
-        <span onclick="showLogin()">Login</span>
-      </div>
-
-    </div>
-
-    <div id="authMessage" class="auth-message"></div>
-
-  </div>
-
-</div>
-
 
 <!-- =========================================================
      HEADER
@@ -480,11 +317,6 @@ textarea{
   </div>
 
   <div class="header-actions">
-
-    <span
-      id="userEmail"
-      class="user-email"
-    ></span>
 
     <button
       class="btn-green"
@@ -502,10 +334,10 @@ textarea{
     </button>
 
     <button
-      class="btn-red"
-      onclick="logoutUser()"
+      class="btn-gray"
+      onclick="clearAllSites()"
     >
-      LOGOUT
+      🗑 Clear All
     </button>
 
   </div>
@@ -613,18 +445,7 @@ textarea{
         📌 USE MY LOCATION
       </button>
 
-      <div
-        id="locationResult"
-        style="
-          display:none;
-          background:#eff6ff;
-          border:1px solid #bfdbfe;
-          border-radius:7px;
-          padding:9px;
-          margin-top:9px;
-          font-size:12px;
-        "
-      ></div>
+      <div id="locationResult"></div>
 
     </div>
 
@@ -846,8 +667,6 @@ textarea{
      LIBRARIES
 ========================================================= -->
 
-<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
-
 <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
 
 <script src="https://cdn.jsdelivr.net/npm/xlsx@0.18.5/dist/xlsx.full.min.js"></script>
@@ -858,27 +677,8 @@ textarea{
 <script>
 
 /* =========================================================
-   SUPABASE
-========================================================= */
-
-const SUPABASE_URL =
-  "https://fbzwaqeqndnaveuqiqtu.supabase.co";
-
-const SUPABASE_KEY =
-  "sb_publishable_PuG3tL1I_UOvL77prZ2-iA_3Ga2DU49";
-
-const supabaseClient =
-  window.supabase.createClient(
-    SUPABASE_URL,
-    SUPABASE_KEY
-  );
-
-
-/* =========================================================
    GLOBAL VARIABLES
 ========================================================= */
-
-let currentUser = null;
 
 let sites = [];
 
@@ -889,6 +689,10 @@ let map = null;
 let markers = [];
 
 let searchMarker = null;
+
+const STORAGE_KEY = "my_vision_ooh_sites";
+
+const CAMPAIGN_KEY = "my_vision_ooh_campaign";
 
 
 /* =========================================================
@@ -917,122 +721,23 @@ function showMessage(text){
 
 
 /* =========================================================
-   AUTH MESSAGE
+   LOCAL STORAGE
 ========================================================= */
 
-function setAuthMessage(text){
-
-  document.getElementById(
-    "authMessage"
-  ).innerText = text;
-
-}
-
-
-/* =========================================================
-   SHOW SIGNUP
-========================================================= */
-
-function showSignup(){
-
-  document.getElementById("loginForm")
-    .classList.add("hidden");
-
-  document.getElementById("signupForm")
-    .classList.remove("hidden");
-
-  setAuthMessage("");
-
-}
-
-
-/* =========================================================
-   SHOW LOGIN
-========================================================= */
-
-function showLogin(){
-
-  document.getElementById("signupForm")
-    .classList.add("hidden");
-
-  document.getElementById("loginForm")
-    .classList.remove("hidden");
-
-  setAuthMessage("");
-
-}
-
-
-/* =========================================================
-   SIGNUP
-========================================================= */
-
-async function signupUser(){
-
-  const email =
-    document.getElementById("signupEmail")
-      .value.trim();
-
-  const password =
-    document.getElementById("signupPassword")
-      .value;
-
-  if(!email || !password){
-
-    setAuthMessage(
-      "Enter email and password."
-    );
-
-    return;
-
-  }
-
-  if(password.length < 6){
-
-    setAuthMessage(
-      "Password must be at least 6 characters."
-    );
-
-    return;
-
-  }
-
-  const button =
-    document.getElementById("signupButton");
-
-  button.disabled = true;
-
-  setAuthMessage("Creating account...");
+function loadLocalData(){
 
   try{
 
-    const { data, error } =
-      await supabaseClient.auth.signUp({
-        email:email,
-        password:password
-      });
+    const saved =
+      localStorage.getItem(STORAGE_KEY);
 
-    if(error){
+    sites =
+      saved
+        ? JSON.parse(saved)
+        : [];
 
-      setAuthMessage(error.message);
-
-      return;
-
-    }
-
-    if(data.session && data.user){
-
-      currentUser = data.user;
-
-      await enterApplication();
-
-    }
-    else{
-
-      setAuthMessage(
-        "Account created. Check your email for confirmation, then login."
-      );
-
+    if(!Array.isArray(sites)){
+      sites = [];
     }
 
   }
@@ -1040,213 +745,48 @@ async function signupUser(){
 
     console.error(error);
 
-    setAuthMessage(
-      "Signup failed: " + error.message
+    sites = [];
+
+  }
+
+
+  const campaign =
+    localStorage.getItem(
+      CAMPAIGN_KEY
     );
 
-  }
-  finally{
+  if(campaign){
 
-    button.disabled = false;
-
-  }
-
-}
-
-
-/* =========================================================
-   LOGIN
-========================================================= */
-
-async function loginUser(){
-
-  const email =
-    document.getElementById("email")
-      .value.trim();
-
-  const password =
-    document.getElementById("password")
-      .value;
-
-  if(!email || !password){
-
-    setAuthMessage(
-      "Enter email and password."
-    );
-
-    return;
+    document.getElementById(
+      "campaign"
+    ).value = campaign;
 
   }
 
-  const button =
-    document.getElementById("loginButton");
-
-  button.disabled = true;
-
-  setAuthMessage("Logging in...");
-
-  try{
-
-    const { data, error } =
-      await supabaseClient.auth.signInWithPassword({
-        email:email,
-        password:password
-      });
-
-    if(error){
-
-      setAuthMessage(error.message);
-
-      return;
-
-    }
-
-    if(!data.user){
-
-      setAuthMessage(
-        "Login failed."
-      );
-
-      return;
-
-    }
-
-    currentUser =
-      data.user;
-
-    await enterApplication();
-
-  }
-  catch(error){
-
-    console.error(error);
-
-    setAuthMessage(
-      "Login failed: " + error.message
-    );
-
-  }
-  finally{
-
-    button.disabled = false;
-
-  }
-
-}
-
-
-/* =========================================================
-   LOGOUT
-========================================================= */
-
-async function logoutUser(){
-
-  try{
-
-    await supabaseClient.auth.signOut();
-
-  }
-  catch(error){
-
-    console.error(error);
-
-  }
-
-  currentUser = null;
-
-  sites = [];
 
   selectedSites.clear();
 
-  document.getElementById(
-    "loginScreen"
-  ).style.display = "flex";
-
-  document.getElementById(
-    "userEmail"
-  ).innerText = "";
-
-  showLogin();
-
   renderSites();
 
-}
-
-
-/* =========================================================
-   ENTER APPLICATION
-========================================================= */
-
-async function enterApplication(){
-
-  document.getElementById(
-    "loginScreen"
-  ).style.display = "none";
-
-  document.getElementById(
-    "userEmail"
-  ).innerText =
-    currentUser.email || "";
-
-  initializeMap();
-
-  await loadSites();
+  renderMarkers();
 
 }
 
 
-/* =========================================================
-   LOAD SITES
-========================================================= */
-
-async function loadSites(){
-
-  if(!currentUser){
-
-    return;
-
-  }
-
-  showMessage("Loading saved sites...");
+function saveLocalData(){
 
   try{
 
-    const { data, error } =
-      await supabaseClient
-        .from("sites")
-        .select("*")
-        .eq("user_id",currentUser.id)
-        .order("created_at",{
-          ascending:false
-        });
+    localStorage.setItem(
+      STORAGE_KEY,
+      JSON.stringify(sites)
+    );
 
-    if(error){
-
-      console.error(error);
-
-      showMessage(
-        "Could not load sites: " +
-        error.message
-      );
-
-      return;
-
-    }
-
-    sites =
-      Array.isArray(data)
-        ? data
-        : [];
-
-    selectedSites.clear();
-
-    renderSites();
-
-    renderMarkers();
-
-    showMessage(
-      sites.length +
-      " site(s) loaded from cloud"
+    localStorage.setItem(
+      CAMPAIGN_KEY,
+      document.getElementById(
+        "campaign"
+      ).value.trim()
     );
 
   }
@@ -1255,8 +795,10 @@ async function loadSites(){
     console.error(error);
 
     showMessage(
-      "Could not load sites."
+      "Storage is full. Try removing some large photos."
     );
+
+    throw error;
 
   }
 
@@ -1264,303 +806,31 @@ async function loadSites(){
 
 
 /* =========================================================
-   SAVE SITE
+   CAMPAIGN AUTO SAVE
 ========================================================= */
 
-async function saveSite(){
-
-  if(!currentUser){
-
-    showMessage("Please login first.");
-
-    return;
-
-  }
-
-  const name =
-    document.getElementById("siteName")
-      .value.trim();
-
-  const location =
-    document.getElementById("siteLocation")
-      .value.trim();
-
-  const lat =
-    parseFloat(
-      document.getElementById("latitude").value
-    );
-
-  const lng =
-    parseFloat(
-      document.getElementById("longitude").value
-    );
-
-  if(!name){
-
-    showMessage(
-      "Enter Site Name / ID"
-    );
-
-    return;
-
-  }
-
-  if(
-    Number.isNaN(lat) ||
-    Number.isNaN(lng)
-  ){
-
-    showMessage(
-      "Select a location first."
-    );
-
-    return;
-
-  }
-
-  let photoURL =
-    document.getElementById(
-      "photoPreview"
-    ).dataset.url || null;
-
-
-  /* =======================================================
-     PHOTO UPLOAD
-  ======================================================= */
-
-  const photoFile =
-    document.getElementById("photo")
-      .files[0];
-
-  if(photoFile){
-
-    showMessage(
-      "Uploading site photo..."
-    );
+document.getElementById(
+  "campaign"
+).addEventListener(
+  "input",
+  function(){
 
     try{
 
-      const extension =
-        photoFile.name
-          .split(".")
-          .pop()
-          .toLowerCase();
-
-      const fileName =
-        currentUser.id +
-        "/" +
-        crypto.randomUUID() +
-        "." +
-        extension;
-
-      const { error:uploadError } =
-        await supabaseClient.storage
-          .from("site-photos")
-          .upload(
-            fileName,
-            photoFile,
-            {
-              upsert:false,
-              contentType:
-                photoFile.type || "image/jpeg"
-            }
-          );
-
-      if(uploadError){
-
-        console.error(uploadError);
-
-        showMessage(
-          "Photo upload failed: " +
-          uploadError.message
-        );
-
-        return;
-
-      }
-
-      const { data:urlData } =
-        supabaseClient.storage
-          .from("site-photos")
-          .getPublicUrl(fileName);
-
-      photoURL =
-        urlData.publicUrl;
+      localStorage.setItem(
+        CAMPAIGN_KEY,
+        this.value
+      );
 
     }
     catch(error){
 
       console.error(error);
 
-      showMessage(
-        "Photo upload failed."
-      );
-
-      return;
-
     }
 
   }
-
-
-  const editId =
-    document.getElementById(
-      "editId"
-    ).value.trim();
-
-
-  const siteData = {
-
-    site_name:name,
-
-    location:location,
-
-    latitude:lat,
-
-    longitude:lng,
-
-    width:
-      Number(
-        document.getElementById("width").value
-      ) || 0,
-
-    height:
-      Number(
-        document.getElementById("height").value
-      ) || 0,
-
-    media_type:
-      document.getElementById("mediaType").value,
-
-    illumination:
-      document.getElementById("illumination").value,
-
-    monthly_rate:
-      Number(
-        document.getElementById("rate").value
-      ) || 0,
-
-    status:
-      document.getElementById("status").value,
-
-    photo_url:
-      photoURL,
-
-    remarks:
-      document.getElementById("remarks").value,
-
-    updated_at:
-      new Date().toISOString()
-
-  };
-
-
-  try{
-
-    let result;
-
-
-    /* UPDATE */
-
-    if(editId){
-
-      result =
-        await supabaseClient
-          .from("sites")
-          .update(siteData)
-          .eq("id",editId)
-          .eq("user_id",currentUser.id)
-          .select()
-          .single();
-
-    }
-
-
-    /* INSERT */
-
-    else{
-
-      siteData.user_id =
-        currentUser.id;
-
-      result =
-        await supabaseClient
-          .from("sites")
-          .insert(siteData)
-          .select()
-          .single();
-
-    }
-
-
-    if(result.error){
-
-      console.error(result.error);
-
-      showMessage(
-        "Could not save site: " +
-        result.error.message
-      );
-
-      return;
-
-    }
-
-
-    if(editId){
-
-      const index =
-        sites.findIndex(
-          site => site.id === editId
-        );
-
-      if(index !== -1){
-
-        sites[index] =
-          result.data;
-
-      }
-
-      showMessage(
-        "Site updated successfully."
-      );
-
-    }
-    else{
-
-      sites.unshift(
-        result.data
-      );
-
-      selectedSites.add(
-        result.data.id
-      );
-
-      showMessage(
-        "Site saved to cloud successfully."
-      );
-
-    }
-
-
-    renderSites();
-
-    renderMarkers();
-
-    clearForm();
-
-  }
-  catch(error){
-
-    console.error(error);
-
-    showMessage(
-      "Could not save site."
-    );
-
-  }
-
-}
+);
 
 
 /* =========================================================
@@ -1668,7 +938,10 @@ async function searchLocation(){
 
   }
 
-  showMessage("Searching location...");
+  showMessage(
+    "Searching location..."
+  );
+
 
   try{
 
@@ -1677,8 +950,18 @@ async function searchLocation(){
       "?format=json&limit=1&q=" +
       encodeURIComponent(query);
 
+
     const response =
-      await fetch(url);
+      await fetch(
+        url,
+        {
+          headers:{
+            "Accept":
+              "application/json"
+          }
+        }
+      );
+
 
     if(!response.ok){
 
@@ -1688,8 +971,10 @@ async function searchLocation(){
 
     }
 
+
     const data =
       await response.json();
+
 
     if(!data.length){
 
@@ -1701,8 +986,10 @@ async function searchLocation(){
 
     }
 
+
     const result =
       data[0];
+
 
     showLocation(
       parseFloat(result.lat),
@@ -1759,6 +1046,28 @@ function searchCoordinates(){
   }
 
 
+  if(lat < -90 || lat > 90){
+
+    showMessage(
+      "Latitude must be between -90 and 90."
+    );
+
+    return;
+
+  }
+
+
+  if(lng < -180 || lng > 180){
+
+    showMessage(
+      "Longitude must be between -180 and 180."
+    );
+
+    return;
+
+  }
+
+
   showLocation(
     lat,
     lng,
@@ -1783,6 +1092,7 @@ function showLocation(
     initializeMap();
 
   }
+
 
   map.setView(
     [lat,lng],
@@ -1920,7 +1230,9 @@ function useMyLocation(){
 
     },
 
-    function(){
+    function(error){
+
+      console.error(error);
 
       showMessage(
         "Please allow location permission."
@@ -1934,6 +1246,488 @@ function useMyLocation(){
       maximumAge:0
     }
 
+  );
+
+}
+
+
+/* =========================================================
+   PHOTO → DATA URL
+========================================================= */
+
+function fileToDataURL(file){
+
+  return new Promise(
+    function(resolve,reject){
+
+      const reader =
+        new FileReader();
+
+
+      reader.onload =
+        function(){
+
+          resolve(
+            reader.result
+          );
+
+        };
+
+
+      reader.onerror =
+        function(){
+
+          reject(
+            new Error(
+              "Could not read image."
+            )
+          );
+
+        };
+
+
+      reader.readAsDataURL(file);
+
+    }
+  );
+
+}
+
+
+/* =========================================================
+   SAVE SITE
+========================================================= */
+
+async function saveSite(){
+
+  const name =
+    document.getElementById(
+      "siteName"
+    ).value.trim();
+
+
+  const location =
+    document.getElementById(
+      "siteLocation"
+    ).value.trim();
+
+
+  const lat =
+    parseFloat(
+      document.getElementById(
+        "latitude"
+      ).value
+    );
+
+
+  const lng =
+    parseFloat(
+      document.getElementById(
+        "longitude"
+      ).value
+    );
+
+
+  if(!name){
+
+    showMessage(
+      "Enter Site Name / ID."
+    );
+
+    return;
+
+  }
+
+
+  if(
+    Number.isNaN(lat) ||
+    Number.isNaN(lng)
+  ){
+
+    showMessage(
+      "Select a location on the map first."
+    );
+
+    return;
+
+  }
+
+
+  if(lat < -90 || lat > 90){
+
+    showMessage(
+      "Invalid latitude."
+    );
+
+    return;
+
+  }
+
+
+  if(lng < -180 || lng > 180){
+
+    showMessage(
+      "Invalid longitude."
+    );
+
+    return;
+
+  }
+
+
+  const editId =
+    document.getElementById(
+      "editId"
+    ).value.trim();
+
+
+  let photoURL =
+    document.getElementById(
+      "photoPreview"
+    ).dataset.url || "";
+
+
+  const photoFile =
+    document.getElementById(
+      "photo"
+    ).files[0];
+
+
+  if(photoFile){
+
+    try{
+
+      showMessage(
+        "Processing site photo..."
+      );
+
+
+      /*
+       * Resize the image before storing it.
+       * This prevents localStorage from becoming
+       * unnecessarily large.
+       */
+
+      photoURL =
+        await resizeImage(
+          photoFile,
+          1200,
+          0.82
+        );
+
+    }
+    catch(error){
+
+      console.error(error);
+
+      showMessage(
+        "Could not process photo."
+      );
+
+      return;
+
+    }
+
+  }
+
+
+  const siteData = {
+
+    id:
+      editId ||
+      generateID(),
+
+    site_name:
+      name,
+
+    location:
+      location,
+
+    latitude:
+      lat,
+
+    longitude:
+      lng,
+
+    width:
+      Number(
+        document.getElementById(
+          "width"
+        ).value
+      ) || 0,
+
+    height:
+      Number(
+        document.getElementById(
+          "height"
+        ).value
+      ) || 0,
+
+    media_type:
+      document.getElementById(
+        "mediaType"
+      ).value,
+
+    illumination:
+      document.getElementById(
+        "illumination"
+      ).value,
+
+    monthly_rate:
+      Number(
+        document.getElementById(
+          "rate"
+        ).value
+      ) || 0,
+
+    status:
+      document.getElementById(
+        "status"
+      ).value,
+
+    photo_url:
+      photoURL,
+
+    remarks:
+      document.getElementById(
+        "remarks"
+      ).value.trim(),
+
+    updated_at:
+      new Date().toISOString()
+
+  };
+
+
+  if(editId){
+
+    const index =
+      sites.findIndex(
+        site => site.id === editId
+      );
+
+
+    if(index !== -1){
+
+      sites[index] =
+        siteData;
+
+    }
+
+
+    showMessage(
+      "Site updated successfully."
+    );
+
+  }
+  else{
+
+    siteData.created_at =
+      new Date().toISOString();
+
+
+    sites.unshift(
+      siteData
+    );
+
+
+    selectedSites.add(
+      siteData.id
+    );
+
+
+    showMessage(
+      "Site saved successfully."
+    );
+
+  }
+
+
+  try{
+
+    saveLocalData();
+
+  }
+  catch(error){
+
+    /*
+     * If storage failed while adding a new item,
+     * reload the previous state.
+     */
+
+    loadLocalData();
+
+    return;
+
+  }
+
+
+  renderSites();
+
+  renderMarkers();
+
+  clearForm();
+
+}
+
+
+/* =========================================================
+   RESIZE IMAGE
+========================================================= */
+
+function resizeImage(
+  file,
+  maxSize,
+  quality
+){
+
+  return new Promise(
+    function(resolve,reject){
+
+      const reader =
+        new FileReader();
+
+
+      reader.onload =
+        function(event){
+
+          const image =
+            new Image();
+
+
+          image.onload =
+            function(){
+
+              let width =
+                image.width;
+
+              let height =
+                image.height;
+
+
+              if(
+                width > maxSize ||
+                height > maxSize
+              ){
+
+                if(width > height){
+
+                  height =
+                    Math.round(
+                      height *
+                      maxSize /
+                      width
+                    );
+
+                  width =
+                    maxSize;
+
+                }
+                else{
+
+                  width =
+                    Math.round(
+                      width *
+                      maxSize /
+                      height
+                    );
+
+                  height =
+                    maxSize;
+
+                }
+
+              }
+
+
+              const canvas =
+                document.createElement(
+                  "canvas"
+                );
+
+
+              canvas.width =
+                width;
+
+              canvas.height =
+                height;
+
+
+              const context =
+                canvas.getContext(
+                  "2d"
+                );
+
+
+              context.drawImage(
+                image,
+                0,
+                0,
+                width,
+                height
+              );
+
+
+              resolve(
+                canvas.toDataURL(
+                  "image/jpeg",
+                  quality
+                )
+              );
+
+            };
+
+
+          image.onerror =
+            function(){
+
+              reject(
+                new Error(
+                  "Invalid image."
+                )
+              );
+
+            };
+
+
+          image.src =
+            event.target.result;
+
+        };
+
+
+      reader.onerror =
+        function(){
+
+          reject(
+            new Error(
+              "Could not read file."
+            )
+          );
+
+        };
+
+
+      reader.readAsDataURL(file);
+
+    }
+  );
+
+}
+
+
+/* =========================================================
+   GENERATE ID
+========================================================= */
+
+function generateID(){
+
+  return (
+    Date.now().toString(36) +
+    "-" +
+    Math.random()
+      .toString(36)
+      .substring(2,10)
   );
 
 }
@@ -1955,6 +1749,7 @@ function renderMarkers(){
   markers.forEach(
     marker => marker.remove()
   );
+
 
   markers = [];
 
@@ -1989,7 +1784,9 @@ function renderMarkers(){
 
       let popup =
         "<b>" +
-        escapeHTML(site.site_name) +
+        escapeHTML(
+          site.site_name
+        ) +
         "</b><br>" +
 
         escapeHTML(
@@ -2014,7 +1811,9 @@ function renderMarkers(){
         "Rate: ₹" +
         Number(
           site.monthly_rate || 0
-        ).toLocaleString("en-IN") +
+        ).toLocaleString(
+          "en-IN"
+        ) +
 
         "<br>" +
 
@@ -2029,10 +1828,23 @@ function renderMarkers(){
         popup +=
           "<br><br>" +
           "<img src='" +
-          escapeAttribute(site.photo_url) +
+          escapeAttribute(
+            site.photo_url
+          ) +
           "' style='width:180px;height:120px;object-fit:cover;border-radius:6px'>";
 
       }
+
+
+      popup +=
+        "<br><br>" +
+        "<a href='https://www.google.com/maps?q=" +
+        encodeURIComponent(
+          lat + "," + lng
+        ) +
+        "' target='_blank'>" +
+        "📍 Open Google Maps" +
+        "</a>";
 
 
       marker.bindPopup(
@@ -2054,7 +1866,9 @@ function renderMarkers(){
       );
 
 
-      markers.push(marker);
+      markers.push(
+        marker
+      );
 
     }
   );
@@ -2115,7 +1929,9 @@ function renderSites(){
           .toLowerCase();
 
 
-        return text.includes(search);
+        return text.includes(
+          search
+        );
 
       }
     );
@@ -2165,18 +1981,24 @@ function renderSites(){
         photoHTML =
           "<img " +
           "src='" +
-          escapeAttribute(site.photo_url) +
+          escapeAttribute(
+            site.photo_url
+          ) +
           "' " +
           "class='saved-site-photo' " +
           "onclick=\"viewSite('" +
-          escapeAttribute(site.id) +
+          escapeAttribute(
+            site.id
+          ) +
           "')\">";
 
       }
       else{
 
         photoHTML =
-          "<div class='no-site-photo'>📷</div>";
+          "<div class='no-site-photo'>" +
+          "📷" +
+          "</div>";
 
       }
 
@@ -2193,7 +2015,11 @@ function renderSites(){
 
             "<div class='site-name'>" +
 
-              (selected ? "☑ " : "☐ ") +
+              (
+                selected
+                  ? "☑ "
+                  : "☐ "
+              ) +
 
               escapeHTML(
                 site.site_name
@@ -2210,20 +2036,35 @@ function renderSites(){
               "<br>" +
 
               "📍 " +
+
               escapeHTML(
-                String(site.latitude)
+                String(
+                  site.latitude
+                )
               ) +
+
               ", " +
+
               escapeHTML(
-                String(site.longitude)
+                String(
+                  site.longitude
+                )
               ) +
 
               "<br>" +
 
               "📐 " +
-              Number(site.width || 0) +
+
+              Number(
+                site.width || 0
+              ) +
+
               " × " +
-              Number(site.height || 0) +
+
+              Number(
+                site.height || 0
+              ) +
+
               " ft" +
 
               "<br>" +
@@ -2250,7 +2091,9 @@ function renderSites(){
           "<button " +
           "class='btn-blue' " +
           "onclick=\"viewSite('" +
-          escapeAttribute(site.id) +
+          escapeAttribute(
+            site.id
+          ) +
           "')\">" +
           "MAP" +
           "</button>" +
@@ -2258,19 +2101,25 @@ function renderSites(){
           "<button " +
           "class='btn-gray' " +
           "onclick=\"selectSite('" +
-          escapeAttribute(site.id) +
+          escapeAttribute(
+            site.id
+          ) +
           "')\">" +
+
           (
             selected
               ? "UNSELECT"
               : "SELECT"
           ) +
+
           "</button>" +
 
           "<button " +
           "class='btn-gray' " +
           "onclick=\"editSite('" +
-          escapeAttribute(site.id) +
+          escapeAttribute(
+            site.id
+          ) +
           "')\">" +
           "EDIT" +
           "</button>" +
@@ -2278,7 +2127,9 @@ function renderSites(){
           "<button " +
           "class='btn-red' " +
           "onclick=\"deleteSite('" +
-          escapeAttribute(site.id) +
+          escapeAttribute(
+            site.id
+          ) +
           "')\">" +
           "DELETE" +
           "</button>" +
@@ -2324,6 +2175,7 @@ function selectSite(id){
     selectedSites.add(id);
 
   }
+
 
   renderSites();
 
@@ -2464,13 +2316,15 @@ function editSite(id){
   document.getElementById(
     "mediaType"
   ).value =
-    site.media_type || "Billboard";
+    site.media_type ||
+    "Billboard";
 
 
   document.getElementById(
     "illumination"
   ).value =
-    site.illumination || "Lit";
+    site.illumination ||
+    "Lit";
 
 
   document.getElementById(
@@ -2482,7 +2336,8 @@ function editSite(id){
   document.getElementById(
     "status"
   ).value =
-    site.status || "Available";
+    site.status ||
+    "Available";
 
 
   document.getElementById(
@@ -2526,7 +2381,9 @@ function editSite(id){
     "✏️ Edit OOH Site";
 
 
-  viewSite(id);
+  viewSite(
+    id
+  );
 
 
   window.scrollTo({
@@ -2541,14 +2398,7 @@ function editSite(id){
    DELETE SITE
 ========================================================= */
 
-async function deleteSite(id){
-
-  if(!currentUser){
-
-    return;
-
-  }
-
+function deleteSite(id){
 
   const site =
     sites.find(
@@ -2576,61 +2426,76 @@ async function deleteSite(id){
   }
 
 
-  showMessage(
-    "Deleting site..."
+  sites =
+    sites.filter(
+      item => item.id !== id
+    );
+
+
+  selectedSites.delete(
+    id
   );
 
 
-  try{
+  saveLocalData();
 
-    const { error } =
-      await supabaseClient
-        .from("sites")
-        .delete()
-        .eq("id",id)
-        .eq("user_id",currentUser.id);
+  renderSites();
 
+  renderMarkers();
 
-    if(error){
+  showMessage(
+    "Site deleted."
+  );
 
-      console.error(error);
-
-      showMessage(
-        "Could not delete site: " +
-        error.message
-      );
-
-      return;
-
-    }
+}
 
 
-    sites =
-      sites.filter(
-        site => site.id !== id
-      );
+/* =========================================================
+   CLEAR ALL SITES
+========================================================= */
 
+function clearAllSites(){
 
-    selectedSites.delete(id);
-
-    renderSites();
-
-    renderMarkers();
+  if(!sites.length){
 
     showMessage(
-      "Site deleted."
+      "There are no saved sites."
     );
 
-  }
-  catch(error){
-
-    console.error(error);
-
-    showMessage(
-      "Could not delete site."
-    );
+    return;
 
   }
+
+
+  if(
+    !confirm(
+      "Delete ALL saved OOH sites? This cannot be undone."
+    )
+  ){
+
+    return;
+
+  }
+
+
+  sites = [];
+
+  selectedSites.clear();
+
+  localStorage.removeItem(
+    STORAGE_KEY
+  );
+
+
+  renderSites();
+
+  renderMarkers();
+
+  clearForm();
+
+  showMessage(
+    "All sites deleted."
+  );
 
 }
 
@@ -2749,7 +2614,9 @@ function exportExcel(){
     sites.filter(
       site =>
         selectedSites.size === 0 ||
-        selectedSites.has(site.id)
+        selectedSites.has(
+          site.id
+        )
     );
 
 
@@ -2854,9 +2721,32 @@ function exportExcel(){
     );
 
 
+    const campaign =
+      document.getElementById(
+        "campaign"
+      ).value.trim();
+
+
+    const safeName =
+      (
+        campaign ||
+        "My_Vision_OOH_Sites"
+      )
+      .replace(
+        /[^a-z0-9_\- ]/gi,
+        ""
+      )
+      .trim()
+      .replace(
+        /\s+/g,
+        "_"
+      );
+
+
     XLSX.writeFile(
       workbook,
-      "My_Vision_OOH_Sites.xlsx"
+      safeName +
+      ".xlsx"
     );
 
 
@@ -2880,7 +2770,6 @@ function exportExcel(){
 
 /* =========================================================
    IMAGE URL → DATA URL
-   THIS FIXES PPT IMAGE EXPORT
 ========================================================= */
 
 async function imageUrlToDataUrl(url){
@@ -2888,6 +2777,21 @@ async function imageUrlToDataUrl(url){
   if(!url){
 
     return null;
+
+  }
+
+
+  /*
+   * Supports normal data URLs directly.
+   */
+
+  if(
+    String(url).startsWith(
+      "data:image/"
+    )
+  ){
+
+    return url;
 
   }
 
@@ -2959,7 +2863,6 @@ async function imageUrlToDataUrl(url){
 
     console.error(
       "Could not convert image:",
-      url,
       error
     );
 
@@ -2991,7 +2894,9 @@ async function exportPPT(){
     sites.filter(
       site =>
         selectedSites.size === 0 ||
-        selectedSites.has(site.id)
+        selectedSites.has(
+          site.id
+        )
     );
 
 
@@ -3148,12 +3053,11 @@ async function exportPPT(){
         };
 
 
-      /* HEADER */
-
       slide.addText(
         (index + 1) +
         ". " +
-        (site.site_name || "OOH Site"),
+        (site.site_name ||
+        "OOH Site"),
         {
           x:.5,
           y:.3,
@@ -3183,7 +3087,7 @@ async function exportPPT(){
 
 
       /* ===================================================
-         SITE IMAGE
+         SITE PHOTO
       =================================================== */
 
       if(site.photo_url){
@@ -3288,6 +3192,7 @@ async function exportPPT(){
 
 
       const details =
+
         "LATITUDE: " +
         (site.latitude ?? "-") +
 
@@ -3326,15 +3231,14 @@ async function exportPPT(){
           fontSize:13,
           color:"172033",
           valign:"top",
-          breakLine:false,
-          margin:0.05,
+          margin:.05,
           fit:"shrink"
         }
       );
 
 
       /* ===================================================
-         GOOGLE MAPS LINK
+         GOOGLE MAPS
       =================================================== */
 
       const mapsURL =
@@ -3475,50 +3379,54 @@ async function exportPPT(){
 
 function escapeHTML(text){
 
-  return String(text ?? "")
-    .replace(
-      /[&<>"']/g,
-      function(character){
+  return String(
+    text ?? ""
+  )
+  .replace(
+    /[&<>"']/g,
+    function(character){
 
-        return {
+      return {
 
-          "&":"&amp;",
-          "<":"&lt;",
-          ">":"&gt;",
-          '"':"&quot;",
-          "'":"&#039;"
+        "&":"&amp;",
+        "<":"&lt;",
+        ">":"&gt;",
+        '"':"&quot;",
+        "'":"&#039;"
 
-        }[character];
+      }[character];
 
-      }
-    );
+    }
+  );
 
 }
 
 
 function escapeAttribute(text){
 
-  return String(text ?? "")
-    .replace(
-      /&/g,
-      "&amp;"
-    )
-    .replace(
-      /"/g,
-      "&quot;"
-    )
-    .replace(
-      /'/g,
-      "&#039;"
-    )
-    .replace(
-      /</g,
-      "&lt;"
-    )
-    .replace(
-      />/g,
-      "&gt;"
-    );
+  return String(
+    text ?? ""
+  )
+  .replace(
+    /&/g,
+    "&amp;"
+  )
+  .replace(
+    /"/g,
+    "&quot;"
+  )
+  .replace(
+    /'/g,
+    "&#039;"
+  )
+  .replace(
+    /</g,
+    "&lt;"
+  )
+  .replace(
+    />/g,
+    "&gt;"
+  );
 
 }
 
@@ -3531,10 +3439,11 @@ document.getElementById(
   "photo"
 ).addEventListener(
   "change",
-  function(){
+  async function(){
 
     const file =
       this.files[0];
+
 
     const preview =
       document.getElementById(
@@ -3554,170 +3463,73 @@ document.getElementById(
     }
 
 
-    const reader =
-      new FileReader();
+    try{
+
+      const dataURL =
+        await resizeImage(
+          file,
+          1200,
+          0.82
+        );
 
 
-    reader.onload =
-      function(event){
+      preview.src =
+        dataURL;
 
-        preview.src =
-          event.target.result;
+      preview.dataset.url =
+        "";
 
-        preview.dataset.url =
-          "";
-
-        preview.style.display =
-          "block";
-
-      };
-
-
-    reader.readAsDataURL(file);
-
-  }
-);
-
-
-/* =========================================================
-   ENTER KEY LOGIN
-========================================================= */
-
-document.getElementById(
-  "password"
-).addEventListener(
-  "keydown",
-  function(event){
-
-    if(event.key === "Enter"){
-
-      loginUser();
+      preview.style.display =
+        "block";
 
     }
+    catch(error){
 
-  }
-);
+      console.error(error);
 
-
-document.getElementById(
-  "signupPassword"
-).addEventListener(
-  "keydown",
-  function(event){
-
-    if(event.key === "Enter"){
-
-      signupUser();
-
-    }
-
-  }
-);
-
-
-/* =========================================================
-   AUTH SESSION
-========================================================= */
-
-async function startApp(){
-
-  try{
-
-    const {
-      data:{
-        session
-      },
-      error
-    } =
-      await supabaseClient.auth.getSession();
-
-
-    if(error){
-
-      console.error(
-        "Session error:",
-        error
+      showMessage(
+        "Could not preview image."
       );
 
     }
 
+  }
+);
 
-    if(session && session.user){
 
-      currentUser =
-        session.user;
+/* =========================================================
+   ENTER KEY SEARCH
+========================================================= */
 
-      await enterApplication();
+document.getElementById(
+  "locationSearch"
+).addEventListener(
+  "keydown",
+  function(event){
+
+    if(event.key === "Enter"){
+
+      searchLocation();
 
     }
-    else{
-
-      document.getElementById(
-        "loginScreen"
-      ).style.display =
-        "flex";
-
-    }
-
-
-    supabaseClient.auth.onAuthStateChange(
-      async function(event,session){
-
-        console.log(
-          "Auth event:",
-          event
-        );
-
-
-        if(
-          event === "SIGNED_IN" &&
-          session &&
-          session.user
-        ){
-
-          currentUser =
-            session.user;
-
-        }
-
-
-        if(
-          event === "SIGNED_OUT"
-        ){
-
-          currentUser =
-            null;
-
-          sites = [];
-
-          selectedSites.clear();
-
-          document.getElementById(
-            "loginScreen"
-          ).style.display =
-            "flex";
-
-          showLogin();
-
-        }
-
-      }
-    );
 
   }
-  catch(error){
+);
 
-    console.error(
-      "START APP ERROR:",
-      error
-    );
 
-    document.getElementById(
-      "loginScreen"
-    ).style.display =
-      "flex";
+/* =========================================================
+   START APPLICATION
+========================================================= */
 
-  }
+function startApp(){
+
+  initializeMap();
+
+  loadLocalData();
+
+  showMessage(
+    "MY VISION OOH ready."
+  );
 
 }
 
