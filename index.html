@@ -330,8 +330,6 @@ textarea{
 
   <div class="sidebar">
 
-    <!-- CAMPAIGN -->
-
     <div class="card">
 
       <h3>Campaign</h3>
@@ -357,8 +355,6 @@ textarea{
 
     </div>
 
-
-    <!-- LOCATION -->
 
     <div class="card">
 
@@ -403,8 +399,6 @@ textarea{
 
     </div>
 
-
-    <!-- SITE FORM -->
 
     <div class="card">
 
@@ -516,10 +510,8 @@ textarea{
           <label>Traffic</label>
 
           <select id="traffic">
-            <option>High</option>
-            <option>Medium</option>
-            <option>Low</option>
-            <option>NA</option>
+            <option>ET</option>
+            <option>MT</option>
           </select>
 
         </div>
@@ -624,8 +616,6 @@ textarea{
     </div>
 
 
-    <!-- SAVED SITES -->
-
     <div class="card">
 
       <h3>📌 Saved Sites</h3>
@@ -672,10 +662,6 @@ const STORAGE_KEY = "my_vision_ooh_sites";
 const CAMPAIGN_KEY = "my_vision_ooh_campaign";
 
 
-/* =========================================================
-   MESSAGE
-========================================================= */
-
 function showMessage(text){
 
   const box = document.getElementById("message");
@@ -694,20 +680,12 @@ function showMessage(text){
 }
 
 
-/* =========================================================
-   NUMBER FORMAT
-========================================================= */
-
 function money(value){
 
   return "₹" + Number(value || 0).toLocaleString("en-IN");
 
 }
 
-
-/* =========================================================
-   CALCULATIONS
-========================================================= */
 
 function calculateValues(){
 
@@ -732,10 +710,6 @@ function calculateValues(){
   const illumination =
     document.getElementById("illumination").value;
 
-  /*
-   * DOOH has no P&M charge.
-   */
-
   if(illumination === "DOOH"){
 
     pmRate = 0;
@@ -746,11 +720,6 @@ function calculateValues(){
 
   const area =
     width * height * units;
-
-  /*
-   * Display charge for campaign duration.
-   * Monthly rate × days / 30
-   */
 
   const displayCharges =
     rate * duration / 30;
@@ -776,10 +745,6 @@ function calculateValues(){
 
 }
 
-
-/* =========================================================
-   LOAD LOCAL DATA
-========================================================= */
 
 function loadLocalData(){
 
@@ -852,10 +817,6 @@ function saveLocalData(){
 }
 
 
-/* =========================================================
-   CAMPAIGN
-========================================================= */
-
 document.getElementById("campaign").addEventListener(
   "input",
   function(){
@@ -877,10 +838,6 @@ document.getElementById("campaign").addEventListener(
   }
 );
 
-
-/* =========================================================
-   MAP
-========================================================= */
 
 function initializeMap(){
 
@@ -941,10 +898,6 @@ function initializeMap(){
 
 }
 
-
-/* =========================================================
-   LOCATION SEARCH
-========================================================= */
 
 async function searchLocation(){
 
@@ -1017,10 +970,6 @@ async function searchLocation(){
 }
 
 
-/* =========================================================
-   COORDINATES
-========================================================= */
-
 function searchCoordinates(){
 
   const lat =
@@ -1066,10 +1015,6 @@ function searchCoordinates(){
 
 }
 
-
-/* =========================================================
-   SHOW LOCATION
-========================================================= */
 
 function showLocation(lat,lng,name){
 
@@ -1132,10 +1077,6 @@ function showLocation(lat,lng,name){
 }
 
 
-/* =========================================================
-   SEARCH MARKER
-========================================================= */
-
 function placeSearchMarker(lat,lng,name){
 
   if(searchMarker){
@@ -1158,10 +1099,6 @@ function placeSearchMarker(lat,lng,name){
 
 }
 
-
-/* =========================================================
-   MY LOCATION
-========================================================= */
 
 function useMyLocation(){
 
@@ -1208,10 +1145,6 @@ function useMyLocation(){
 
 }
 
-
-/* =========================================================
-   SAVE SITE
-========================================================= */
 
 async function saveSite(){
 
@@ -1492,10 +1425,6 @@ async function saveSite(){
 }
 
 
-/* =========================================================
-   RESIZE IMAGE
-========================================================= */
-
 function resizeImage(file,maxSize,quality){
 
   return new Promise(function(resolve,reject){
@@ -1611,10 +1540,6 @@ function resizeImage(file,maxSize,quality){
 }
 
 
-/* =========================================================
-   GENERATE ID
-========================================================= */
-
 function generateID(){
 
   return (
@@ -1627,10 +1552,6 @@ function generateID(){
 
 }
 
-
-/* =========================================================
-   MARKERS
-========================================================= */
 
 function renderMarkers(){
 
@@ -1751,10 +1672,6 @@ function renderMarkers(){
 
 }
 
-
-/* =========================================================
-   SITE LIST
-========================================================= */
 
 function renderSites(){
 
@@ -1908,6 +1825,11 @@ function renderSites(){
             " | " +
             escapeHTML(site.illumination || "") +
 
+            "<br>" +
+
+            "🚦 " +
+            escapeHTML(site.traffic || "") +
+
           "</div>" +
 
         "</div>" +
@@ -1966,10 +1888,6 @@ function renderSites(){
 }
 
 
-/* =========================================================
-   SELECT
-========================================================= */
-
 function selectSite(id){
 
   if(selectedSites.has(id)){
@@ -1983,10 +1901,6 @@ function selectSite(id){
 
 }
 
-
-/* =========================================================
-   VIEW SITE
-========================================================= */
 
 function viewSite(id){
 
@@ -2039,10 +1953,6 @@ function viewSite(id){
 }
 
 
-/* =========================================================
-   EDIT SITE
-========================================================= */
-
 function editSite(id){
 
   const site =
@@ -2091,7 +2001,9 @@ function editSite(id){
     site.illumination || "LIT";
 
   document.getElementById("traffic").value =
-    site.traffic || "High";
+    site.traffic === "ET" || site.traffic === "MT"
+      ? site.traffic
+      : "ET";
 
   document.getElementById("rate").value =
     site.monthly_rate ?? 0;
@@ -2152,10 +2064,6 @@ function editSite(id){
 }
 
 
-/* =========================================================
-   DELETE
-========================================================= */
-
 function deleteSite(id){
 
   const site =
@@ -2197,10 +2105,6 @@ function deleteSite(id){
 
 }
 
-
-/* =========================================================
-   CLEAR ALL
-========================================================= */
 
 function clearAllSites(){
 
@@ -2244,10 +2148,6 @@ function clearAllSites(){
 }
 
 
-/* =========================================================
-   CLEAR FORM
-========================================================= */
-
 function clearForm(){
 
   document.getElementById("editId").value = "";
@@ -2274,7 +2174,7 @@ function clearForm(){
 
   document.getElementById("illumination").value = "LIT";
 
-  document.getElementById("traffic").value = "High";
+  document.getElementById("traffic").value = "ET";
 
   document.getElementById("rate").value = "0";
 
@@ -2306,10 +2206,6 @@ function clearForm(){
 
 }
 
-
-/* =========================================================
-   EXCEL EXPORT
-========================================================= */
 
 function exportExcel(){
 
@@ -2344,10 +2240,6 @@ function exportExcel(){
 
 
   try{
-
-    /*
-     * EXACT COLUMN FORMAT REQUESTED
-     */
 
     const rows =
       data.map(function(site,index){
@@ -2431,10 +2323,6 @@ function exportExcel(){
       XLSX.utils.json_to_sheet(rows);
 
 
-    /*
-     * COLUMN WIDTHS
-     */
-
     worksheet["!cols"] = [
 
       {wch:7},
@@ -2456,10 +2344,6 @@ function exportExcel(){
 
     ];
 
-
-    /*
-     * HEADER STYLE
-     */
 
     const range =
       XLSX.utils.decode_range(
@@ -2522,10 +2406,6 @@ function exportExcel(){
       "OOH Sites"
     );
 
-
-    /*
-     * SECOND SHEET - SUMMARY
-     */
 
     const summaryRows = [
 
@@ -2681,10 +2561,6 @@ function exportExcel(){
 }
 
 
-/* =========================================================
-   IMAGE URL TO DATA URL
-========================================================= */
-
 async function imageUrlToDataUrl(url){
 
   if(!url){
@@ -2766,10 +2642,6 @@ async function imageUrlToDataUrl(url){
 }
 
 
-/* =========================================================
-   PPT EXPORT
-========================================================= */
-
 async function exportPPT(){
 
   if(typeof pptxgen === "undefined"){
@@ -2832,10 +2704,6 @@ async function exportPPT(){
 
     ppt.lang = "en-US";
 
-
-    /*
-     * COVER
-     */
 
     const cover =
       ppt.addSlide();
@@ -2903,10 +2771,6 @@ async function exportPPT(){
     );
 
 
-    /*
-     * SITE SLIDES
-     */
-
     for(
       let index = 0;
       index < data.length;
@@ -2957,10 +2821,6 @@ async function exportPPT(){
         }
       );
 
-
-      /*
-       * PHOTO
-       */
 
       if(site.photo_url){
 
@@ -3023,10 +2883,6 @@ async function exportPPT(){
 
       }
 
-
-      /*
-       * DETAILS
-       */
 
       const details =
 
@@ -3102,10 +2958,6 @@ async function exportPPT(){
         }
       );
 
-
-      /*
-       * GOOGLE MAPS
-       */
 
       const mapsURL =
         "https://www.google.com/maps?q=" +
@@ -3226,10 +3078,6 @@ async function exportPPT(){
 }
 
 
-/* =========================================================
-   SECURITY
-========================================================= */
-
 function escapeHTML(text){
 
   return String(text ?? "")
@@ -3264,10 +3112,6 @@ function escapeAttribute(text){
 
 }
 
-
-/* =========================================================
-   PHOTO PREVIEW
-========================================================= */
 
 document.getElementById("photo").addEventListener(
   "change",
@@ -3320,10 +3164,6 @@ document.getElementById("photo").addEventListener(
 );
 
 
-/* =========================================================
-   CALCULATION EVENTS
-========================================================= */
-
 [
   "width",
   "height",
@@ -3366,10 +3206,6 @@ document.getElementById("illumination").addEventListener(
 );
 
 
-/* =========================================================
-   ENTER SEARCH
-========================================================= */
-
 document.getElementById("locationSearch").addEventListener(
   "keydown",
   function(event){
@@ -3381,10 +3217,6 @@ document.getElementById("locationSearch").addEventListener(
   }
 );
 
-
-/* =========================================================
-   START
-========================================================= */
 
 function startApp(){
 
