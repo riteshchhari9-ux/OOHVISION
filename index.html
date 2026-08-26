@@ -7,10 +7,8 @@
 
 <title>MY VISION OOH</title>
 
-<link
-  rel="stylesheet"
-  href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css"
-/>
+<link rel="stylesheet"
+href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css">
 
 <style>
 
@@ -303,12 +301,23 @@ textarea{
   font-size:12px;
 }
 
-.storage-status{
-  font-size:10px;
+/* =========================
+   PPT PREVIEW / DESIGN HELPERS
+========================= */
+
+.ppt-note{
+  background:#f8fafc;
+  border:1px solid #e2e8f0;
+  padding:10px;
+  border-radius:8px;
+  font-size:11px;
   color:#64748b;
-  margin-top:8px;
-  text-align:center;
+  margin-top:10px;
 }
+
+/* =========================
+   RESPONSIVE
+========================= */
 
 @media(max-width:850px){
 
@@ -339,7 +348,6 @@ textarea{
 }
 
 </style>
-
 </head>
 
 <body>
@@ -352,25 +360,18 @@ textarea{
 
   <div class="header-actions">
 
-    <button
-      class="btn-green"
-      onclick="exportExcel()"
-    >
+    <button class="btn-green" onclick="exportExcel()">
       📊 Excel
     </button>
 
-    <button
-      id="pptButton"
-      class="btn-green"
-      onclick="exportPPT()"
-    >
+    <button id="pptButton"
+            class="btn-green"
+            onclick="exportPPT()">
       📑 PPT
     </button>
 
-    <button
-      class="btn-gray"
-      onclick="clearAllSites()"
-    >
+    <button class="btn-gray"
+            onclick="clearAllSites()">
       🗑 Clear All
     </button>
 
@@ -382,6 +383,8 @@ textarea{
 <div class="main">
 
   <div class="sidebar">
+
+    <!-- CAMPAIGN -->
 
     <div class="card">
 
@@ -406,12 +409,10 @@ textarea{
 
       </div>
 
-      <div class="storage-status">
-        💾 Sites are stored securely in browser storage
-      </div>
-
     </div>
 
+
+    <!-- SEARCH -->
 
     <div class="card">
 
@@ -424,10 +425,8 @@ textarea{
         placeholder="Bandra West, Mumbai"
       >
 
-      <button
-        class="btn-blue full"
-        onclick="searchLocation()"
-      >
+      <button class="btn-blue full"
+              onclick="searchLocation()">
         SEARCH LOCATION
       </button>
 
@@ -436,42 +435,28 @@ textarea{
       <div class="row">
 
         <div>
-
           <label>Latitude</label>
-
-          <input
-            id="searchLat"
-            type="number"
-            step="any"
-          >
-
+          <input id="searchLat"
+                 type="number"
+                 step="any">
         </div>
 
         <div>
-
           <label>Longitude</label>
-
-          <input
-            id="searchLng"
-            type="number"
-            step="any"
-          >
-
+          <input id="searchLng"
+                 type="number"
+                 step="any">
         </div>
 
       </div>
 
-      <button
-        class="btn-blue full"
-        onclick="searchCoordinates()"
-      >
+      <button class="btn-blue full"
+              onclick="searchCoordinates()">
         📍 FIND COORDINATES
       </button>
 
-      <button
-        class="btn-gray full"
-        onclick="useMyLocation()"
-      >
+      <button class="btn-gray full"
+              onclick="useMyLocation()">
         📌 USE MY LOCATION
       </button>
 
@@ -480,16 +465,16 @@ textarea{
     </div>
 
 
+    <!-- SITE FORM -->
+
     <div class="card">
 
       <h3 id="formTitle">
         ➕ Add OOH Site
       </h3>
 
-      <input
-        id="editId"
-        type="hidden"
-      >
+      <input id="editId"
+             type="hidden">
 
       <label>Site Name / ID</label>
 
@@ -501,29 +486,18 @@ textarea{
       <div class="row">
 
         <div>
-
           <label>State</label>
-
-          <input
-            id="state"
-            placeholder="Maharashtra"
-          >
-
+          <input id="state"
+                 placeholder="Maharashtra">
         </div>
 
         <div>
-
           <label>City</label>
-
-          <input
-            id="city"
-            placeholder="Mumbai"
-          >
-
+          <input id="city"
+                 placeholder="Mumbai">
         </div>
 
       </div>
-
 
       <label>Location</label>
 
@@ -532,75 +506,48 @@ textarea{
         placeholder="Bandra West, Mumbai"
       >
 
-
       <div class="row">
 
         <div>
-
           <label>Latitude</label>
-
-          <input
-            id="latitude"
-            type="number"
-            step="any"
-          >
-
+          <input id="latitude"
+                 type="number"
+                 step="any">
         </div>
 
         <div>
-
           <label>Longitude</label>
-
-          <input
-            id="longitude"
-            type="number"
-            step="any"
-          >
-
+          <input id="longitude"
+                 type="number"
+                 step="any">
         </div>
 
       </div>
 
-
       <div class="row3">
 
         <div>
-
           <label>Width (ft)</label>
-
-          <input
-            id="width"
-            type="number"
-            value="40"
-            min="0"
-          >
-
+          <input id="width"
+                 type="number"
+                 value="40"
+                 min="0">
         </div>
 
         <div>
-
           <label>Height (ft)</label>
-
-          <input
-            id="height"
-            type="number"
-            value="40"
-            min="0"
-          >
-
+          <input id="height"
+                 type="number"
+                 value="40"
+                 min="0">
         </div>
 
         <div>
-
           <label>Units</label>
-
-          <input
-            id="units"
-            type="number"
-            value="1"
-            min="1"
-          >
-
+          <input id="units"
+                 type="number"
+                 value="1"
+                 min="1">
         </div>
 
       </div>
@@ -613,30 +560,25 @@ textarea{
           <label>Media</label>
 
           <select id="mediaType">
-
             <option>Billboard</option>
             <option>Unipole</option>
             <option>Gantries</option>
             <option>Bus Shelter</option>
             <option>Digital</option>
             <option>Other</option>
-
           </select>
 
         </div>
-
 
         <div>
 
           <label>Illumination / Type</label>
 
           <select id="illumination">
-
             <option>LIT</option>
             <option>N LIT</option>
             <option>DOOH</option>
             <option>F LIT</option>
-
           </select>
 
         </div>
@@ -651,25 +593,20 @@ textarea{
           <label>Traffic</label>
 
           <select id="traffic">
-
             <option>ET</option>
             <option>MT</option>
-
           </select>
 
         </div>
-
 
         <div>
 
           <label>Monthly Display Charges ₹</label>
 
-          <input
-            id="rate"
-            type="number"
-            value="0"
-            min="0"
-          >
+          <input id="rate"
+                 type="number"
+                 value="0"
+                 min="0">
 
         </div>
 
@@ -682,26 +619,21 @@ textarea{
 
           <label>Campaign Duration (Days)</label>
 
-          <input
-            id="duration"
-            type="number"
-            value="30"
-            min="1"
-          >
+          <input id="duration"
+                 type="number"
+                 value="30"
+                 min="1">
 
         </div>
-
 
         <div>
 
           <label>P&M Charges ₹ / sq.ft</label>
 
-          <input
-            id="pmRate"
-            type="number"
-            value="15"
-            min="0"
-          >
+          <input id="pmRate"
+                 type="number"
+                 value="15"
+                 min="0">
 
         </div>
 
@@ -711,51 +643,41 @@ textarea{
       <label>Status</label>
 
       <select id="status">
-
         <option>Available</option>
         <option>Booked</option>
         <option>Hold</option>
         <option>Unavailable</option>
-
       </select>
 
 
       <div class="calculation">
 
         <div>
-
           Total Area:
           <strong id="areaPreview">
             1,600 sq.ft
           </strong>
-
         </div>
 
         <div>
-
           Display Charges:
           <strong id="displayPreview">
             ₹0
           </strong>
-
         </div>
 
         <div>
-
           P&M Charges:
           <strong id="pmPreview">
             ₹24,000
           </strong>
-
         </div>
 
         <div>
-
           Total Cost:
           <strong id="totalPreview">
             ₹24,000
           </strong>
-
         </div>
 
       </div>
@@ -768,7 +690,6 @@ textarea{
         type="file"
         accept="image/*"
       >
-
 
       <img
         id="photoPreview"
@@ -784,23 +705,20 @@ textarea{
       ></textarea>
 
 
-      <button
-        class="btn-blue full"
-        onclick="saveSite()"
-      >
+      <button class="btn-blue full"
+              onclick="saveSite()">
         💾 SAVE SITE
       </button>
 
-
-      <button
-        class="btn-gray full"
-        onclick="clearForm()"
-      >
+      <button class="btn-gray full"
+              onclick="clearForm()">
         CLEAR FORM
       </button>
 
     </div>
 
+
+    <!-- SAVED SITES -->
 
     <div class="card">
 
@@ -831,26 +749,18 @@ textarea{
 <div id="message"></div>
 
 
-<script
-  src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"
-></script>
+<script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
 
+<script src="https://cdn.jsdelivr.net/npm/xlsx@0.18.5/dist/xlsx.full.min.js"></script>
 
-<script
-  src="https://cdn.jsdelivr.net/npm/xlsx@0.18.5/dist/xlsx.full.min.js"
-></script>
-
-
-<script
-  src="https://cdn.jsdelivr.net/npm/pptxgenjs@3.12.0/dist/pptxgen.bundle.js"
-></script>
+<script src="https://cdn.jsdelivr.net/npm/pptxgenjs@3.12.0/dist/pptxgen.bundle.js"></script>
 
 
 <script>
 
 /* =========================================================
    GLOBAL VARIABLES
-   ========================================================= */
+========================================================= */
 
 let sites = [];
 
@@ -862,50 +772,36 @@ let markers = [];
 
 let searchMarker = null;
 
+let db = null;
 
-/* =========================================================
-   STORAGE
-   ========================================================= */
-
-const DB_NAME =
-  "MY_VISION_OOH_DATABASE";
+const DB_NAME = "MY_VISION_OOH_DATABASE";
 
 const DB_VERSION = 1;
 
-const STORE_NAME =
-  "sites";
+const STORE_NAME = "sites";
 
-const STORAGE_KEY =
-  "my_vision_ooh_sites";
-
-const CAMPAIGN_KEY =
-  "my_vision_ooh_campaign";
+const CAMPAIGN_KEY = "my_vision_ooh_campaign";
 
 
 /* =========================================================
    MESSAGE
-   ========================================================= */
+========================================================= */
 
 function showMessage(text){
 
   const box =
     document.getElementById("message");
 
-  box.innerText =
-    text;
+  box.innerText = text;
 
-  box.style.display =
-    "block";
+  box.style.display = "block";
 
-  clearTimeout(
-    window.messageTimer
-  );
+  clearTimeout(window.messageTimer);
 
   window.messageTimer =
     setTimeout(function(){
 
-      box.style.display =
-        "none";
+      box.style.display = "none";
 
     },3000);
 
@@ -914,14 +810,29 @@ function showMessage(text){
 
 /* =========================================================
    MONEY
-   ========================================================= */
+========================================================= */
 
 function money(value){
 
-  return (
-    "₹" +
+  return "₹" +
     Number(value || 0)
-      .toLocaleString("en-IN")
+      .toLocaleString("en-IN");
+
+}
+
+
+/* =========================================================
+   ID
+========================================================= */
+
+function generateID(){
+
+  return (
+    Date.now().toString(36) +
+    "-" +
+    Math.random()
+      .toString(36)
+      .substring(2,10)
   );
 
 }
@@ -929,492 +840,266 @@ function money(value){
 
 /* =========================================================
    INDEXED DB
-   ========================================================= */
+   This removes localStorage photo limit problem.
+========================================================= */
 
-function openOOHDatabase(){
+function openDatabase(){
 
-  return new Promise(
-    function(resolve,reject){
+  return new Promise(function(resolve,reject){
 
-      if(!window.indexedDB){
+    const request =
+      indexedDB.open(
+        DB_NAME,
+        DB_VERSION
+      );
+
+    request.onupgradeneeded =
+      function(event){
+
+        const database =
+          event.target.result;
+
+        if(
+          !database.objectStoreNames.contains(
+            STORE_NAME
+          )
+        ){
+
+          database.createObjectStore(
+            STORE_NAME,
+            {
+              keyPath:"id"
+            }
+          );
+
+        }
+
+      };
+
+
+    request.onsuccess =
+      function(event){
+
+        db =
+          event.target.result;
+
+        resolve(db);
+
+      };
+
+
+    request.onerror =
+      function(){
 
         reject(
-          new Error(
-            "IndexedDB is not supported."
-          )
+          request.error
         );
 
-        return;
+      };
 
-      }
-
-
-      const request =
-        indexedDB.open(
-          DB_NAME,
-          DB_VERSION
-        );
-
-
-      request.onupgradeneeded =
-        function(event){
-
-          const db =
-            event.target.result;
-
-
-          if(
-            !db.objectStoreNames.contains(
-              STORE_NAME
-            )
-          ){
-
-            db.createObjectStore(
-              STORE_NAME,
-              {
-                keyPath:"id"
-              }
-            );
-
-          }
-
-        };
-
-
-      request.onsuccess =
-        function(){
-
-          resolve(
-            request.result
-          );
-
-        };
-
-
-      request.onerror =
-        function(){
-
-          reject(
-            request.error
-          );
-
-        };
-
-    }
-  );
+  });
 
 }
 
 
 /* =========================================================
-   SAVE DATABASE
-   ========================================================= */
+   GET ALL SITES
+========================================================= */
 
-async function saveLocalData(){
+function getAllSites(){
 
-  try{
+  return new Promise(function(resolve,reject){
 
-    const db =
-      await openOOHDatabase();
+    if(!db){
 
+      reject(
+        new Error("Database not ready")
+      );
 
-    await new Promise(
-      function(resolve,reject){
+      return;
 
-        const transaction =
-          db.transaction(
-            STORE_NAME,
-            "readwrite"
-          );
+    }
 
 
-        const store =
-          transaction.objectStore(
-            STORE_NAME
-          );
+    const transaction =
+      db.transaction(
+        STORE_NAME,
+        "readonly"
+      );
+
+    const store =
+      transaction.objectStore(
+        STORE_NAME
+      );
+
+    const request =
+      store.getAll();
 
 
-        store.clear();
+    request.onsuccess =
+      function(){
 
-
-        sites.forEach(
-          function(site){
-
-            store.put(site);
-
-          }
+        resolve(
+          request.result || []
         );
 
-
-        transaction.oncomplete =
-          function(){
-
-            resolve();
-
-          };
+      };
 
 
-        transaction.onerror =
-          function(){
+    request.onerror =
+      function(){
 
-            reject(
-              transaction.error
-            );
+        reject(
+          request.error
+        );
 
-          };
+      };
 
-
-        transaction.onabort =
-          function(){
-
-            reject(
-              transaction.error ||
-              new Error(
-                "Transaction aborted."
-              )
-            );
-
-          };
-
-      }
-    );
-
-
-    db.close();
-
-
-    localStorage.setItem(
-      CAMPAIGN_KEY,
-      document.getElementById(
-        "campaign"
-      ).value.trim()
-    );
-
-
-    return true;
-
-  }
-  catch(error){
-
-    console.error(
-      "IndexedDB save error:",
-      error
-    );
-
-
-    showMessage(
-      "Could not save site. Browser storage may be unavailable."
-    );
-
-
-    return false;
-
-  }
+  });
 
 }
 
 
 /* =========================================================
-   LOAD DATABASE
-   ========================================================= */
+   SAVE SITE TO INDEXED DB
+========================================================= */
 
-async function loadLocalData(){
+function putSite(site){
 
-  try{
+  return new Promise(function(resolve,reject){
 
-    const db =
-      await openOOHDatabase();
-
-
-    const storedSites =
-      await new Promise(
-        function(resolve,reject){
-
-          const transaction =
-            db.transaction(
-              STORE_NAME,
-              "readonly"
-            );
-
-
-          const store =
-            transaction.objectStore(
-              STORE_NAME
-            );
-
-
-          const request =
-            store.getAll();
-
-
-          request.onsuccess =
-            function(){
-
-              resolve(
-                request.result || []
-              );
-
-            };
-
-
-          request.onerror =
-            function(){
-
-              reject(
-                request.error
-              );
-
-            };
-
-        }
+    const transaction =
+      db.transaction(
+        STORE_NAME,
+        "readwrite"
       );
 
+    const store =
+      transaction.objectStore(
+        STORE_NAME
+      );
 
-    db.close();
-
-
-    if(
-      Array.isArray(storedSites) &&
-      storedSites.length > 0
-    ){
-
-      sites =
-        storedSites;
-
-    }
-    else{
-
-      /*
-        MIGRATE OLD LOCAL STORAGE
-      */
-
-      try{
-
-        const oldData =
-          localStorage.getItem(
-            STORAGE_KEY
-          );
+    const request =
+      store.put(site);
 
 
-        if(oldData){
+    request.onsuccess =
+      function(){
 
-          const oldSites =
-            JSON.parse(
-              oldData
-            );
+        resolve();
 
-
-          if(
-            Array.isArray(oldSites) &&
-            oldSites.length > 0
-          ){
-
-            sites =
-              oldSites;
+      };
 
 
-            const migrated =
-              await saveLocalData();
+    request.onerror =
+      function(){
 
-
-            if(migrated){
-
-              localStorage.removeItem(
-                STORAGE_KEY
-              );
-
-            }
-
-          }
-          else{
-
-            sites = [];
-
-          }
-
-        }
-        else{
-
-          sites = [];
-
-        }
-
-      }
-      catch(error){
-
-        console.error(
-          "Migration failed:",
-          error
+        reject(
+          request.error
         );
 
-        sites = [];
+      };
 
-      }
+  });
 
-    }
+}
 
 
-    const campaign =
-      localStorage.getItem(
-        CAMPAIGN_KEY
+/* =========================================================
+   DELETE SITE FROM INDEXED DB
+========================================================= */
+
+function removeSiteFromDB(id){
+
+  return new Promise(function(resolve,reject){
+
+    const transaction =
+      db.transaction(
+        STORE_NAME,
+        "readwrite"
       );
 
+    const store =
+      transaction.objectStore(
+        STORE_NAME
+      );
 
-    if(campaign){
-
-      document.getElementById(
-        "campaign"
-      ).value =
-        campaign;
-
-    }
+    const request =
+      store.delete(id);
 
 
-    selectedSites.clear();
+    request.onsuccess =
+      function(){
+
+        resolve();
+
+      };
 
 
-    renderSites();
+    request.onerror =
+      function(){
 
-    renderMarkers();
-
-  }
-  catch(error){
-
-    console.error(
-      "IndexedDB load error:",
-      error
-    );
-
-
-    /*
-      FALLBACK
-    */
-
-    try{
-
-      const oldData =
-        localStorage.getItem(
-          STORAGE_KEY
+        reject(
+          request.error
         );
 
+      };
 
-      sites =
-        oldData
-          ? JSON.parse(oldData)
-          : [];
-
-
-      if(!Array.isArray(sites)){
-
-        sites = [];
-
-      }
-
-    }
-    catch(fallbackError){
-
-      console.error(
-        fallbackError
-      );
-
-      sites = [];
-
-    }
-
-
-    renderSites();
-
-    renderMarkers();
-
-  }
+  });
 
 }
 
 
 /* =========================================================
    CLEAR DATABASE
-   ========================================================= */
+========================================================= */
 
-async function clearOOHDatabase(){
+function clearDatabase(){
 
-  try{
+  return new Promise(function(resolve,reject){
 
-    const db =
-      await openOOHDatabase();
+    const transaction =
+      db.transaction(
+        STORE_NAME,
+        "readwrite"
+      );
 
+    const store =
+      transaction.objectStore(
+        STORE_NAME
+      );
 
-    await new Promise(
-      function(resolve,reject){
-
-        const transaction =
-          db.transaction(
-            STORE_NAME,
-            "readwrite"
-          );
-
-
-        const store =
-          transaction.objectStore(
-            STORE_NAME
-          );
+    const request =
+      store.clear();
 
 
-        const request =
-          store.clear();
+    request.onsuccess =
+      function(){
+
+        resolve();
+
+      };
 
 
-        request.onsuccess =
-          function(){
+    request.onerror =
+      function(){
 
-            resolve();
+        reject(
+          request.error
+        );
 
-          };
+      };
 
-
-        request.onerror =
-          function(){
-
-            reject(
-              request.error
-            );
-
-          };
-
-      }
-    );
-
-
-    db.close();
-
-
-    localStorage.removeItem(
-      STORAGE_KEY
-    );
-
-    showMessage(
-      "All sites deleted."
-    );
-
-  }
-  catch(error){
-
-    console.error(error);
-
-    showMessage(
-      "Could not clear storage."
-    );
-
-  }
+  });
 
 }
 
 
 /* =========================================================
    CAMPAIGN
-   ========================================================= */
+========================================================= */
 
-document
-  .getElementById("campaign")
+document.getElementById("campaign")
   .addEventListener(
     "input",
     function(){
@@ -1439,62 +1124,42 @@ document
 
 /* =========================================================
    CALCULATIONS
-   ========================================================= */
+========================================================= */
 
 function calculateValues(){
 
   const width =
     Number(
-      document.getElementById(
-        "width"
-      ).value
+      document.getElementById("width").value
     ) || 0;
-
 
   const height =
     Number(
-      document.getElementById(
-        "height"
-      ).value
+      document.getElementById("height").value
     ) || 0;
-
 
   const units =
     Number(
-      document.getElementById(
-        "units"
-      ).value
+      document.getElementById("units").value
     ) || 0;
-
 
   const rate =
     Number(
-      document.getElementById(
-        "rate"
-      ).value
+      document.getElementById("rate").value
     ) || 0;
-
 
   const duration =
     Number(
-      document.getElementById(
-        "duration"
-      ).value
+      document.getElementById("duration").value
     ) || 0;
-
 
   let pmRate =
     Number(
-      document.getElementById(
-        "pmRate"
-      ).value
+      document.getElementById("pmRate").value
     ) || 0;
 
-
   const illumination =
-    document.getElementById(
-      "illumination"
-    ).value;
+    document.getElementById("illumination").value;
 
 
   if(
@@ -1535,54 +1200,98 @@ function calculateValues(){
   document.getElementById(
     "areaPreview"
   ).innerText =
-    area.toLocaleString(
-      "en-IN"
-    ) +
+    area.toLocaleString("en-IN") +
     " sq.ft";
 
 
   document.getElementById(
     "displayPreview"
   ).innerText =
-    money(
-      displayCharges
-    );
+    money(displayCharges);
 
 
   document.getElementById(
     "pmPreview"
   ).innerText =
-    money(
-      pmCharges
-    );
+    money(pmCharges);
 
 
   document.getElementById(
     "totalPreview"
   ).innerText =
-    money(
-      totalCost
+    money(totalCost);
+
+}
+
+
+/* =========================================================
+   LOAD DATA
+========================================================= */
+
+async function loadLocalData(){
+
+  try{
+
+    sites =
+      await getAllSites();
+
+
+    if(
+      !Array.isArray(sites)
+    ){
+
+      sites = [];
+
+    }
+
+  }
+  catch(error){
+
+    console.error(error);
+
+    sites = [];
+
+  }
+
+
+  const campaign =
+    localStorage.getItem(
+      CAMPAIGN_KEY
     );
+
+
+  if(campaign){
+
+    document.getElementById(
+      "campaign"
+    ).value =
+      campaign;
+
+  }
+
+
+  selectedSites.clear();
+
+  renderSites();
+
+  renderMarkers();
 
 }
 
 
 /* =========================================================
    MAP
-   ========================================================= */
+========================================================= */
 
 function initializeMap(){
 
   if(map){
 
-    setTimeout(
-      function(){
+    setTimeout(function(){
 
-        map.invalidateSize();
+      map.invalidateSize();
 
-      },
-      300
-    );
+    },300);
 
     return;
 
@@ -1590,22 +1299,17 @@ function initializeMap(){
 
 
   map =
-    L.map(
-      "map"
-    ).setView(
-      [
-        19.0760,
-        72.8777
-      ],
-      11
-    );
+    L.map("map")
+      .setView(
+        [19.0760,72.8777],
+        11
+      );
 
 
   L.tileLayer(
     "https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png",
     {
       maxZoom:19,
-
       attribution:
         "© OpenStreetMap contributors"
     }
@@ -1661,7 +1365,7 @@ function initializeMap(){
 
 /* =========================================================
    SEARCH LOCATION
-   ========================================================= */
+========================================================= */
 
 async function searchLocation(){
 
@@ -1692,9 +1396,7 @@ async function searchLocation(){
     const url =
       "https://nominatim.openstreetmap.org/search" +
       "?format=json&limit=1&q=" +
-      encodeURIComponent(
-        query
-      );
+      encodeURIComponent(query);
 
 
     const response =
@@ -1738,12 +1440,8 @@ async function searchLocation(){
 
 
     showLocation(
-      parseFloat(
-        result.lat
-      ),
-      parseFloat(
-        result.lon
-      ),
+      parseFloat(result.lat),
+      parseFloat(result.lon),
       result.display_name
     );
 
@@ -1763,7 +1461,7 @@ async function searchLocation(){
 
 /* =========================================================
    COORDINATES
-   ========================================================= */
+========================================================= */
 
 function searchCoordinates(){
 
@@ -1836,7 +1534,7 @@ function searchCoordinates(){
 
 /* =========================================================
    SHOW LOCATION
-   ========================================================= */
+========================================================= */
 
 function showLocation(
   lat,
@@ -1852,10 +1550,7 @@ function showLocation(
 
 
   map.setView(
-    [
-      lat,
-      lng
-    ],
+    [lat,lng],
     17
   );
 
@@ -1928,7 +1623,7 @@ function showLocation(
 
 /* =========================================================
    SEARCH MARKER
-   ========================================================= */
+========================================================= */
 
 function placeSearchMarker(
   lat,
@@ -1945,10 +1640,7 @@ function placeSearchMarker(
 
   searchMarker =
     L.marker(
-      [
-        lat,
-        lng
-      ]
+      [lat,lng]
     )
     .addTo(map)
     .bindPopup(
@@ -1965,8 +1657,8 @@ function placeSearchMarker(
 
 
 /* =========================================================
-   CURRENT LOCATION
-   ========================================================= */
+   MY LOCATION
+========================================================= */
 
 function useMyLocation(){
 
@@ -2017,8 +1709,8 @@ function useMyLocation(){
 
 
 /* =========================================================
-   RESIZE IMAGE
-   ========================================================= */
+   IMAGE RESIZE
+========================================================= */
 
 function resizeImage(
   file,
@@ -2166,25 +1858,8 @@ function resizeImage(
 
 
 /* =========================================================
-   GENERATE ID
-   ========================================================= */
-
-function generateID(){
-
-  return (
-    Date.now().toString(36) +
-    "-" +
-    Math.random()
-      .toString(36)
-      .substring(2,10)
-  );
-
-}
-
-
-/* =========================================================
    SAVE SITE
-   ========================================================= */
+========================================================= */
 
 async function saveSite(){
 
@@ -2311,7 +1986,7 @@ async function saveSite(){
       photoURL =
         await resizeImage(
           photoFile,
-          1200,
+          1400,
           0.82
         );
 
@@ -2416,6 +2091,20 @@ async function saveSite(){
     pmCharges;
 
 
+  let existingSite = null;
+
+
+  if(editId){
+
+    existingSite =
+      sites.find(
+        site =>
+          site.id === editId
+      );
+
+  }
+
+
   const siteData = {
 
     id:
@@ -2496,118 +2185,81 @@ async function saveSite(){
         "remarks"
       ).value.trim(),
 
+    created_at:
+      existingSite?.created_at ||
+      new Date().toISOString(),
+
     updated_at:
       new Date().toISOString()
 
   };
 
 
-  if(editId){
+  try{
+
+    await putSite(
+      siteData
+    );
+
 
     const index =
       sites.findIndex(
         site =>
-          site.id === editId
+          site.id ===
+          siteData.id
       );
 
 
     if(index !== -1){
 
-      /*
-        Preserve original creation date
-      */
-
-      siteData.created_at =
-        sites[index].created_at ||
-        new Date().toISOString();
-
-
       sites[index] =
         siteData;
 
-    }
-
-
-    showMessage(
-      "Site updated successfully."
-    );
-
-  }
-  else{
-
-    siteData.created_at =
-      new Date().toISOString();
-
-
-    sites.unshift(
-      siteData
-    );
-
-
-    selectedSites.add(
-      siteData.id
-    );
-
-
-    showMessage(
-      "Site saved successfully."
-    );
-
-  }
-
-
-  const savedSuccessfully =
-    await saveLocalData();
-
-
-  if(!savedSuccessfully){
-
-    /*
-      Roll back if storage failed
-    */
-
-    if(editId){
-
-      /*
-        Reload from database
-      */
-
-      await loadLocalData();
+      showMessage(
+        "Site updated successfully."
+      );
 
     }
     else{
 
-      sites =
-        sites.filter(
-          site =>
-            site.id !==
-            siteData.id
-        );
+      sites.unshift(
+        siteData
+      );
 
-
-      selectedSites.delete(
+      selectedSites.add(
         siteData.id
+      );
+
+      showMessage(
+        "Site saved successfully."
       );
 
     }
 
-    return;
+
+    renderSites();
+
+    renderMarkers();
+
+    clearForm();
 
   }
+  catch(error){
 
+    console.error(error);
 
-  renderSites();
+    showMessage(
+      "Could not save site."
+    );
 
-  renderMarkers();
-
-  clearForm();
+  }
 
 }
 
 
 /* =========================================================
-   RENDER MARKERS
-   ========================================================= */
+   MARKERS
+========================================================= */
 
 function renderMarkers(){
 
@@ -2635,7 +2287,6 @@ function renderMarkers(){
           site.latitude
         );
 
-
       const lng =
         Number(
           site.longitude
@@ -2654,10 +2305,7 @@ function renderMarkers(){
 
       const marker =
         L.marker(
-          [
-            lat,
-            lng
-          ]
+          [lat,lng]
         )
         .addTo(map);
 
@@ -2738,7 +2386,9 @@ function renderMarkers(){
       if(site.photo_url){
 
         popup +=
+
           "<br><br>" +
+
           "<img src='" +
           escapeAttribute(
             site.photo_url
@@ -2749,13 +2399,12 @@ function renderMarkers(){
 
 
       popup +=
+
         "<br><br>" +
 
         "<a href='https://www.google.com/maps?q=" +
         encodeURIComponent(
-          lat +
-          "," +
-          lng
+          lat + "," + lng
         ) +
         "' target='_blank'>" +
 
@@ -2795,7 +2444,7 @@ function renderMarkers(){
 
 /* =========================================================
    RENDER SITES
-   ========================================================= */
+========================================================= */
 
 function renderSites(){
 
@@ -2830,25 +2479,35 @@ function renderSites(){
     sites.filter(
       function(site){
 
-        const text =
-          [
+        const text = [
 
-            site.site_name,
-            site.state,
-            site.city,
-            site.location,
-            site.media_type,
-            site.illumination,
-            site.traffic,
-            site.status,
-            site.width,
-            site.height,
-            site.units,
-            site.remarks
+          site.site_name,
 
-          ]
-          .join(" ")
-          .toLowerCase();
+          site.state,
+
+          site.city,
+
+          site.location,
+
+          site.media_type,
+
+          site.illumination,
+
+          site.traffic,
+
+          site.status,
+
+          site.width,
+
+          site.height,
+
+          site.units,
+
+          site.remarks
+
+        ]
+        .join(" ")
+        .toLowerCase();
 
 
         return text.includes(
@@ -2865,6 +2524,7 @@ function renderSites(){
   if(!filtered.length){
 
     list.innerHTML =
+
       "<div class='empty'>" +
 
       (
@@ -2920,7 +2580,10 @@ function renderSites(){
       else{
 
         photoHTML =
-          "<div class='no-site-photo'>📷</div>";
+
+          "<div class='no-site-photo'>" +
+          "📷" +
+          "</div>";
 
       }
 
@@ -3035,9 +2698,11 @@ function renderSites(){
           "<button class='btn-blue' " +
 
           "onclick=\"viewSite('" +
+
           escapeAttribute(
             site.id
           ) +
+
           "')\">" +
 
           "MAP" +
@@ -3048,9 +2713,11 @@ function renderSites(){
           "<button class='btn-gray' " +
 
           "onclick=\"selectSite('" +
+
           escapeAttribute(
             site.id
           ) +
+
           "')\">" +
 
           (
@@ -3065,9 +2732,11 @@ function renderSites(){
           "<button class='btn-gray' " +
 
           "onclick=\"editSite('" +
+
           escapeAttribute(
             site.id
           ) +
+
           "')\">" +
 
           "EDIT" +
@@ -3078,9 +2747,11 @@ function renderSites(){
           "<button class='btn-red' " +
 
           "onclick=\"deleteSite('" +
+
           escapeAttribute(
             site.id
           ) +
+
           "')\">" +
 
           "DELETE" +
@@ -3113,8 +2784,8 @@ function renderSites(){
 
 
 /* =========================================================
-   SELECT SITE
-   ========================================================= */
+   SELECT
+========================================================= */
 
 function selectSite(id){
 
@@ -3122,16 +2793,12 @@ function selectSite(id){
     selectedSites.has(id)
   ){
 
-    selectedSites.delete(
-      id
-    );
+    selectedSites.delete(id);
 
   }
   else{
 
-    selectedSites.add(
-      id
-    );
+    selectedSites.add(id);
 
   }
 
@@ -3143,7 +2810,7 @@ function selectSite(id){
 
 /* =========================================================
    VIEW SITE
-   ========================================================= */
+========================================================= */
 
 function viewSite(id){
 
@@ -3165,7 +2832,6 @@ function viewSite(id){
     Number(
       site.latitude
     );
-
 
   const lng =
     Number(
@@ -3195,10 +2861,7 @@ function viewSite(id){
 
 
   map.setView(
-    [
-      lat,
-      lng
-    ],
+    [lat,lng],
     17
   );
 
@@ -3221,8 +2884,8 @@ function viewSite(id){
 
 
 /* =========================================================
-   EDIT SITE
-   ========================================================= */
+   EDIT
+========================================================= */
 
 function editSite(id){
 
@@ -3397,19 +3060,17 @@ function editSite(id){
   viewSite(id);
 
 
-  window.scrollTo(
-    {
-      top:0,
-      behavior:"smooth"
-    }
-  );
+  window.scrollTo({
+    top:0,
+    behavior:"smooth"
+  });
 
 }
 
 
 /* =========================================================
-   DELETE SITE
-   ========================================================= */
+   DELETE
+========================================================= */
 
 async function deleteSite(id){
 
@@ -3440,46 +3101,50 @@ async function deleteSite(id){
   }
 
 
-  sites =
-    sites.filter(
-      item =>
-        item.id !== id
+  try{
+
+    await removeSiteFromDB(
+      id
     );
 
 
-  selectedSites.delete(
-    id
-  );
+    sites =
+      sites.filter(
+        item =>
+          item.id !== id
+      );
 
 
-  const saved =
-    await saveLocalData();
+    selectedSites.delete(
+      id
+    );
 
 
-  if(!saved){
+    renderSites();
 
-    await loadLocalData();
+    renderMarkers();
 
-    return;
+    showMessage(
+      "Site deleted."
+    );
 
   }
+  catch(error){
 
+    console.error(error);
 
-  renderSites();
+    showMessage(
+      "Could not delete site."
+    );
 
-  renderMarkers();
-
-
-  showMessage(
-    "Site deleted."
-  );
+  }
 
 }
 
 
 /* =========================================================
    CLEAR ALL
-   ========================================================= */
+========================================================= */
 
 async function clearAllSites(){
 
@@ -3505,26 +3170,44 @@ async function clearAllSites(){
   }
 
 
-  sites = [];
+  try{
 
-  selectedSites.clear();
-
-
-  await clearOOHDatabase();
+    await clearDatabase();
 
 
-  renderSites();
+    sites = [];
 
-  renderMarkers();
+    selectedSites.clear();
 
-  clearForm();
+
+    renderSites();
+
+    renderMarkers();
+
+    clearForm();
+
+
+    showMessage(
+      "All sites deleted."
+    );
+
+  }
+  catch(error){
+
+    console.error(error);
+
+    showMessage(
+      "Could not clear sites."
+    );
+
+  }
 
 }
 
 
 /* =========================================================
    CLEAR FORM
-   ========================================================= */
+========================================================= */
 
 function clearForm(){
 
@@ -3580,37 +3263,44 @@ function clearForm(){
 
   document.getElementById(
     "mediaType"
-  ).value = "Billboard";
+  ).value =
+    "Billboard";
 
 
   document.getElementById(
     "illumination"
-  ).value = "LIT";
+  ).value =
+    "LIT";
 
 
   document.getElementById(
     "traffic"
-  ).value = "ET";
+  ).value =
+    "ET";
 
 
   document.getElementById(
     "rate"
-  ).value = "0";
+  ).value =
+    "0";
 
 
   document.getElementById(
     "duration"
-  ).value = "30";
+  ).value =
+    "30";
 
 
   document.getElementById(
     "pmRate"
-  ).value = "15";
+  ).value =
+    "15";
 
 
   document.getElementById(
     "status"
-  ).value = "Available";
+  ).value =
+    "Available";
 
 
   document.getElementById(
@@ -3650,8 +3340,7 @@ function clearForm(){
 
 /* =========================================================
    EXCEL EXPORT
-   MERGED SIZE HEADER: W + H
-   ========================================================= */
+========================================================= */
 
 function exportExcel(){
 
@@ -3660,7 +3349,7 @@ function exportExcel(){
   ){
 
     showMessage(
-      "Excel library not loaded. Please refresh."
+      "Excel library not loaded."
     );
 
     return;
@@ -3691,390 +3380,132 @@ function exportExcel(){
 
   try{
 
-    const rows = [];
+    const rows =
+      data.map(
+        function(site,index){
 
+          return {
 
-    /*
-      TWO HEADER ROWS
+            "Sr.":
+              index + 1,
 
-      G1:H1 = SIZE
-      G2 = W
-      H2 = H
-    */
+            "State":
+              site.state || "",
 
-    rows.push([
+            "City":
+              site.city || "",
 
-      "Sr.",
-      "State",
-      "City",
-      "Location",
-      "Media",
-      "Type",
-      "Size (W/H)",
-      "",
-      "Traffic",
-      "Units",
-      "Total area of display (sq.ft)",
-      "Display Charges PM",
-      "Duration of Campaign (days)",
-      "Display Charges as per duration",
-      "P&M Charges",
-      "Total Cost",
-      "Remark"
+            "Location":
+              site.location || "",
 
-    ]);
+            "Media":
+              site.media_type || "",
 
+            "Type":
+              site.illumination || "",
 
-    rows.push([
+            "Size (W/H)":
+              Number(
+                site.width || 0
+              ) +
+              " x " +
+              Number(
+                site.height || 0
+              ),
 
-      "",
-      "",
-      "",
-      "",
-      "",
-      "",
-      "W",
-      "H",
-      "",
-      "",
-      "",
-      "",
-      "",
-      "",
-      "",
-      "",
-      ""
+            "Traffic":
+              site.traffic || "",
 
-    ]);
+            "Units":
+              Number(
+                site.units || 1
+              ),
 
+            "Total area of display (sq.ft)":
+              Number(
+                site.total_area ||
+                (
+                  Number(
+                    site.width || 0
+                  ) *
+                  Number(
+                    site.height || 0
+                  ) *
+                  Number(
+                    site.units || 1
+                  )
+                )
+              ),
 
-    data.forEach(
-      function(site,index){
+            "Display Charges PM":
+              Number(
+                site.monthly_rate || 0
+              ),
 
-        const width =
-          Number(
-            site.width || 0
-          );
+            "Duration of Campaign (days)":
+              Number(
+                site.duration || 30
+              ),
 
+            "Display Charges as per duration":
+              Number(
+                site.display_charges ||
+                (
+                  Number(
+                    site.monthly_rate || 0
+                  ) *
+                  Number(
+                    site.duration || 30
+                  ) /
+                  30
+                )
+              ),
 
-        const height =
-          Number(
-            site.height || 0
-          );
+            "P&M Charges":
+              Number(
+                site.pm_charges || 0
+              ),
 
+            "Total Cost":
+              Number(
+                site.total_cost || 0
+              ),
 
-        const units =
-          Number(
-            site.units || 1
-          );
+            "Remark":
+              site.remarks || ""
 
+          };
 
-        const area =
-          Number(
-            site.total_area ||
-            (
-              width *
-              height *
-              units
-            )
-          );
-
-
-        const monthlyRate =
-          Number(
-            site.monthly_rate || 0
-          );
-
-
-        const duration =
-          Number(
-            site.duration || 30
-          );
-
-
-        const displayCharges =
-          Number(
-            site.display_charges ||
-            (
-              monthlyRate *
-              duration /
-              30
-            )
-          );
-
-
-        const pmCharges =
-          Number(
-            site.pm_charges || 0
-          );
-
-
-        const totalCost =
-          Number(
-            site.total_cost ||
-            (
-              displayCharges +
-              pmCharges
-            )
-          );
-
-
-        rows.push([
-
-          index + 1,
-
-          site.state || "",
-
-          site.city || "",
-
-          site.location || "",
-
-          site.media_type || "",
-
-          site.illumination || "",
-
-          width,
-
-          height,
-
-          site.traffic || "",
-
-          units,
-
-          area,
-
-          monthlyRate,
-
-          duration,
-
-          displayCharges,
-
-          pmCharges,
-
-          totalCost,
-
-          site.remarks || ""
-
-        ]);
-
-      }
-    );
-
-
-    const worksheet =
-      XLSX.utils.aoa_to_sheet(
-        rows
+        }
       );
 
 
-    /*
-      MERGE SIZE HEADER
-      G1:H1
-    */
-
-    worksheet["!merges"] = [
-
-      {
-        s:{
-          r:0,
-          c:6
-        },
-
-        e:{
-          r:0,
-          c:7
-        }
-      }
-
-    ];
+    const worksheet =
+      XLSX.utils.json_to_sheet(
+        rows
+      );
 
 
     worksheet["!cols"] = [
 
       {wch:7},
-
       {wch:16},
-
       {wch:16},
-
       {wch:35},
-
       {wch:18},
-
       {wch:14},
-
-      {wch:10},
-
-      {wch:10},
-
+      {wch:15},
       {wch:14},
-
       {wch:10},
-
       {wch:25},
-
       {wch:20},
-
       {wch:25},
-
       {wch:30},
-
       {wch:18},
-
       {wch:18},
-
       {wch:40}
 
     ];
-
-
-    /*
-      ROW HEIGHT
-    */
-
-    worksheet["!rows"] = [
-
-      {
-        hpt:30
-      },
-
-      {
-        hpt:22
-      }
-
-    ];
-
-
-    /*
-      HEADER STYLE
-    */
-
-    const headerCells = [
-      "A1",
-      "B1",
-      "C1",
-      "D1",
-      "E1",
-      "F1",
-      "G1",
-      "H1",
-      "I1",
-      "J1",
-      "K1",
-      "L1",
-      "M1",
-      "N1",
-      "O1",
-      "P1",
-      "Q1"
-    ];
-
-
-    headerCells.forEach(
-      function(address){
-
-        if(
-          worksheet[address]
-        ){
-
-          worksheet[address].s = {
-
-            font:{
-              bold:true,
-              color:{
-                rgb:"FFFFFF"
-              }
-            },
-
-            fill:{
-              fgColor:{
-                rgb:"101827"
-              }
-            },
-
-            alignment:{
-              horizontal:"center",
-              vertical:"center",
-              wrapText:true
-            },
-
-            border:{
-
-              top:{
-                style:"thin",
-                color:{
-                  rgb:"FFFFFF"
-                }
-              },
-
-              bottom:{
-                style:"thin",
-                color:{
-                  rgb:"FFFFFF"
-                }
-              },
-
-              left:{
-                style:"thin",
-                color:{
-                  rgb:"FFFFFF"
-                }
-              },
-
-              right:{
-                style:"thin",
-                color:{
-                  rgb:"FFFFFF"
-                }
-              }
-
-            }
-
-          };
-
-        }
-
-      }
-    );
-
-
-    /*
-      SECOND HEADER
-    */
-
-    ["G2","H2"].forEach(
-      function(address){
-
-        if(
-          worksheet[address]
-        ){
-
-          worksheet[address].s = {
-
-            font:{
-              bold:true,
-              color:{
-                rgb:"FFFFFF"
-              }
-            },
-
-            fill:{
-              fgColor:{
-                rgb:"0787C8"
-              }
-            },
-
-            alignment:{
-              horizontal:"center",
-              vertical:"center"
-            }
-
-          };
-
-        }
-
-      }
-    );
 
 
     const workbook =
@@ -4088,177 +3519,117 @@ function exportExcel(){
     );
 
 
-    /*
-      SUMMARY
-    */
-
-    const totalArea =
-      data.reduce(
-        function(sum,site){
-
-          return (
-            sum +
-            Number(
-              site.total_area || 0
-            )
-          );
-
-        },
-        0
-      );
-
-
-    const totalDisplay =
-      data.reduce(
-        function(sum,site){
-
-          return (
-            sum +
-            Number(
-              site.display_charges || 0
-            )
-          );
-
-        },
-        0
-      );
-
-
-    const totalPM =
-      data.reduce(
-        function(sum,site){
-
-          return (
-            sum +
-            Number(
-              site.pm_charges || 0
-            )
-          );
-
-        },
-        0
-      );
-
-
-    const grandTotal =
-      data.reduce(
-        function(sum,site){
-
-          return (
-            sum +
-            Number(
-              site.total_cost || 0
-            )
-          );
-
-        },
-        0
-      );
-
-
     const summaryRows = [
 
-      [
-        "Particulars",
-        "Value"
-      ],
-
-      [
-        "Campaign",
-        document.getElementById(
-          "campaign"
-        ).value.trim()
-      ],
-
-      [
-        "Total Sites",
-        data.length
-      ],
-
-      [
-        "Total Display Area (sq.ft)",
-        totalArea
-      ],
-
-      [
-        "Total Display Charges",
-        totalDisplay
-      ],
-
-      [
-        "Total P&M Charges",
-        totalPM
-      ],
-
-      [
-        "Grand Total",
-        grandTotal
-      ]
-
-    ];
-
-
-    const summarySheet =
-      XLSX.utils.aoa_to_sheet(
-        summaryRows
-      );
-
-
-    summarySheet["!cols"] = [
-
       {
-        wch:35
+        "Particulars":
+          "Campaign",
+
+        "Value":
+          document.getElementById(
+            "campaign"
+          ).value.trim()
+
       },
 
       {
-        wch:25
+        "Particulars":
+          "Total Sites",
+
+        "Value":
+          data.length
+
+      },
+
+      {
+        "Particulars":
+          "Total Display Area (sq.ft)",
+
+        "Value":
+          data.reduce(
+            function(sum,site){
+
+              return sum +
+                Number(
+                  site.total_area || 0
+                );
+
+            },
+            0
+          )
+
+      },
+
+      {
+        "Particulars":
+          "Total Display Charges",
+
+        "Value":
+          data.reduce(
+            function(sum,site){
+
+              return sum +
+                Number(
+                  site.display_charges || 0
+                );
+
+            },
+            0
+          )
+
+      },
+
+      {
+        "Particulars":
+          "Total P&M Charges",
+
+        "Value":
+          data.reduce(
+            function(sum,site){
+
+              return sum +
+                Number(
+                  site.pm_charges || 0
+                );
+
+            },
+            0
+          )
+
+      },
+
+      {
+        "Particulars":
+          "Grand Total",
+
+        "Value":
+          data.reduce(
+            function(sum,site){
+
+              return sum +
+                Number(
+                  site.total_cost || 0
+                );
+
+            },
+            0
+          )
+
       }
 
     ];
 
 
-    if(summarySheet["A1"]){
-
-      summarySheet["A1"].s = {
-
-        font:{
-          bold:true,
-          color:{
-            rgb:"FFFFFF"
-          }
-        },
-
-        fill:{
-          fgColor:{
-            rgb:"101827"
-          }
-        }
-
-      };
-
-    }
+    const summarySheet =
+      XLSX.utils.json_to_sheet(
+        summaryRows
+      );
 
 
-    if(summarySheet["B1"]){
-
-      summarySheet["B1"].s = {
-
-        font:{
-          bold:true,
-          color:{
-            rgb:"FFFFFF"
-          }
-        },
-
-        fill:{
-          fgColor:{
-            rgb:"101827"
-          }
-        }
-
-      };
-
-    }
+    summarySheet["!cols"] = [
+      {wch:35},
+      {wch:25}
+    ];
 
 
     XLSX.utils.book_append_sheet(
@@ -4275,19 +3646,15 @@ function exportExcel(){
 
 
     const safeName =
-
       (
         campaign ||
         "My_Vision_OOH_Sites"
       )
-
       .replace(
         /[^a-z0-9_\- ]/gi,
         ""
       )
-
       .trim()
-
       .replace(
         /\s+/g,
         "_"
@@ -4308,15 +3675,10 @@ function exportExcel(){
   }
   catch(error){
 
-    console.error(
-      "EXCEL EXPORT ERROR:",
-      error
-    );
+    console.error(error);
 
-
-    alert(
-      "Excel export failed.\n\n" +
-      error.message
+    showMessage(
+      "Excel export failed."
     );
 
   }
@@ -4325,8 +3687,8 @@ function exportExcel(){
 
 
 /* =========================================================
-   IMAGE TO DATA URL
-   ========================================================= */
+   IMAGE FOR PPT
+========================================================= */
 
 async function imageUrlToDataUrl(
   url
@@ -4429,22 +3791,31 @@ async function imageUrlToDataUrl(
 
 
 /* =========================================================
+   PPT HELPER - SAFE TEXT
+========================================================= */
+
+function pptText(value){
+
+  return String(
+    value ?? "-"
+  );
+
+}
+
+
+/* =========================================================
    PPT EXPORT
-   ========================================================= */
+   PREMIUM / ATTRACTIVE DESIGN
+========================================================= */
 
 async function exportPPT(){
 
-  const PptxConstructor =
-    window.pptxgen ||
-    window.PptxGenJS;
-
-
   if(
-    !PptxConstructor
+    typeof pptxgen === "undefined"
   ){
 
     showMessage(
-      "PPT library not loaded. Please refresh."
+      "PPT library not loaded. Please refresh the website."
     );
 
     return;
@@ -4479,8 +3850,7 @@ async function exportPPT(){
     );
 
 
-  button.disabled =
-    true;
+  button.disabled = true;
 
   button.innerText =
     "⏳ Creating PPT...";
@@ -4489,8 +3859,12 @@ async function exportPPT(){
   try{
 
     const ppt =
-      new PptxConstructor();
+      new pptxgen();
 
+
+    /*
+      16:9 WIDE
+    */
 
     ppt.layout =
       "LAYOUT_WIDE";
@@ -4519,32 +3893,83 @@ async function exportPPT(){
       "en-US";
 
 
-    /*
-      COVER
-    */
+    ppt.theme = {
+
+      headFontFace:
+        "Aptos Display",
+
+      bodyFontFace:
+        "Aptos",
+
+      lang:
+        "en-US"
+
+    };
+
+
+    /* =====================================================
+       COVER SLIDE
+    ===================================================== */
 
     const cover =
       ppt.addSlide();
 
 
     cover.background = {
-
-      color:
-        "101827"
-
+      color:"0B1220"
     };
 
 
-    cover.addText(
-      "MY VISION OOH",
+    /*
+      Accent top line
+    */
+
+    cover.addShape(
+      ppt.ShapeType.rect,
       {
-        x:.7,
-        y:2,
-        w:11,
-        h:.6,
-        fontSize:30,
+        x:0,
+        y:0,
+        w:13.333,
+        h:.12,
+        fill:{
+          color:"20AEF3"
+        },
+        line:{
+          color:"20AEF3"
+        }
+      }
+    );
+
+
+    /*
+      Main title
+    */
+
+    cover.addText(
+      "MY VISION",
+      {
+        x:.75,
+        y:1.45,
+        w:8,
+        h:.65,
+        fontSize:34,
         bold:true,
         color:"FFFFFF",
+        margin:0
+      }
+    );
+
+
+    cover.addText(
+      "OOH",
+      {
+        x:.75,
+        y:2.12,
+        w:4,
+        h:.65,
+        fontSize:34,
+        bold:true,
+        color:"20AEF3",
         margin:0
       }
     );
@@ -4554,28 +3979,14 @@ async function exportPPT(){
       document.getElementById(
         "campaign"
       ).value.trim() ||
-      "OOH Site Proposal",
+      "OOH SITE PROPOSAL",
       {
-        x:.7,
-        y:2.8,
-        w:11,
-        h:.5,
-        fontSize:20,
-        color:"20AEF3",
-        margin:0
-      }
-    );
-
-
-    cover.addText(
-      data.length +
-      " Selected Sites",
-      {
-        x:.7,
-        y:3.5,
-        w:11,
-        h:.4,
-        fontSize:15,
+        x:.78,
+        y:3.10,
+        w:8.8,
+        h:.55,
+        fontSize:22,
+        bold:true,
         color:"FFFFFF",
         margin:0
       }
@@ -4583,25 +3994,159 @@ async function exportPPT(){
 
 
     cover.addText(
-      new Date()
-        .toLocaleDateString(
-          "en-IN"
-        ),
+      "OUT OF HOME MEDIA PROPOSAL",
       {
-        x:.7,
-        y:4.1,
-        w:5,
-        h:.3,
+        x:.8,
+        y:3.75,
+        w:7,
+        h:.35,
         fontSize:11,
-        color:"CBD5E1",
+        bold:true,
+        color:"94A3B8",
+        charSpacing:2,
         margin:0
       }
     );
 
 
     /*
-      SITE SLIDES
+      Site count card
     */
+
+    cover.addShape(
+      ppt.ShapeType.roundRect,
+      {
+        x:.78,
+        y:4.55,
+        w:2.25,
+        h:1.0,
+        rectRadius:.08,
+        fill:{
+          color:"172033"
+        },
+        line:{
+          color:"334155",
+          width:1
+        }
+      }
+    );
+
+
+    cover.addText(
+      String(data.length),
+      {
+        x:.98,
+        y:4.68,
+        w:.8,
+        h:.35,
+        fontSize:24,
+        bold:true,
+        color:"20AEF3",
+        margin:0
+      }
+    );
+
+
+    cover.addText(
+      "SELECTED SITES",
+      {
+        x:1.0,
+        y:5.08,
+        w:1.7,
+        h:.2,
+        fontSize:8,
+        bold:true,
+        color:"CBD5E1",
+        charSpacing:1,
+        margin:0
+      }
+    );
+
+
+    /*
+      Date
+    */
+
+    cover.addText(
+      new Date().toLocaleDateString(
+        "en-IN",
+        {
+          day:"2-digit",
+          month:"long",
+          year:"numeric"
+        }
+      ),
+      {
+        x:.8,
+        y:6.45,
+        w:4,
+        h:.3,
+        fontSize:10,
+        color:"94A3B8",
+        margin:0
+      }
+    );
+
+
+    /*
+      Decorative right side
+    */
+
+    cover.addShape(
+      ppt.ShapeType.arc,
+      {
+        x:8.7,
+        y:-1.0,
+        w:5.8,
+        h:5.8,
+        line:{
+          color:"20AEF3",
+          width:2,
+          transparency:40
+        },
+        adjustPoint:.3
+      }
+    );
+
+
+    cover.addShape(
+      ppt.ShapeType.ellipse,
+      {
+        x:10.3,
+        y:1.0,
+        w:2.2,
+        h:2.2,
+        fill:{
+          color:"20AEF3",
+          transparency:90
+        },
+        line:{
+          color:"20AEF3",
+          transparency:60
+        }
+      }
+    );
+
+
+    cover.addText(
+      "MY VISION OOH",
+      {
+        x:10.15,
+        y:6.45,
+        w:2.4,
+        h:.25,
+        fontSize:9,
+        bold:true,
+        color:"64748B",
+        align:"right",
+        margin:0
+      }
+    );
+
+
+    /* =====================================================
+       SITE SLIDES
+    ===================================================== */
 
     for(
       let index = 0;
@@ -4618,90 +4163,242 @@ async function exportPPT(){
 
 
       slide.background = {
-
-        color:
-          "FFFFFF"
-
+        color:"F8FAFC"
       };
 
 
-      slide.addText(
-        (index + 1) +
-        ". " +
-        (
-          site.site_name ||
-          "OOH Site"
-        ),
+      /*
+        TOP HEADER
+      */
+
+      slide.addShape(
+        ppt.ShapeType.rect,
         {
-          x:.5,
-          y:.3,
-          w:7.2,
-          h:.5,
-          fontSize:23,
+          x:0,
+          y:0,
+          w:13.333,
+          h:.72,
+          fill:{
+            color:"0B1220"
+          },
+          line:{
+            color:"0B1220"
+          }
+        }
+      );
+
+
+      slide.addText(
+        "MY VISION",
+        {
+          x:.45,
+          y:.20,
+          w:1.65,
+          h:.25,
+          fontSize:12,
           bold:true,
-          color:"101827",
+          color:"FFFFFF",
           margin:0
         }
       );
 
 
       slide.addText(
-        site.location ||
-        "Location not specified",
+        "OOH",
         {
-          x:.5,
-          y:.9,
-          w:7.2,
-          h:.4,
-          fontSize:13,
-          color:"64748B",
+          x:2.02,
+          y:.20,
+          w:.7,
+          h:.25,
+          fontSize:12,
+          bold:true,
+          color:"20AEF3",
           margin:0
         }
       );
 
 
       /*
-        PHOTO
+        Site number badge
       */
+
+      slide.addShape(
+        ppt.ShapeType.roundRect,
+        {
+          x:11.65,
+          y:.15,
+          w:1.15,
+          h:.38,
+          rectRadius:.06,
+          fill:{
+            color:"20AEF3"
+          },
+          line:{
+            color:"20AEF3"
+          }
+        }
+      );
+
+
+      slide.addText(
+        String(index + 1).padStart(2,"0") +
+        " / " +
+        String(data.length).padStart(2,"0"),
+        {
+          x:11.65,
+          y:.25,
+          w:1.15,
+          h:.16,
+          fontSize:8,
+          bold:true,
+          color:"FFFFFF",
+          align:"center",
+          margin:0
+        }
+      );
+
+
+      /*
+        SITE TITLE
+      */
+
+      slide.addText(
+        pptText(
+          site.site_name ||
+          "OOH SITE"
+        ),
+        {
+          x:.55,
+          y:.92,
+          w:7.8,
+          h:.45,
+          fontSize:24,
+          bold:true,
+          color:"0B1220",
+          margin:0,
+          fit:"shrink"
+        }
+      );
+
+
+      slide.addText(
+        pptText(
+          site.location ||
+          "Location not specified"
+        ),
+        {
+          x:.57,
+          y:1.39,
+          w:7.7,
+          h:.35,
+          fontSize:11,
+          color:"64748B",
+          margin:0,
+          fit:"shrink"
+        }
+      );
+
+
+      /*
+        IMAGE AREA
+        BIGGER THAN OLD PPT
+      */
+
+      const imageX =
+        .55;
+
+      const imageY =
+        1.90;
+
+      const imageW =
+        7.65;
+
+      const imageH =
+        4.55;
+
+
+      slide.addShape(
+        ppt.ShapeType.roundRect,
+        {
+          x:imageX,
+          y:imageY,
+          w:imageW,
+          h:imageH,
+          rectRadius:.06,
+          fill:{
+            color:"E2E8F0"
+          },
+          line:{
+            color:"E2E8F0"
+          }
+        }
+      );
+
 
       if(site.photo_url){
 
-        try{
-
-          const imageData =
-            await imageUrlToDataUrl(
-              site.photo_url
-            );
+        const imageData =
+          await imageUrlToDataUrl(
+            site.photo_url
+          );
 
 
-          if(imageData){
+        if(imageData){
+
+          try{
 
             slide.addImage({
 
               data:
                 imageData,
 
-              x:.5,
+              x:
+                imageX,
 
-              y:1.45,
+              y:
+                imageY,
 
-              w:5.6,
+              w:
+                imageW,
 
-              h:3.7
+              h:
+                imageH,
+
+              sizing:{
+                type:"cover",
+                x:
+                  imageX,
+
+                y:
+                  imageY,
+
+                w:
+                  imageW,
+
+                h:
+                  imageH
+              }
 
             });
 
           }
-          else{
+          catch(error){
+
+            console.error(
+              "PPT image error",
+              error
+            );
+
 
             slide.addText(
-              "📷 Site photo could not be loaded",
+              "IMAGE NOT AVAILABLE",
               {
-                x:.7,
-                y:3,
-                w:5.2,
-                h:.4,
-                fontSize:13,
+                x:imageX,
+                y:imageY + 2,
+                w:imageW,
+                h:.35,
+                fontSize:14,
+                bold:true,
                 color:"64748B",
                 align:"center",
                 margin:0
@@ -4711,22 +4408,17 @@ async function exportPPT(){
           }
 
         }
-        catch(imageError){
-
-          console.error(
-            "PPT image error:",
-            imageError
-          );
-
+        else{
 
           slide.addText(
-            "📷 Site photo unavailable",
+            "IMAGE NOT AVAILABLE",
             {
-              x:.7,
-              y:3,
-              w:5.2,
-              h:.4,
-              fontSize:13,
+              x:imageX,
+              y:imageY + 2,
+              w:imageW,
+              h:.35,
+              fontSize:14,
+              bold:true,
               color:"64748B",
               align:"center",
               margin:0
@@ -4739,13 +4431,14 @@ async function exportPPT(){
       else{
 
         slide.addText(
-          "📷 No site photo available",
+          "📷  NO SITE PHOTO AVAILABLE",
           {
-            x:.7,
-            y:3,
-            w:5.2,
-            h:.4,
+            x:imageX,
+            y:imageY + 2,
+            w:imageW,
+            h:.35,
             fontSize:14,
+            bold:true,
             color:"64748B",
             align:"center",
             margin:0
@@ -4756,139 +4449,550 @@ async function exportPPT(){
 
 
       /*
-        DETAILS
+        RIGHT INFORMATION PANEL
       */
 
-      const details =
+      const panelX =
+        8.48;
 
-        "STATE: " +
-        (
-          site.state ||
-          "-"
-        ) +
+      const panelY =
+        1.90;
 
-        "\nCITY: " +
-        (
-          site.city ||
-          "-"
-        ) +
+      const panelW =
+        4.28;
 
-        "\n\nLATITUDE: " +
-        (
-          site.latitude ??
-          "-"
-        ) +
 
-        "\nLONGITUDE: " +
-        (
-          site.longitude ??
-          "-"
-        ) +
+      slide.addShape(
+        ppt.ShapeType.roundRect,
+        {
+          x:panelX,
+          y:panelY,
+          w:panelW,
+          h:4.55,
+          rectRadius:.06,
+          fill:{
+            color:"FFFFFF"
+          },
+          line:{
+            color:"E2E8F0",
+            width:1
+          }
+        }
+      );
 
-        "\n\nSIZE: " +
-        (
-          site.width ||
-          0
-        ) +
-        " × " +
-        (
-          site.height ||
-          0
-        ) +
-        " FT" +
 
-        "\nUNITS: " +
-        (
-          site.units ||
-          1
-        ) +
+      /*
+        LOCATION HEADER
+      */
 
-        "\nTOTAL AREA: " +
-        Number(
-          site.total_area ||
-          0
-        ).toLocaleString(
-          "en-IN"
-        ) +
-        " SQ.FT" +
+      slide.addText(
+        "SITE INFORMATION",
+        {
+          x:panelX + .25,
+          y:panelY + .22,
+          w:3.5,
+          h:.25,
+          fontSize:9,
+          bold:true,
+          color:"20AEF3",
+          charSpacing:1.3,
+          margin:0
+        }
+      );
 
-        "\n\nMEDIA: " +
-        (
-          site.media_type ||
-          "-"
-        ) +
 
-        "\nTYPE: " +
-        (
-          site.illumination ||
-          "-"
-        ) +
+      /*
+        Location
+      */
 
-        "\nTRAFFIC: " +
-        (
-          site.traffic ||
-          "-"
-        ) +
-
-        "\n\nMONTHLY RATE: " +
-        money(
-          site.monthly_rate
-        ) +
-
-        "\nDURATION: " +
-        (
-          site.duration ||
-          30
-        ) +
-        " DAYS" +
-
-        "\nDISPLAY CHARGES: " +
-        money(
-          site.display_charges
-        ) +
-
-        "\nP&M CHARGES: " +
-        money(
-          site.pm_charges
-        ) +
-
-        "\nTOTAL COST: " +
-        money(
-          site.total_cost
-        ) +
-
-        "\n\nSTATUS: " +
-        (
-          site.status ||
-          "-"
-        ) +
-
-        "\n\nREMARKS: " +
-        (
-          site.remarks ||
-          "-"
-        );
+      slide.addText(
+        "LOCATION",
+        {
+          x:panelX + .25,
+          y:panelY + .63,
+          w:1.2,
+          h:.2,
+          fontSize:7,
+          bold:true,
+          color:"94A3B8",
+          charSpacing:1,
+          margin:0
+        }
+      );
 
 
       slide.addText(
-        details,
+        pptText(
+          site.location
+        ),
         {
-          x:6.5,
-          y:1.45,
-          w:5.7,
-          h:4.8,
-          fontSize:11,
+          x:panelX + .25,
+          y:panelY + .84,
+          w:3.7,
+          h:.42,
+          fontSize:10,
+          bold:true,
           color:"172033",
-          valign:"top",
-          margin:.05,
-          breakLine:false,
+          margin:0,
           fit:"shrink"
         }
       );
 
 
       /*
-        GOOGLE MAPS LINK
+        STATE / CITY
+      */
+
+      slide.addText(
+        "STATE",
+        {
+          x:panelX + .25,
+          y:panelY + 1.42,
+          w:1.2,
+          h:.18,
+          fontSize:7,
+          bold:true,
+          color:"94A3B8",
+          margin:0
+        }
+      );
+
+
+      slide.addText(
+        pptText(
+          site.state
+        ),
+        {
+          x:panelX + .25,
+          y:panelY + 1.62,
+          w:1.6,
+          h:.25,
+          fontSize:9,
+          color:"172033",
+          margin:0
+        }
+      );
+
+
+      slide.addText(
+        "CITY",
+        {
+          x:panelX + 2.15,
+          y:panelY + 1.42,
+          w:1.2,
+          h:.18,
+          fontSize:7,
+          bold:true,
+          color:"94A3B8",
+          margin:0
+        }
+      );
+
+
+      slide.addText(
+        pptText(
+          site.city
+        ),
+        {
+          x:panelX + 2.15,
+          y:panelY + 1.62,
+          w:1.6,
+          h:.25,
+          fontSize:9,
+          color:"172033",
+          margin:0
+        }
+      );
+
+
+      /*
+        SIZE CARD
+      */
+
+      slide.addShape(
+        ppt.ShapeType.roundRect,
+        {
+          x:panelX + .25,
+          y:panelY + 2.03,
+          w:3.78,
+          h:.72,
+          rectRadius:.04,
+          fill:{
+            color:"F1F5F9"
+          },
+          line:{
+            color:"E2E8F0"
+          }
+        }
+      );
+
+
+      slide.addText(
+        "SIZE",
+        {
+          x:panelX + .45,
+          y:panelY + 2.20,
+          w:.55,
+          h:.18,
+          fontSize:7,
+          bold:true,
+          color:"64748B",
+          margin:0
+        }
+      );
+
+
+      slide.addText(
+        Number(
+          site.width || 0
+        ) +
+        " × " +
+        Number(
+          site.height || 0
+        ) +
+        " FT",
+        {
+          x:panelX + 1.0,
+          y:panelY + 2.12,
+          w:1.4,
+          h:.3,
+          fontSize:13,
+          bold:true,
+          color:"0B1220",
+          margin:0
+        }
+      );
+
+
+      slide.addText(
+        "UNITS",
+        {
+          x:panelX + 2.55,
+          y:panelY + 2.20,
+          w:.55,
+          h:.18,
+          fontSize:7,
+          bold:true,
+          color:"64748B",
+          margin:0
+        }
+      );
+
+
+      slide.addText(
+        String(
+          site.units || 1
+        ),
+        {
+          x:panelX + 3.15,
+          y:panelY + 2.12,
+          w:.55,
+          h:.3,
+          fontSize:13,
+          bold:true,
+          color:"20AEF3",
+          margin:0
+        }
+      );
+
+
+      /*
+        AREA
+      */
+
+      slide.addText(
+        "TOTAL DISPLAY AREA",
+        {
+          x:panelX + .25,
+          y:panelY + 2.96,
+          w:1.7,
+          h:.18,
+          fontSize:7,
+          bold:true,
+          color:"94A3B8",
+          margin:0
+        }
+      );
+
+
+      slide.addText(
+        Number(
+          site.total_area || 0
+        ).toLocaleString(
+          "en-IN"
+        ) +
+        " SQ.FT",
+        {
+          x:panelX + .25,
+          y:panelY + 3.18,
+          w:2.2,
+          h:.3,
+          fontSize:12,
+          bold:true,
+          color:"172033",
+          margin:0
+        }
+      );
+
+
+      /*
+        MEDIA
+      */
+
+      slide.addText(
+        "MEDIA",
+        {
+          x:panelX + 2.35,
+          y:panelY + 2.96,
+          w:1,
+          h:.18,
+          fontSize:7,
+          bold:true,
+          color:"94A3B8",
+          margin:0
+        }
+      );
+
+
+      slide.addText(
+        pptText(
+          site.media_type
+        ),
+        {
+          x:panelX + 2.35,
+          y:panelY + 3.18,
+          w:1.55,
+          h:.3,
+          fontSize:10,
+          bold:true,
+          color:"172033",
+          margin:0,
+          fit:"shrink"
+        }
+      );
+
+
+      /*
+        TYPE / TRAFFIC
+      */
+
+      slide.addText(
+        "TYPE",
+        {
+          x:panelX + .25,
+          y:panelY + 3.62,
+          w:.7,
+          h:.18,
+          fontSize:7,
+          bold:true,
+          color:"94A3B8",
+          margin:0
+        }
+      );
+
+
+      slide.addText(
+        pptText(
+          site.illumination
+        ),
+        {
+          x:panelX + .25,
+          y:panelY + 3.83,
+          w:1.4,
+          h:.25,
+          fontSize:10,
+          bold:true,
+          color:"20AEF3",
+          margin:0
+        }
+      );
+
+
+      slide.addText(
+        "TRAFFIC",
+        {
+          x:panelX + 2.15,
+          y:panelY + 3.62,
+          w:.8,
+          h:.18,
+          fontSize:7,
+          bold:true,
+          color:"94A3B8",
+          margin:0
+        }
+      );
+
+
+      slide.addText(
+        pptText(
+          site.traffic
+        ),
+        {
+          x:panelX + 2.15,
+          y:panelY + 3.83,
+          w:1.2,
+          h:.25,
+          fontSize:10,
+          bold:true,
+          color:"172033",
+          margin:0
+        }
+      );
+
+
+      /*
+        COST STRIP
+      */
+
+      slide.addShape(
+        ppt.ShapeType.roundRect,
+        {
+          x:.55,
+          y:6.68,
+          w:12.21,
+          h:.55,
+          rectRadius:.04,
+          fill:{
+            color:"0B1220"
+          },
+          line:{
+            color:"0B1220"
+          }
+        }
+      );
+
+
+      slide.addText(
+        "MONTHLY",
+        {
+          x:.78,
+          y:6.84,
+          w:.75,
+          h:.15,
+          fontSize:7,
+          bold:true,
+          color:"94A3B8",
+          margin:0
+        }
+      );
+
+
+      slide.addText(
+        money(
+          site.monthly_rate
+        ),
+        {
+          x:1.52,
+          y:6.78,
+          w:1.35,
+          h:.25,
+          fontSize:10,
+          bold:true,
+          color:"FFFFFF",
+          margin:0
+        }
+      );
+
+
+      slide.addText(
+        "DURATION",
+        {
+          x:3.25,
+          y:6.84,
+          w:.75,
+          h:.15,
+          fontSize:7,
+          bold:true,
+          color:"94A3B8",
+          margin:0
+        }
+      );
+
+
+      slide.addText(
+        String(
+          site.duration || 30
+        ) +
+        " DAYS",
+        {
+          x:4.05,
+          y:6.78,
+          w:1.05,
+          h:.25,
+          fontSize:10,
+          bold:true,
+          color:"FFFFFF",
+          margin:0
+        }
+      );
+
+
+      slide.addText(
+        "TOTAL COST",
+        {
+          x:5.55,
+          y:6.84,
+          w:.8,
+          h:.15,
+          fontSize:7,
+          bold:true,
+          color:"94A3B8",
+          margin:0
+        }
+      );
+
+
+      slide.addText(
+        money(
+          site.total_cost
+        ),
+        {
+          x:6.45,
+          y:6.77,
+          w:1.6,
+          h:.28,
+          fontSize:11,
+          bold:true,
+          color:"20AEF3",
+          margin:0
+        }
+      );
+
+
+      slide.addText(
+        "STATUS",
+        {
+          x:8.35,
+          y:6.84,
+          w:.55,
+          h:.15,
+          fontSize:7,
+          bold:true,
+          color:"94A3B8",
+          margin:0
+        }
+      );
+
+
+      slide.addText(
+        pptText(
+          site.status
+        ),
+        {
+          x:9.0,
+          y:6.78,
+          w:1.15,
+          h:.25,
+          fontSize:9,
+          bold:true,
+          color:"FFFFFF",
+          margin:0
+        }
+      );
+
+
+      /*
+        GOOGLE MAPS BUTTON
       */
 
       const mapsURL =
@@ -4905,24 +5009,54 @@ async function exportPPT(){
 
 
       slide.addText(
-        "📍 Open Location in Google Maps",
+        "📍  OPEN LOCATION IN GOOGLE MAPS",
         {
-          x:6.5,
-          y:6.35,
-          w:5,
-          h:.4,
-          fontSize:12,
-          color:"0563C1",
-          underline:{
-            style:"sng"
-          },
+          x:10.35,
+          y:6.78,
+          w:2.15,
+          h:.25,
+          fontSize:8,
+          bold:true,
+          color:"FFFFFF",
+          align:"right",
+          margin:0,
           hyperlink:{
             url:
               mapsURL
-          },
-          margin:0
+          }
         }
       );
+
+
+      /*
+        REMARKS
+      */
+
+      if(
+        site.remarks &&
+        String(
+          site.remarks
+        ).trim()
+      ){
+
+        slide.addText(
+          "REMARKS: " +
+          String(
+            site.remarks
+          ),
+          {
+            x:.57,
+            y:7.34,
+            w:9.4,
+            h:.22,
+            fontSize:7,
+            color:"64748B",
+            margin:0,
+            fit:"shrink"
+          }
+        );
+
+      }
 
 
       /*
@@ -4930,13 +5064,13 @@ async function exportPPT(){
       */
 
       slide.addText(
-        "MY VISION OOH",
+        "MY VISION OOH  •  OOH SITE PROPOSAL",
         {
-          x:.5,
-          y:7.05,
-          w:3,
-          h:.25,
-          fontSize:9,
+          x:.57,
+          y:7.34,
+          w:4.2,
+          h:.2,
+          fontSize:6.5,
           color:"94A3B8",
           margin:0
         }
@@ -4944,15 +5078,15 @@ async function exportPPT(){
 
 
       slide.addText(
-        (index + 1) +
+        String(index + 1) +
         " / " +
-        data.length,
+        String(data.length),
         {
-          x:11,
-          y:7.05,
-          w:1.5,
-          h:.25,
-          fontSize:9,
+          x:11.6,
+          y:7.34,
+          w:1.15,
+          h:.2,
+          fontSize:7,
           color:"94A3B8",
           align:"right",
           margin:0
@@ -4973,58 +5107,30 @@ async function exportPPT(){
 
 
     const safeName =
-
       (
         campaignName ||
         "My_Vision_OOH_Proposal"
       )
-
       .replace(
         /[^a-z0-9_\- ]/gi,
         ""
       )
-
       .trim()
-
       .replace(
         /\s+/g,
         "_"
       );
 
 
-    /*
-      DOWNLOAD
-    */
-
-    if(
-      typeof ppt.writeFile ===
-      "function"
-    ){
-
-      await ppt.writeFile({
-
-        fileName:
-          safeName +
-          ".pptx"
-
-      });
-
-    }
-    else{
-
-      await ppt.writeFile(
-        {
-          fileName:
-            safeName +
-            ".pptx"
-        }
-      );
-
-    }
+    await ppt.writeFile({
+      fileName:
+        safeName +
+        ".pptx"
+    });
 
 
     showMessage(
-      "PPT downloaded successfully."
+      "Premium PPT downloaded successfully."
     );
 
   }
@@ -5038,10 +5144,7 @@ async function exportPPT(){
 
     alert(
       "PPT export failed.\n\n" +
-      (
-        error.message ||
-        error
-      )
+      error.message
     );
 
   }
@@ -5060,7 +5163,7 @@ async function exportPPT(){
 
 /* =========================================================
    ESCAPE HTML
-   ========================================================= */
+========================================================= */
 
 function escapeHTML(text){
 
@@ -5073,20 +5176,11 @@ function escapeHTML(text){
 
       return {
 
-        "&":
-          "&amp;",
-
-        "<":
-          "&lt;",
-
-        ">":
-          "&gt;",
-
-        '"':
-          "&quot;",
-
-        "'":
-          "&#039;"
+        "&":"&amp;",
+        "<":"&lt;",
+        ">":"&gt;",
+        '"':"&quot;",
+        "'":"&#039;"
 
       }[character];
 
@@ -5098,7 +5192,7 @@ function escapeHTML(text){
 
 /* =========================================================
    ESCAPE ATTRIBUTE
-   ========================================================= */
+========================================================= */
 
 function escapeAttribute(text){
 
@@ -5131,83 +5225,76 @@ function escapeAttribute(text){
 
 /* =========================================================
    PHOTO PREVIEW
-   ========================================================= */
+========================================================= */
 
-document
-  .getElementById("photo")
-  .addEventListener(
-    "change",
-    async function(){
+document.getElementById(
+  "photo"
+)
+.addEventListener(
+  "change",
+  async function(){
 
-      const file =
-        this.files[0];
-
-
-      const preview =
-        document.getElementById(
-          "photoPreview"
-        );
+    const file =
+      this.files[0];
 
 
-      if(!file){
-
-        preview.src = "";
-
-        preview.style.display =
-          "none";
-
-        return;
-
-      }
+    const preview =
+      document.getElementById(
+        "photoPreview"
+      );
 
 
-      try{
+    if(!file){
 
-        const dataURL =
-          await resizeImage(
-            file,
-            1200,
-            0.82
-          );
+      preview.src = "";
 
+      preview.style.display =
+        "none";
 
-        preview.src =
-          dataURL;
-
-
-        /*
-          New photo.
-          saveSite() will use the file.
-        */
-
-        preview.dataset.url =
-          "";
-
-
-        preview.style.display =
-          "block";
-
-      }
-      catch(error){
-
-        console.error(
-          error
-        );
-
-
-        showMessage(
-          "Could not preview image."
-        );
-
-      }
+      return;
 
     }
-  );
+
+
+    try{
+
+      const dataURL =
+        await resizeImage(
+          file,
+          1400,
+          0.82
+        );
+
+
+      preview.src =
+        dataURL;
+
+
+      preview.dataset.url =
+        "";
+
+
+      preview.style.display =
+        "block";
+
+    }
+    catch(error){
+
+      console.error(error);
+
+      showMessage(
+        "Could not preview image."
+      );
+
+    }
+
+  }
+);
 
 
 /* =========================================================
-   CALCULATION EVENTS
-   ========================================================= */
+   CALCULATION LISTENERS
+========================================================= */
 
 [
   "width",
@@ -5216,101 +5303,125 @@ document
   "rate",
   "duration",
   "pmRate"
+
 ].forEach(
   function(id){
 
-    document
-      .getElementById(id)
-      .addEventListener(
-        "input",
-        calculateValues
-      );
+    document.getElementById(
+      id
+    )
+    .addEventListener(
+      "input",
+      calculateValues
+    );
 
   }
 );
 
 
 /* =========================================================
-   ILLUMINATION EVENT
-   ========================================================= */
+   ILLUMINATION
+========================================================= */
 
-document
-  .getElementById("illumination")
-  .addEventListener(
-    "change",
-    function(){
+document.getElementById(
+  "illumination"
+)
+.addEventListener(
+  "change",
+  function(){
 
-      if(
-        this.value === "DOOH"
-      ){
+    if(
+      this.value === "DOOH"
+    ){
 
-        document.getElementById(
-          "pmRate"
-        ).value = 0;
-
-      }
-      else if(
-        Number(
-          document.getElementById(
-            "pmRate"
-          ).value
-        ) === 0
-      ){
-
-        document.getElementById(
-          "pmRate"
-        ).value = 15;
-
-      }
-
-
-      calculateValues();
+      document.getElementById(
+        "pmRate"
+      ).value = 0;
 
     }
-  );
+    else if(
+      Number(
+        document.getElementById(
+          "pmRate"
+        ).value
+      ) === 0
+    ){
+
+      document.getElementById(
+        "pmRate"
+      ).value = 15;
+
+    }
+
+
+    calculateValues();
+
+  }
+);
 
 
 /* =========================================================
-   LOCATION ENTER KEY
-   ========================================================= */
+   ENTER SEARCH
+========================================================= */
 
-document
-  .getElementById(
-    "locationSearch"
-  )
-  .addEventListener(
-    "keydown",
-    function(event){
+document.getElementById(
+  "locationSearch"
+)
+.addEventListener(
+  "keydown",
+  function(event){
 
-      if(
-        event.key === "Enter"
-      ){
+    if(
+      event.key === "Enter"
+    ){
 
-        event.preventDefault();
-
-        searchLocation();
-
-      }
+      searchLocation();
 
     }
-  );
+
+  }
+);
 
 
 /* =========================================================
    START APP
-   ========================================================= */
+========================================================= */
 
 async function startApp(){
 
-  initializeMap();
+  try{
 
-  await loadLocalData();
+    await openDatabase();
 
-  calculateValues();
+    initializeMap();
 
-  showMessage(
-    "MY VISION OOH ready."
-  );
+    await loadLocalData();
+
+    calculateValues();
+
+    showMessage(
+      "MY VISION OOH ready."
+    );
+
+  }
+  catch(error){
+
+    console.error(
+      "APP START ERROR:",
+      error
+    );
+
+
+    initializeMap();
+
+    calculateValues();
+
+
+    showMessage(
+      "MY VISION OOH ready."
+    );
+
+  }
 
 }
 
