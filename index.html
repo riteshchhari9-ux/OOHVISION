@@ -2602,6 +2602,7 @@ async function saveSite(){
 
   clearForm();
 
+
 }
 
 
@@ -4430,6 +4431,7 @@ async function imageUrlToDataUrl(
 
 /* =========================================================
    PPT EXPORT
+   PROFESSIONAL 3/4 PROPOSAL DESIGN
    ========================================================= */
 
 async function exportPPT(){
@@ -4438,852 +4440,1359 @@ async function exportPPT(){
     window.pptxgen ||
     window.PptxGenJS;
 
-  if(!PptxConstructor){
-    showMessage("PPT library not loaded. Please refresh.");
+
+  if(
+    !PptxConstructor
+  ){
+
+    showMessage(
+      "PPT library not loaded. Please refresh."
+    );
+
     return;
+
   }
+
 
   const data =
     sites.filter(
       site =>
         selectedSites.size === 0 ||
-        selectedSites.has(site.id)
+        selectedSites.has(
+          site.id
+        )
     );
 
+
   if(!data.length){
-    showMessage("No sites to export.");
+
+    showMessage(
+      "No sites to export."
+    );
+
     return;
+
   }
 
-  const button = document.getElementById("pptButton");
-  button.disabled = true;
-  button.innerText = "Creating PPT...";
+
+  const button =
+    document.getElementById(
+      "pptButton"
+    );
+
+
+  button.disabled =
+    true;
+
+  button.innerText =
+    "⏳ Creating PPT...";
+
 
   try{
 
-    const ppt = new PptxConstructor();
+    const ppt =
+      new PptxConstructor();
 
-    ppt.layout = "LAYOUT_WIDE";
-    ppt.author = "MY VISION OOH";
-    ppt.company = "MY VISION OOH";
-    ppt.subject = "OOH Site Proposal";
-    ppt.title =
-      document.getElementById("campaign").value.trim() ||
+
+    ppt.layout =
+      "LAYOUT_WIDE";
+
+
+    ppt.author =
+      "MY VISION OOH";
+
+
+    ppt.company =
+      "MY VISION OOH";
+
+
+    ppt.subject =
       "OOH Site Proposal";
-    ppt.lang = "en-US";
 
-    const W = 13.333;
-    const H = 7.5;
 
-    const NAVY = "061A3A";
-    const BLUE = "0876D1";
-    const LIGHTBLUE = "EAF3FC";
-    const BORDER = "C8D7E8";
-    const TEXT = "102344";
-    const MUTED = "66758A";
-    const WHITE = "FFFFFF";
-    const GREEN = "42A65A";
+    ppt.title =
+      document.getElementById(
+        "campaign"
+      ).value.trim() ||
+      "OOH Site Proposal";
 
-    const safeText = value =>
-      String(value ?? "-") || "-";
 
-    const addLabelValue = function(slide, label, value, x, y, w, valueX){
-      slide.addText(label.toUpperCase() + ":", {
-        x:x,
-        y:y,
-        w:valueX - x,
-        h:.25,
-        fontFace:"Aptos",
-        fontSize:10.5,
-        bold:true,
-        color:TEXT,
-        margin:0,
-        fit:"shrink"
-      });
+    ppt.lang =
+      "en-US";
 
-      slide.addText(safeText(value), {
-        x:valueX,
-        y:y,
-        w:w - (valueX - x),
-        h:.25,
-        fontFace:"Aptos",
-        fontSize:10.5,
-        color:TEXT,
-        margin:0,
-        fit:"shrink"
-      });
+
+    /*
+      ======================================================
+      COVER SLIDE
+      ======================================================
+    */
+
+    const cover =
+      ppt.addSlide();
+
+
+    cover.background = {
+      color:"101827"
     };
 
-    const addSectionTitle = function(slide, title, x, y, w, icon){
-      slide.addShape(ppt.ShapeType.ellipse, {
-        x:x,
-        y:y-.02,
-        w:.34,
-        h:.34,
-        fill:{color:BLUE},
-        line:{color:BLUE}
-      });
 
-      slide.addText(icon || "", {
-        x:x+.055,
-        y:y+.015,
-        w:.23,
-        h:.18,
-        fontFace:"Aptos",
-        fontSize:9,
-        bold:true,
-        color:WHITE,
-        align:"center",
-        margin:0
-      });
+    /*
+      TOP BLUE LINE
+    */
 
-      slide.addText(title, {
-        x:x+.43,
-        y:y,
-        w:w-.43,
-        h:.25,
-        fontFace:"Aptos",
-        fontSize:11.5,
-        bold:true,
-        color:BLUE,
-        margin:0
-      });
-    };
+    cover.addShape(
+      ppt.ShapeType.rect,
+      {
+        x:0,
+        y:0,
+        w:13.333,
+        h:.12,
+        fill:{
+          color:"20AEF3"
+        },
+        line:{
+          color:"20AEF3"
+        }
+      }
+    );
 
-    /* =====================================================
-       COVER SLIDE
-       ===================================================== */
 
-    const cover = ppt.addSlide();
-    cover.background = {color:NAVY};
-
-    cover.addShape(ppt.ShapeType.rect, {
-      x:0,
-      y:0,
-      w:W,
-      h:H,
-      fill:{color:NAVY},
-      line:{color:NAVY}
-    });
-
-    cover.addText("MY VISION", {
-      x:.75,
-      y:2.45,
-      w:5.2,
-      h:.55,
-      fontFace:"Aptos Display",
-      fontSize:29,
-      bold:true,
-      color:WHITE,
-      margin:0
-    });
-
-    cover.addText("OOH", {
-      x:3.85,
-      y:2.45,
-      w:1.8,
-      h:.55,
-      fontFace:"Aptos Display",
-      fontSize:29,
-      bold:true,
-      color:"1685E5",
-      margin:0
-    });
+    /*
+      LOGO
+    */
 
     cover.addText(
-      document.getElementById("campaign").value.trim() ||
+      "MY VISION",
+      {
+        x:.75,
+        y:.72,
+        w:3.2,
+        h:.45,
+        fontFace:"Arial",
+        fontSize:25,
+        bold:true,
+        color:"FFFFFF",
+        margin:0
+      }
+    );
+
+
+    cover.addText(
+      "OOH",
+      {
+        x:3.45,
+        y:.72,
+        w:1.3,
+        h:.45,
+        fontFace:"Arial",
+        fontSize:25,
+        bold:true,
+        color:"20AEF3",
+        margin:0
+      }
+    );
+
+
+    cover.addShape(
+      ppt.ShapeType.line,
+      {
+        x:.78,
+        y:1.48,
+        w:2.25,
+        h:0,
+        line:{
+          color:"20AEF3",
+          width:2
+        }
+      }
+    );
+
+
+    cover.addText(
+      "OUT OF HOME",
+      {
+        x:.8,
+        y:2.05,
+        w:4,
+        h:.3,
+        fontFace:"Arial",
+        fontSize:12,
+        bold:true,
+        color:"20AEF3",
+        charSpacing:2,
+        margin:0
+      }
+    );
+
+
+    cover.addText(
+      document.getElementById(
+        "campaign"
+      ).value.trim() ||
       "OOH Site Proposal",
       {
         x:.78,
-        y:3.25,
-        w:8.5,
-        h:.55,
-        fontFace:"Aptos",
-        fontSize:21,
-        color:WHITE,
+        y:2.52,
+        w:10.8,
+        h:1.0,
+        fontFace:"Arial",
+        fontSize:31,
+        bold:true,
+        color:"FFFFFF",
         margin:0,
         fit:"shrink"
       }
     );
 
-    cover.addText(data.length + " Selected Sites", {
-      x:.8,
-      y:4.05,
-      w:4,
-      h:.35,
-      fontFace:"Aptos",
-      fontSize:13,
-      color:"D8E5F3",
-      margin:0
-    });
 
-    cover.addText(new Date().toLocaleDateString("en-IN"), {
-      x:.8,
-      y:4.5,
-      w:3,
-      h:.3,
-      fontFace:"Aptos",
-      fontSize:10.5,
-      color:"AFC2D8",
-      margin:0
-    });
-
-    cover.addShape(ppt.ShapeType.line, {
-      x:.8,
-      y:5.05,
-      w:4.7,
-      h:0,
-      line:{color:BLUE, width:2}
-    });
-
-    cover.addText("Premium Outdoor Advertising Solutions", {
-      x:.8,
-      y:5.25,
-      w:6,
-      h:.3,
-      fontFace:"Aptos",
-      fontSize:11,
-      color:"D8E5F3",
-      margin:0
-    });
-
-    cover.addText("MY VISION OOH", {
-      x:9.2,
-      y:.55,
-      w:3.4,
-      h:.35,
-      fontFace:"Aptos Display",
-      fontSize:20,
-      bold:true,
-      color:WHITE,
-      align:"right",
-      margin:0
-    });
-
-    cover.addText("PREMIUM OUTDOOR ADVERTISING SOLUTIONS", {
-      x:8.2,
-      y:.98,
-      w:4.4,
-      h:.25,
-      fontFace:"Aptos",
-      fontSize:7.5,
-      color:"C8D7E8",
-      align:"right",
-      margin:0,
-      fit:"shrink"
-    });
-
-    cover.addText("—  —  —", {
-      x:8.9,
-      y:1.35,
-      w:3.7,
-      h:.2,
-      fontSize:8,
-      color:"8096B2",
-      align:"right",
-      margin:0
-    });
-
-    /* =====================================================
-       SITE SLIDES
-       ===================================================== */
-
-    for(let index = 0; index < data.length; index++){
-
-      const site = data[index];
-      const slide = ppt.addSlide();
-      slide.background = {color:WHITE};
-
-      /* Top header */
-      slide.addShape(ppt.ShapeType.rect, {
-        x:0,
-        y:0,
-        w:W,
-        h:1.02,
-        fill:{color:WHITE},
-        line:{color:WHITE}
-      });
-
-      slide.addShape(ppt.ShapeType.rect, {
-        x:0,
-        y:0,
-        w:1.34,
-        h:1.02,
-        fill:{color:NAVY},
-        line:{color:NAVY}
-      });
-
-      slide.addText(String(index + 1).padStart(2,"0") + ".", {
-        x:.18,
-        y:.27,
-        w:1,
-        h:.43,
-        fontFace:"Aptos Display",
-        fontSize:28,
+    cover.addText(
+      "OOH MEDIA SITE PROPOSAL",
+      {
+        x:.8,
+        y:3.68,
+        w:6,
+        h:.35,
+        fontFace:"Arial",
+        fontSize:16,
         bold:true,
-        color:WHITE,
-        align:"center",
+        color:"CBD5E1",
         margin:0
-      });
-
-      slide.addText(safeText(site.site_name || "OOH SITE"), {
-        x:1.78,
-        y:.18,
-        w:6.7,
-        h:.38,
-        fontFace:"Aptos Display",
-        fontSize:22,
-        bold:true,
-        color:NAVY,
-        margin:0,
-        fit:"shrink"
-      });
-
-      slide.addText("LOCATION  •  " + safeText(site.location || "Location not specified"), {
-        x:1.8,
-        y:.61,
-        w:7.0,
-        h:.25,
-        fontFace:"Aptos",
-        fontSize:10.5,
-        bold:true,
-        color:TEXT,
-        margin:0,
-        fit:"shrink"
-      });
-
-      slide.addText("MY VISION", {
-        x:10.05,
-        y:.18,
-        w:1.45,
-        h:.3,
-        fontFace:"Aptos Display",
-        fontSize:17,
-        bold:true,
-        color:NAVY,
-        align:"right",
-        margin:0
-      });
-
-      slide.addText("OOH", {
-        x:11.47,
-        y:.18,
-        w:1.1,
-        h:.3,
-        fontFace:"Aptos Display",
-        fontSize:17,
-        bold:true,
-        color:BLUE,
-        align:"right",
-        margin:0
-      });
-
-      slide.addText("Premium Outdoor Advertising Solutions", {
-        x:9.65,
-        y:.55,
-        w:2.95,
-        h:.2,
-        fontFace:"Aptos",
-        fontSize:7.3,
-        color:MUTED,
-        align:"right",
-        margin:0,
-        fit:"shrink"
-      });
-
-      slide.addShape(ppt.ShapeType.line, {
-        x:0,
-        y:1.02,
-        w:W,
-        h:0,
-        line:{color:BORDER, width:1}
-      });
-
-      /* Main photo panel */
-      slide.addShape(ppt.ShapeType.roundRect, {
-        x:.04,
-        y:1.1,
-        w:7.55,
-        h:6.05,
-        rectRadius:.06,
-        fill:{color:"F2F5F8"},
-        line:{color:BORDER, width:1}
-      });
-
-      if(site.photo_url){
-        try{
-          const imageData = await imageUrlToDataUrl(site.photo_url);
-
-          if(imageData){
-            slide.addImage({
-              data:imageData,
-              x:.06,
-              y:1.12,
-              w:7.51,
-              h:6.01,
-              sizingCrop:true
-            });
-          }
-          else{
-            slide.addText("SITE PHOTO UNAVAILABLE", {
-              x:.6,
-              y:3.75,
-              w:6.4,
-              h:.35,
-              fontFace:"Aptos",
-              fontSize:14,
-              bold:true,
-              color:MUTED,
-              align:"center",
-              margin:0
-            });
-          }
-        }
-        catch(error){
-          console.error("PPT image error:", error);
-          slide.addText("SITE PHOTO UNAVAILABLE", {
-            x:.6,
-            y:3.75,
-            w:6.4,
-            h:.35,
-            fontFace:"Aptos",
-            fontSize:14,
-            bold:true,
-            color:MUTED,
-            align:"center",
-            margin:0
-          });
-        }
       }
-      else{
-        slide.addText("NO SITE PHOTO AVAILABLE", {
-          x:.6,
-          y:3.75,
-          w:6.4,
-          h:.35,
-          fontFace:"Aptos",
-          fontSize:14,
-          bold:true,
-          color:MUTED,
-          align:"center",
-          margin:0
-        });
-      }
+    );
 
-      /* Right column: Site details */
-      slide.addShape(ppt.ShapeType.roundRect, {
-        x:7.78,
-        y:1.1,
-        w:2.12,
-        h:5.28,
-        fill:{color:WHITE},
-        line:{color:BORDER, width:1}
-      });
 
-      addSectionTitle(slide,"SITE DETAILS",7.98,1.3,1.75,"i");
+    /*
+      TOTAL AREA
+    */
 
-      addLabelValue(slide,"State",site.state,7.98,1.78,1.72,8.56);
-      addLabelValue(slide,"City",site.city,7.98,2.08,1.72,8.56);
+    const totalArea =
+      data.reduce(
+        function(sum,site){
 
-      slide.addShape(ppt.ShapeType.line, {
-        x:7.98,
-        y:2.42,
-        w:1.72,
-        h:0,
-        line:{color:BORDER, width:1, dash:"dash"}
-      });
+          return(
+            sum +
+            Number(
+              site.total_area || 0
+            )
+          );
 
-      addLabelValue(slide,"Latitude",site.latitude,7.98,2.66,1.72,8.65);
-      addLabelValue(slide,"Longitude",site.longitude,7.98,2.96,1.72,8.65);
+        },
+        0
+      );
 
-      slide.addShape(ppt.ShapeType.line, {
-        x:7.98,
-        y:3.30,
-        w:1.72,
-        h:0,
-        line:{color:BORDER, width:1}
-      });
 
-      addSectionTitle(slide,"SIZE & UNITS",7.98,3.48,1.75,"×");
-      addLabelValue(slide,"Size",safeText(site.width || 0) + " × " + safeText(site.height || 0) + " FT",7.98,3.96,1.72,8.56);
-      addLabelValue(slide,"Units",site.units || 1,7.98,4.26,1.72,8.56);
+    /*
+      SITE COUNT BOX
+    */
 
-      slide.addShape(ppt.ShapeType.roundRect, {
-        x:7.98,
-        y:4.62,
-        w:1.72,
-        h:.34,
+    cover.addShape(
+      ppt.ShapeType.roundRect,
+      {
+        x:.8,
+        y:4.85,
+        w:2.45,
+        h:1.08,
         rectRadius:.05,
-        fill:{color:LIGHTBLUE},
-        line:{color:LIGHTBLUE}
-      });
+        fill:{
+          color:"172033"
+        },
+        line:{
+          color:"334155",
+          width:1
+        }
+      }
+    );
 
-      slide.addText("TOTAL AREA: " + Number(site.total_area || 0).toLocaleString("en-IN") + " SQ.FT", {
-        x:8.06,
-        y:4.70,
-        w:1.56,
-        h:.16,
-        fontFace:"Aptos",
-        fontSize:8.3,
+
+    cover.addText(
+      String(data.length),
+      {
+        x:1.0,
+        y:5.03,
+        w:2.05,
+        h:.38,
+        fontFace:"Arial",
+        fontSize:24,
         bold:true,
-        color:NAVY,
-        align:"center",
-        margin:0,
-        fit:"shrink"
-      });
-
-      slide.addShape(ppt.ShapeType.line, {
-        x:7.98,
-        y:5.12,
-        w:1.72,
-        h:0,
-        line:{color:BORDER, width:1}
-      });
-
-      addSectionTitle(slide,"MEDIA DETAILS",7.98,5.30,1.75,"□");
-      addLabelValue(slide,"Media",site.media_type,7.98,5.76,1.72,8.56);
-      addLabelValue(slide,"Type",site.illumination,7.98,6.06,1.72,8.56);
-      addLabelValue(slide,"Traffic",site.traffic,7.98,6.36,1.72,8.56);
-
-      /* Pricing column */
-      slide.addShape(ppt.ShapeType.roundRect, {
-        x:10.04,
-        y:1.1,
-        w:3.25,
-        h:3.22,
-        fill:{color:WHITE},
-        line:{color:BORDER, width:1}
-      });
-
-      slide.addShape(ppt.ShapeType.roundRect, {
-        x:10.04,
-        y:1.1,
-        w:3.25,
-        h:.55,
-        rectRadius:.04,
-        fill:{color:NAVY},
-        line:{color:NAVY}
-      });
-
-      slide.addShape(ppt.ShapeType.ellipse, {
-        x:10.18,
-        y:1.21,
-        w:.34,
-        h:.34,
-        fill:{color:BLUE},
-        line:{color:BLUE}
-      });
-
-      slide.addText("₹", {
-        x:10.24,
-        y:1.265,
-        w:.22,
-        h:.18,
-        fontFace:"Aptos",
-        fontSize:10,
-        bold:true,
-        color:WHITE,
+        color:"20AEF3",
         align:"center",
         margin:0
-      });
+      }
+    );
 
-      slide.addText("PRICING DETAILS", {
-        x:10.62,
-        y:1.24,
+
+    cover.addText(
+      "SELECTED SITES",
+      {
+        x:1.0,
+        y:5.52,
+        w:2.05,
+        h:.18,
+        fontFace:"Arial",
+        fontSize:8,
+        bold:true,
+        color:"CBD5E1",
+        align:"center",
+        margin:0
+      }
+    );
+
+
+    /*
+      AREA BOX
+    */
+
+    cover.addShape(
+      ppt.ShapeType.roundRect,
+      {
+        x:3.5,
+        y:4.85,
+        w:2.75,
+        h:1.08,
+        rectRadius:.05,
+        fill:{
+          color:"172033"
+        },
+        line:{
+          color:"334155",
+          width:1
+        }
+      }
+    );
+
+
+    cover.addText(
+      totalArea.toLocaleString(
+        "en-IN"
+      ),
+      {
+        x:3.72,
+        y:5.03,
         w:2.3,
-        h:.25,
-        fontFace:"Aptos",
-        fontSize:11.5,
+        h:.38,
+        fontFace:"Arial",
+        fontSize:21,
         bold:true,
-        color:WHITE,
-        margin:0
-      });
-
-      addLabelValue(slide,"Monthly Rate",money(site.monthly_rate),10.22,1.92,2.82,11.94);
-      addLabelValue(slide,"Duration",(site.duration || 30) + " DAYS",10.22,2.30,2.82,11.94);
-
-      slide.addShape(ppt.ShapeType.line, {
-        x:10.22,
-        y:2.70,
-        w:2.82,
-        h:0,
-        line:{color:BORDER, width:1, dash:"dash"}
-      });
-
-      addLabelValue(slide,"Display Charges",money(site.display_charges),10.22,2.94,2.82,11.94);
-      addLabelValue(slide,"P&M Charges",money(site.pm_charges),10.22,3.32,2.82,11.94);
-
-      slide.addShape(ppt.ShapeType.roundRect, {
-        x:10.22,
-        y:3.72,
-        w:2.82,
-        h:.42,
-        rectRadius:.04,
-        fill:{color:NAVY},
-        line:{color:NAVY}
-      });
-
-      slide.addText("TOTAL COST", {
-        x:10.36,
-        y:3.80,
-        w:1.3,
-        h:.18,
-        fontFace:"Aptos",
-        fontSize:9.5,
-        bold:true,
-        color:WHITE,
-        margin:0
-      });
-
-      slide.addText(money(site.total_cost), {
-        x:11.55,
-        y:3.74,
-        w:1.34,
-        h:.25,
-        fontFace:"Aptos Display",
-        fontSize:15,
-        bold:true,
-        color:WHITE,
-        align:"right",
+        color:"FFFFFF",
+        align:"center",
         margin:0,
         fit:"shrink"
-      });
+      }
+    );
 
-      /* Location / map card */
-      slide.addShape(ppt.ShapeType.roundRect, {
-        x:10.04,
-        y:4.46,
-        w:3.25,
-        h:2.68,
-        fill:{color:WHITE},
-        line:{color:BORDER, width:1}
-      });
 
-      addSectionTitle(slide,"LOCATION",10.22,4.67,2.75,"+");
-
-      slide.addShape(ppt.ShapeType.roundRect, {
-        x:10.22,
-        y:5.08,
-        w:2.82,
-        h:1.28,
-        rectRadius:.04,
-        fill:{color:"EEF2F6"},
-        line:{color:BORDER, width:1}
-      });
-
-      slide.addText("MAP LOCATION", {
-        x:10.65,
-        y:5.40,
-        w:1.95,
-        h:.25,
-        fontFace:"Aptos",
-        fontSize:11,
+    cover.addText(
+      "TOTAL DISPLAY AREA SQ.FT",
+      {
+        x:3.72,
+        y:5.52,
+        w:2.3,
+        h:.18,
+        fontFace:"Arial",
+        fontSize:8,
         bold:true,
-        color:MUTED,
+        color:"CBD5E1",
         align:"center",
         margin:0
-      });
+      }
+    );
+
+
+    /*
+      DATE
+    */
+
+    cover.addText(
+      new Date()
+        .toLocaleDateString(
+          "en-IN"
+        ),
+      {
+        x:.8,
+        y:6.62,
+        w:3,
+        h:.25,
+        fontFace:"Arial",
+        fontSize:10,
+        color:"94A3B8",
+        margin:0
+      }
+    );
+
+
+    cover.addText(
+      "CONFIDENTIAL PROPOSAL",
+      {
+        x:8.8,
+        y:6.62,
+        w:3.7,
+        h:.25,
+        fontFace:"Arial",
+        fontSize:9,
+        bold:true,
+        color:"64748B",
+        align:"right",
+        margin:0
+      }
+    );
+
+
+    /*
+      ======================================================
+      SITE SLIDES
+      ======================================================
+    */
+
+    for(
+      let index = 0;
+      index < data.length;
+      index++
+    ){
+
+      const site =
+        data[index];
+
+
+      const slide =
+        ppt.addSlide();
+
+
+      slide.background = {
+        color:"F5F7FA"
+      };
+
+
+      /*
+        ====================================================
+        HEADER
+        ====================================================
+      */
+
+      slide.addShape(
+        ppt.ShapeType.rect,
+        {
+          x:0,
+          y:0,
+          w:13.333,
+          h:.72,
+          fill:{
+            color:"101827"
+          },
+          line:{
+            color:"101827"
+          }
+        }
+      );
+
 
       slide.addText(
-        safeText(site.latitude) + ", " + safeText(site.longitude),
+        "MY VISION",
         {
-          x:10.40,
-          y:5.78,
-          w:2.45,
-          h:.25,
-          fontFace:"Aptos",
-          fontSize:9,
-          color:TEXT,
-          align:"center",
+          x:.45,
+          y:.18,
+          w:1.65,
+          h:.27,
+          fontFace:"Arial",
+          fontSize:15,
+          bold:true,
+          color:"FFFFFF",
+          margin:0
+        }
+      );
+
+
+      slide.addText(
+        "OOH",
+        {
+          x:1.92,
+          y:.18,
+          w:.7,
+          h:.27,
+          fontFace:"Arial",
+          fontSize:15,
+          bold:true,
+          color:"20AEF3",
+          margin:0
+        }
+      );
+
+
+      slide.addText(
+        "OOH SITE PROPOSAL",
+        {
+          x:9.0,
+          y:.22,
+          w:3.8,
+          h:.22,
+          fontFace:"Arial",
+          fontSize:8,
+          bold:true,
+          color:"CBD5E1",
+          align:"right",
+          charSpacing:1.4,
+          margin:0
+        }
+      );
+
+
+      /*
+        ====================================================
+        TITLE
+        ====================================================
+      */
+
+      slide.addText(
+        (index + 1) +
+        ". " +
+        (
+          site.site_name ||
+          "OOH Site"
+        ),
+        {
+          x:.55,
+          y:.94,
+          w:7.55,
+          h:.45,
+          fontFace:"Arial",
+          fontSize:22,
+          bold:true,
+          color:"101827",
           margin:0,
           fit:"shrink"
         }
       );
 
+
+      slide.addText(
+        site.location ||
+        "Location not specified",
+        {
+          x:.58,
+          y:1.43,
+          w:7.35,
+          h:.32,
+          fontFace:"Arial",
+          fontSize:10.5,
+          color:"64748B",
+          margin:0,
+          fit:"shrink"
+        }
+      );
+
+
+      /*
+        ====================================================
+        LEFT PHOTO BOX
+        ====================================================
+      */
+
+      slide.addShape(
+        ppt.ShapeType.roundRect,
+        {
+          x:.55,
+          y:1.92,
+          w:7.25,
+          h:4.42,
+          rectRadius:.05,
+          fill:{
+            color:"E2E8F0"
+          },
+          line:{
+            color:"D1D5DB",
+            width:1
+          }
+        }
+      );
+
+
+      let imageAdded =
+        false;
+
+
+      if(site.photo_url){
+
+        try{
+
+          const imageData =
+            await imageUrlToDataUrl(
+              site.photo_url
+            );
+
+
+          if(imageData){
+
+            slide.addImage({
+
+              data:
+                imageData,
+
+              x:.58,
+
+              y:1.95,
+
+              w:7.19,
+
+              h:4.36
+
+            });
+
+
+            imageAdded =
+              true;
+
+          }
+
+        }
+        catch(imageError){
+
+          console.error(
+            "PPT image error:",
+            imageError
+          );
+
+        }
+
+      }
+
+
+      if(!imageAdded){
+
+        slide.addText(
+          "SITE PHOTO",
+          {
+            x:1.0,
+            y:3.55,
+            w:6.35,
+            h:.4,
+            fontFace:"Arial",
+            fontSize:20,
+            bold:true,
+            color:"94A3B8",
+            align:"center",
+            margin:0
+          }
+        );
+
+
+        slide.addText(
+          "No site photo available",
+          {
+            x:1.0,
+            y:4.12,
+            w:6.35,
+            h:.3,
+            fontFace:"Arial",
+            fontSize:11,
+            color:"64748B",
+            align:"center",
+            margin:0
+          }
+        );
+
+      }
+
+
+      /*
+        ====================================================
+        RIGHT INFORMATION CARD
+        ====================================================
+      */
+
+      slide.addShape(
+        ppt.ShapeType.roundRect,
+        {
+          x:8.05,
+          y:.94,
+          w:4.72,
+          h:5.40,
+          rectRadius:.05,
+          fill:{
+            color:"FFFFFF"
+          },
+          line:{
+            color:"D9E0E8",
+            width:1
+          }
+        }
+      );
+
+
+      slide.addText(
+        "SITE INFORMATION",
+        {
+          x:8.38,
+          y:1.20,
+          w:3.9,
+          h:.25,
+          fontFace:"Arial",
+          fontSize:9.5,
+          bold:true,
+          color:"0787C8",
+          charSpacing:1.2,
+          margin:0
+        }
+      );
+
+
+      slide.addShape(
+        ppt.ShapeType.line,
+        {
+          x:8.38,
+          y:1.57,
+          w:3.95,
+          h:0,
+          line:{
+            color:"E2E8F0",
+            width:1
+          }
+        }
+      );
+
+
+      /*
+        INFORMATION ROW FUNCTION
+      */
+
+      function addInfoRow(
+        label,
+        value,
+        x,
+        y,
+        width
+      ){
+
+        slide.addText(
+          label,
+          {
+            x:x,
+            y:y,
+            w:1.45,
+            h:.2,
+            fontFace:"Arial",
+            fontSize:7.5,
+            bold:true,
+            color:"64748B",
+            margin:0
+          }
+        );
+
+
+        slide.addText(
+          String(
+            value ??
+            "-"
+          ),
+          {
+            x:x + 1.45,
+            y:y,
+            w:width - 1.45,
+            h:.26,
+            fontFace:"Arial",
+            fontSize:9.5,
+            bold:true,
+            color:"172033",
+            margin:0,
+            fit:"shrink"
+          }
+        );
+
+      }
+
+
+      addInfoRow(
+        "STATE",
+        site.state || "-",
+        8.38,
+        1.82,
+        3.95
+      );
+
+
+      addInfoRow(
+        "CITY",
+        site.city || "-",
+        8.38,
+        2.12,
+        3.95
+      );
+
+
+      addInfoRow(
+        "MEDIA",
+        site.media_type || "-",
+        8.38,
+        2.42,
+        3.95
+      );
+
+
+      addInfoRow(
+        "TYPE",
+        site.illumination || "-",
+        8.38,
+        2.72,
+        3.95
+      );
+
+
+      addInfoRow(
+        "TRAFFIC",
+        site.traffic || "-",
+        8.38,
+        3.02,
+        3.95
+      );
+
+
+      addInfoRow(
+        "SIZE",
+        (
+          Number(
+            site.width || 0
+          ) +
+          " × " +
+          Number(
+            site.height || 0
+          ) +
+          " FT"
+        ),
+        8.38,
+        3.32,
+        3.95
+      );
+
+
+      addInfoRow(
+        "UNITS",
+        Number(
+          site.units || 1
+        ),
+        8.38,
+        3.62,
+        3.95
+      );
+
+
+      addInfoRow(
+        "DISPLAY AREA",
+        Number(
+          site.total_area || 0
+        ).toLocaleString(
+          "en-IN"
+        ) +
+        " SQ.FT",
+        8.38,
+        3.92,
+        3.95
+      );
+
+
+      /*
+        ====================================================
+        COMMERCIALS BOX
+        ====================================================
+      */
+
+      slide.addShape(
+        ppt.ShapeType.roundRect,
+        {
+          x:8.35,
+          y:4.35,
+          w:4.12,
+          h:1.55,
+          rectRadius:.04,
+          fill:{
+            color:"F1F5F9"
+          },
+          line:{
+            color:"E2E8F0",
+            width:1
+          }
+        }
+      );
+
+
+      slide.addText(
+        "COMMERCIALS",
+        {
+          x:8.58,
+          y:4.57,
+          w:2,
+          h:.2,
+          fontFace:"Arial",
+          fontSize:7.5,
+          bold:true,
+          color:"64748B",
+          charSpacing:1,
+          margin:0
+        }
+      );
+
+
+      /*
+        MONTHLY RATE
+      */
+
+      slide.addText(
+        money(
+          site.monthly_rate
+        ),
+        {
+          x:8.58,
+          y:4.85,
+          w:1.65,
+          h:.3,
+          fontFace:"Arial",
+          fontSize:13,
+          bold:true,
+          color:"172033",
+          margin:0,
+          fit:"shrink"
+        }
+      );
+
+
+      slide.addText(
+        "MONTHLY",
+        {
+          x:8.58,
+          y:5.25,
+          w:1.3,
+          h:.17,
+          fontFace:"Arial",
+          fontSize:7,
+          bold:true,
+          color:"94A3B8",
+          margin:0
+        }
+      );
+
+
+      /*
+        DURATION
+      */
+
+      slide.addText(
+        (
+          site.duration ||
+          30
+        ) +
+        " DAYS",
+        {
+          x:10.35,
+          y:4.85,
+          w:1.7,
+          h:.3,
+          fontFace:"Arial",
+          fontSize:13,
+          bold:true,
+          color:"172033",
+          align:"right",
+          margin:0
+        }
+      );
+
+
+      slide.addText(
+        "CAMPAIGN",
+        {
+          x:10.55,
+          y:5.25,
+          w:1.5,
+          h:.17,
+          fontFace:"Arial",
+          fontSize:7,
+          bold:true,
+          color:"94A3B8",
+          align:"right",
+          margin:0
+        }
+      );
+
+
+      /*
+        ====================================================
+        COST BREAKDOWN
+        ====================================================
+      */
+
+      slide.addText(
+        "DISPLAY",
+        {
+          x:8.58,
+          y:5.48,
+          w:1.2,
+          h:.16,
+          fontFace:"Arial",
+          fontSize:7,
+          bold:true,
+          color:"64748B",
+          margin:0
+        }
+      );
+
+
+      slide.addText(
+        money(
+          site.display_charges
+        ),
+        {
+          x:9.55,
+          y:5.45,
+          w:1.0,
+          h:.2,
+          fontFace:"Arial",
+          fontSize:8,
+          bold:true,
+          color:"172033",
+          align:"right",
+          margin:0,
+          fit:"shrink"
+        }
+      );
+
+
+      slide.addText(
+        "P&M",
+        {
+          x:10.75,
+          y:5.48,
+          w:.8,
+          h:.16,
+          fontFace:"Arial",
+          fontSize:7,
+          bold:true,
+          color:"64748B",
+          margin:0
+        }
+      );
+
+
+      slide.addText(
+        money(
+          site.pm_charges
+        ),
+        {
+          x:11.45,
+          y:5.45,
+          w:.8,
+          h:.2,
+          fontFace:"Arial",
+          fontSize:8,
+          bold:true,
+          color:"172033",
+          align:"right",
+          margin:0,
+          fit:"shrink"
+        }
+      );
+
+
+      /*
+        ====================================================
+        TOTAL COST
+        ====================================================
+      */
+
+      slide.addShape(
+        ppt.ShapeType.roundRect,
+        {
+          x:8.05,
+          y:6.50,
+          w:4.72,
+          h:.55,
+          rectRadius:.04,
+          fill:{
+            color:"0787C8"
+          },
+          line:{
+            color:"0787C8"
+          }
+        }
+      );
+
+
+      slide.addText(
+        "TOTAL CAMPAIGN COST",
+        {
+          x:8.30,
+          y:6.65,
+          w:2.45,
+          h:.18,
+          fontFace:"Arial",
+          fontSize:7.5,
+          bold:true,
+          color:"FFFFFF",
+          margin:0
+        }
+      );
+
+
+      slide.addText(
+        money(
+          site.total_cost
+        ),
+        {
+          x:10.25,
+          y:6.60,
+          w:2.25,
+          h:.28,
+          fontFace:"Arial",
+          fontSize:13,
+          bold:true,
+          color:"FFFFFF",
+          align:"right",
+          margin:0,
+          fit:"shrink"
+        }
+      );
+
+
+      /*
+        ====================================================
+        REMARKS
+        ====================================================
+      */
+
+      if(
+        site.remarks &&
+        String(
+          site.remarks
+        ).trim()
+      ){
+
+        slide.addText(
+          "REMARKS",
+          {
+            x:.58,
+            y:6.52,
+            w:.85,
+            h:.18,
+            fontFace:"Arial",
+            fontSize:7,
+            bold:true,
+            color:"64748B",
+            charSpacing:1,
+            margin:0
+          }
+        );
+
+
+        slide.addText(
+          String(
+            site.remarks
+          ),
+          {
+            x:1.42,
+            y:6.48,
+            w:5.95,
+            h:.32,
+            fontFace:"Arial",
+            fontSize:8,
+            color:"475569",
+            margin:0,
+            fit:"shrink"
+          }
+        );
+
+      }
+
+
+      /*
+        ====================================================
+        GOOGLE MAPS
+        ====================================================
+      */
+
       const mapsURL =
         "https://www.google.com/maps?q=" +
         encodeURIComponent(
-          String(site.latitude) + "," + String(site.longitude)
+          String(
+            site.latitude
+          ) +
+          "," +
+          String(
+            site.longitude
+          )
         );
 
-      slide.addShape(ppt.ShapeType.roundRect, {
-        x:10.22,
-        y:6.56,
-        w:2.82,
-        h:.40,
-        rectRadius:.04,
-        fill:{color:BLUE},
-        line:{color:BLUE}
-      });
 
-      slide.addText("OPEN LOCATION IN GOOGLE MAPS", {
-        x:10.35,
-        y:6.65,
-        w:2.56,
-        h:.17,
-        fontFace:"Aptos",
-        fontSize:8.2,
-        bold:true,
-        color:WHITE,
-        align:"center",
-        margin:0,
-        hyperlink:{url:mapsURL},
-        fit:"shrink"
-      });
-
-      /* Bottom status / remarks strip */
-      slide.addShape(ppt.ShapeType.roundRect, {
-        x:7.78,
-        y:6.52,
-        w:2.12,
-        h:.62,
-        fill:{color:"F7FAFC"},
-        line:{color:BORDER, width:1}
-      });
-
-      slide.addText("STATUS", {
-        x:7.92,
-        y:6.65,
-        w:.8,
-        h:.17,
-        fontFace:"Aptos",
-        fontSize:8.5,
-        bold:true,
-        color:TEXT,
-        margin:0
-      });
-
-      slide.addText(safeText(site.status), {
-        x:8.70,
-        y:6.62,
-        w:1.02,
-        h:.22,
-        fontFace:"Aptos",
-        fontSize:9,
-        bold:true,
-        color:GREEN,
-        align:"right",
-        margin:0,
-        fit:"shrink"
-      });
-
-      slide.addShape(ppt.ShapeType.roundRect, {
-        x:10.04,
-        y:7.15,
-        w:3.25,
-        h:.30,
-        fill:{color:NAVY},
-        line:{color:NAVY}
-      });
-
-      slide.addText("MY VISION OOH", {
-        x:10.22,
-        y:7.22,
-        w:1.6,
-        h:.14,
-        fontFace:"Aptos",
-        fontSize:7.5,
-        bold:true,
-        color:WHITE,
-        margin:0
-      });
-
-      slide.addText((index + 1) + " / " + data.length, {
-        x:12.05,
-        y:7.20,
-        w:1.05,
-        h:.15,
-        fontFace:"Aptos",
-        fontSize:7.5,
-        color:WHITE,
-        align:"right",
-        margin:0
-      });
-
-      /* Remarks in a small footer box if space permits */
-      if(site.remarks){
-        slide.addShape(ppt.ShapeType.roundRect, {
-          x:7.78,
-          y:6.52,
-          w:2.12,
-          h:.62,
-          fill:{color:"F7FAFC"},
-          line:{color:BORDER, width:1}
-        });
-
-        slide.addText("REMARKS", {
-          x:7.92,
-          y:6.61,
-          w:.8,
-          h:.16,
-          fontFace:"Aptos",
-          fontSize:7.8,
+      slide.addText(
+        "📍 OPEN LOCATION IN GOOGLE MAPS",
+        {
+          x:8.05,
+          y:7.18,
+          w:3.3,
+          h:.2,
+          fontFace:"Arial",
+          fontSize:7.5,
           bold:true,
-          color:TEXT,
+          color:"0563C1",
+          underline:{
+            style:"sng"
+          },
+          hyperlink:{
+            url:
+              mapsURL
+          },
           margin:0
-        });
+        }
+      );
 
-        slide.addText(safeText(site.remarks), {
-          x:7.92,
-          y:6.81,
-          w:1.82,
-          h:.20,
-          fontFace:"Aptos",
-          fontSize:7.3,
-          color:MUTED,
-          margin:0,
-          fit:"shrink"
-        });
-      }
 
-      /* Thin blue bottom accent */
-      slide.addShape(ppt.ShapeType.rect, {
-        x:0,
-        y:7.40,
-        w:W,
-        h:.10,
-        fill:{color:BLUE},
-        line:{color:BLUE}
-      });
+      /*
+        STATUS
+      */
+
+      slide.addText(
+        "STATUS: " +
+        (
+          site.status ||
+          "-"
+        ),
+        {
+          x:10.25,
+          y:7.18,
+          w:2.5,
+          h:.2,
+          fontFace:"Arial",
+          fontSize:7.5,
+          bold:true,
+          color:
+            site.status === "Available"
+              ? "16A34A"
+              : "64748B",
+          align:"right",
+          margin:0
+        }
+      );
+
+
+      /*
+        ====================================================
+        FOOTER
+        ====================================================
+      */
+
+      slide.addText(
+        "MY VISION OOH",
+        {
+          x:.55,
+          y:7.47,
+          w:2.2,
+          h:.17,
+          fontFace:"Arial",
+          fontSize:7,
+          bold:true,
+          color:"94A3B8",
+          margin:0
+        }
+      );
+
+
+      slide.addText(
+        (
+          index + 1
+        ) +
+        " / " +
+        data.length,
+        {
+          x:11.3,
+          y:7.47,
+          w:1.45,
+          h:.17,
+          fontFace:"Arial",
+          fontSize:7,
+          color:"94A3B8",
+          align:"right",
+          margin:0
+        }
+      );
+
     }
 
+
+    /*
+      ======================================================
+      FILE NAME
+      ======================================================
+    */
+
     const campaignName =
-      document.getElementById("campaign").value.trim();
+      document.getElementById(
+        "campaign"
+      ).value.trim();
+
 
     const safeName =
+
       (
         campaignName ||
         "My_Vision_OOH_Proposal"
       )
-      .replace(/[^a-z0-9_\- ]/gi, "")
+
+      .replace(
+        /[^a-z0-9_\- ]/gi,
+        ""
+      )
+
       .trim()
-      .replace(/\s+/g, "_");
+
+      .replace(
+        /\s+/g,
+        "_"
+      );
+
+
+    /*
+      ======================================================
+      DOWNLOAD
+      ======================================================
+    */
 
     await ppt.writeFile({
-      fileName:safeName + ".pptx"
+
+      fileName:
+        safeName +
+        ".pptx"
+
     });
 
-    showMessage("PPT downloaded successfully.");
+
+    showMessage(
+      "PPT downloaded successfully."
+    );
 
   }
   catch(error){
 
-    console.error("PPT EXPORT ERROR:", error);
+    console.error(
+      "PPT EXPORT ERROR:",
+      error
+    );
+
 
     alert(
       "PPT export failed.\n\n" +
-      (error.message || error)
+      (
+        error.message ||
+        error
+      )
     );
 
   }
   finally{
 
-    button.disabled = false;
-    button.innerText = "📑 PPT";
+    button.disabled =
+      false;
+
+    button.innerText =
+      "📑 PPT";
 
   }
 
 }
+
 
 /* =========================================================
    ESCAPE HTML
