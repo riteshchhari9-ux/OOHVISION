@@ -1,5233 +1,867 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-
 <title>MY VISION OOH</title>
 
-<link
-  rel="stylesheet"
-  href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css"
-/>
+<link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css">
 
 <style>
-
-*{
-  box-sizing:border-box;
+*{box-sizing:border-box}
+:root{
+  --navy:#101827;--navy2:#061a3a;--blue:#0787c8;--green:#16a34a;
+  --red:#dc2626;--orange:#f59e0b;--bg:#f3f5f8;--border:#dce1e7;
+  --text:#172033;--muted:#64748b;--white:#fff;
 }
-
-body{
-  margin:0;
-  font-family:Arial,Helvetica,sans-serif;
-  background:#f3f5f8;
-  color:#172033;
-}
-
-header{
-  height:64px;
-  background:#101827;
-  color:white;
-  display:flex;
-  align-items:center;
-  padding:0 18px;
-}
-
-.logo{
-  font-size:22px;
-  font-weight:800;
-}
-
-.logo span{
-  color:#20aef3;
-}
-
-.header-actions{
-  margin-left:auto;
-  display:flex;
-  align-items:center;
-  gap:8px;
-}
-
-button{
-  border:0;
-  border-radius:7px;
-  padding:9px 12px;
-  cursor:pointer;
-  font-weight:bold;
-}
-
-button:hover{
-  opacity:.9;
-}
-
-button:disabled{
-  opacity:.5;
-  cursor:not-allowed;
-}
-
-.btn-blue{
-  background:#0787c8;
-  color:white;
-}
-
-.btn-green{
-  background:#16a34a;
-  color:white;
-}
-
-.btn-red{
-  background:#dc2626;
-  color:white;
-}
-
-.btn-gray{
-  background:#e5e7eb;
-  color:#111827;
-}
-
-.full{
-  width:100%;
-  margin-top:8px;
-}
-
-.main{
-  display:grid;
-  grid-template-columns:390px 1fr;
-  height:calc(100vh - 64px);
-}
-
-.sidebar{
-  background:white;
-  border-right:1px solid #ddd;
-  overflow-y:auto;
-  padding:12px;
-}
-
-.map-container{
-  position:relative;
-}
-
-#map{
-  width:100%;
-  height:100%;
-}
-
-.card{
-  background:white;
-  border:1px solid #dce1e7;
-  border-radius:10px;
-  padding:14px;
-  margin-bottom:12px;
-}
-
-.card h3{
-  margin:0 0 12px;
-}
-
-label{
-  display:block;
-  font-size:12px;
-  font-weight:bold;
-  margin:8px 0 4px;
-}
-
-input,
-select,
-textarea{
-  width:100%;
-  border:1px solid #cbd5e1;
-  border-radius:6px;
-  padding:9px;
-  font-size:14px;
-}
-
-textarea{
-  resize:vertical;
-  min-height:70px;
-}
-
-.row{
-  display:grid;
-  grid-template-columns:1fr 1fr;
-  gap:8px;
-}
-
-.row3{
-  display:grid;
-  grid-template-columns:1fr 1fr 1fr;
-  gap:8px;
-}
-
-.stats{
-  display:grid;
-  grid-template-columns:1fr 1fr;
-  gap:8px;
-  margin-top:10px;
-}
-
-.stat{
-  background:#f1f5f9;
-  padding:10px;
-  border-radius:8px;
-}
-
-.stat strong{
-  display:block;
-  font-size:22px;
-  margin-top:3px;
-}
-
-.site{
-  border:1px solid #d8dee6;
-  border-radius:9px;
-  padding:9px;
-  margin-top:8px;
-  background:#fff;
-}
-
-.saved-site-row{
-  display:flex;
-  gap:10px;
-  align-items:center;
-}
-
-.saved-site-image{
-  width:82px;
-  height:68px;
-  flex-shrink:0;
-}
-
-.saved-site-photo{
-  width:82px;
-  height:68px;
-  object-fit:cover;
-  border-radius:7px;
-  cursor:pointer;
-  border:1px solid #d1d5db;
-}
-
-.no-site-photo{
-  width:82px;
-  height:68px;
-  background:#e5e7eb;
-  border-radius:7px;
-  display:flex;
-  align-items:center;
-  justify-content:center;
-  font-size:25px;
-}
-
-.saved-site-details{
-  flex:1;
-  min-width:0;
-}
-
-.site-name{
-  font-weight:bold;
-  font-size:14px;
-  word-break:break-word;
-}
-
-.site-info{
-  font-size:11px;
-  color:#64748b;
-  margin-top:4px;
-  line-height:1.5;
-}
-
-.site-buttons{
-  display:flex;
-  flex-wrap:wrap;
-  gap:5px;
-  margin-top:8px;
-}
-
-.site-buttons button{
-  padding:6px 8px;
-  font-size:10px;
-}
-
-.photo-preview{
-  max-width:100%;
-  max-height:150px;
-  border-radius:7px;
-  margin-top:7px;
-  display:none;
-}
-
-.empty{
-  text-align:center;
-  color:#64748b;
-  padding:15px 5px;
-  font-size:13px;
-}
-
-.calculation{
-  background:#eff6ff;
-  border:1px solid #bfdbfe;
-  border-radius:8px;
-  padding:10px;
-  margin-top:10px;
-  font-size:12px;
-  line-height:1.7;
-}
-
-.calculation strong{
-  font-size:15px;
-}
-
-#message{
-  position:fixed;
-  z-index:99999;
-  bottom:22px;
-  left:50%;
-  transform:translateX(-50%);
-  background:#111827;
-  color:white;
-  padding:11px 18px;
-  border-radius:8px;
-  display:none;
-  max-width:90%;
-  text-align:center;
-}
-
-#locationResult{
-  display:none;
-  background:#eff6ff;
-  border:1px solid #bfdbfe;
-  border-radius:7px;
-  padding:9px;
-  margin-top:9px;
-  font-size:12px;
-}
-
-.storage-status{
-  font-size:10px;
-  color:#64748b;
-  margin-top:8px;
-  text-align:center;
-}
-
+body{margin:0;font-family:Arial,Helvetica,sans-serif;background:var(--bg);color:var(--text)}
+button{border:0;border-radius:7px;padding:9px 12px;cursor:pointer;font-weight:700}
+button:hover{opacity:.92}button:disabled{opacity:.5;cursor:not-allowed}
+input,select,textarea{width:100%;border:1px solid #cbd5e1;border-radius:6px;padding:9px;font-size:14px;background:#fff}
+textarea{resize:vertical;min-height:70px}
+label{display:block;font-size:12px;font-weight:700;margin:8px 0 4px}
+header{height:64px;background:var(--navy);color:#fff;display:flex;align-items:center;padding:0 18px;position:sticky;top:0;z-index:1000}
+.logo{font-size:22px;font-weight:800;white-space:nowrap}.logo span{color:#20aef3}
+.header-actions{margin-left:auto;display:flex;gap:7px;align-items:center}
+.btn-blue{background:var(--blue);color:#fff}.btn-green{background:var(--green);color:#fff}
+.btn-red{background:var(--red);color:#fff}.btn-gray{background:#e5e7eb;color:#111827}
+.btn-orange{background:var(--orange);color:#111827}.full{width:100%;margin-top:8px}
+.app{display:flex;min-height:calc(100vh - 64px)}
+.nav{width:220px;background:#0d1524;color:#dbe7f5;padding:12px;flex-shrink:0}
+.nav-title{font-size:10px;color:#8292aa;font-weight:800;letter-spacing:1.2px;margin:10px 9px 6px}
+.nav button{width:100%;text-align:left;background:transparent;color:#dbe7f5;margin:2px 0;padding:11px 12px}
+.nav button.active,.nav button:hover{background:#17253a;color:#fff}
+.content{flex:1;padding:18px;min-width:0}
+.page{display:none}.page.active{display:block}
+.page-head{display:flex;justify-content:space-between;gap:10px;align-items:center;margin-bottom:14px}
+.page-head h2{margin:0;font-size:22px}.sub{color:var(--muted);font-size:12px;margin-top:4px}
+.card{background:#fff;border:1px solid var(--border);border-radius:10px;padding:14px;margin-bottom:14px}
+.card h3{margin:0 0 12px}
+.grid{display:grid;grid-template-columns:repeat(4,1fr);gap:12px}
+.grid2{display:grid;grid-template-columns:1fr 1fr;gap:10px}.grid3{display:grid;grid-template-columns:repeat(3,1fr);gap:10px}
+.stat-card{background:#fff;border:1px solid var(--border);border-radius:10px;padding:15px}
+.stat-card .label{font-size:11px;color:var(--muted);font-weight:700;text-transform:uppercase}
+.stat-card .value{font-size:25px;font-weight:800;margin-top:6px}
+.stat-card .small{font-size:11px;color:var(--muted);margin-top:4px}
+.table-wrap{overflow:auto;border:1px solid var(--border);border-radius:8px}
+table{width:100%;border-collapse:collapse;background:#fff;font-size:12px}
+th,td{padding:9px 8px;border-bottom:1px solid #e5e7eb;text-align:left;vertical-align:top}
+th{background:#101827;color:#fff;white-space:nowrap}
+tr:last-child td{border-bottom:0}
+.badge{display:inline-block;padding:4px 7px;border-radius:999px;font-size:10px;font-weight:800}
+.badge-green{background:#dcfce7;color:#166534}.badge-red{background:#fee2e2;color:#991b1b}
+.badge-orange{background:#fef3c7;color:#92400e}.badge-blue{background:#dbeafe;color:#1e40af}
+.badge-gray{background:#e5e7eb;color:#374151}
+.actions{display:flex;flex-wrap:wrap;gap:5px}
+.actions button{font-size:10px;padding:6px 8px}
+.empty{text-align:center;color:var(--muted);padding:22px}
+#message{position:fixed;z-index:99999;bottom:22px;left:50%;transform:translateX(-50%);background:#111827;color:#fff;padding:11px 18px;border-radius:8px;display:none;max-width:90%;text-align:center}
+#map{width:100%;height:calc(100vh - 125px);min-height:520px;border-radius:9px}
+.inventory-layout{display:grid;grid-template-columns:390px 1fr;gap:14px}
+.sidebar-scroll{max-height:calc(100vh - 125px);overflow:auto}
+.site{border:1px solid #d8dee6;border-radius:9px;padding:9px;margin-top:8px;background:#fff}
+.saved-site-row{display:flex;gap:10px;align-items:center}
+.saved-site-image{width:82px;height:68px;flex-shrink:0}
+.saved-site-photo{width:82px;height:68px;object-fit:cover;border-radius:7px;cursor:pointer;border:1px solid #d1d5db}
+.no-site-photo{width:82px;height:68px;background:#e5e7eb;border-radius:7px;display:flex;align-items:center;justify-content:center;font-size:25px}
+.saved-site-details{flex:1;min-width:0}.site-name{font-weight:bold;font-size:14px;word-break:break-word}
+.site-info{font-size:11px;color:#64748b;margin-top:4px;line-height:1.5}.site-buttons{display:flex;flex-wrap:wrap;gap:5px;margin-top:8px}
+.site-buttons button{padding:6px 8px;font-size:10px}.photo-preview{max-width:100%;max-height:150px;border-radius:7px;margin-top:7px;display:none}
+.calculation{background:#eff6ff;border:1px solid #bfdbfe;border-radius:8px;padding:10px;margin-top:10px;font-size:12px;line-height:1.7}
+.calculation strong{font-size:15px}.storage-status{font-size:10px;color:#64748b;margin-top:8px;text-align:center}
+.reminder{border-left:4px solid var(--blue);padding:11px;background:#fff;border-top:1px solid var(--border);border-right:1px solid var(--border);border-bottom:1px solid var(--border);border-radius:7px;margin-bottom:8px}
+.reminder.today{border-left-color:var(--red)}.reminder.tomorrow{border-left-color:var(--orange)}
+.modal-backdrop{display:none;position:fixed;inset:0;background:rgba(0,0,0,.45);z-index:5000;align-items:center;justify-content:center;padding:16px}
+.modal-backdrop.show{display:flex}.modal{width:min(850px,100%);max-height:92vh;overflow:auto;background:#fff;border-radius:12px;padding:18px}
+.modal-head{display:flex;justify-content:space-between;align-items:center;margin-bottom:12px}.modal-head h3{margin:0}
+.close{background:#e5e7eb}
+.kpi-row{display:grid;grid-template-columns:repeat(5,1fr);gap:10px}
+.search-row{display:flex;gap:8px}.search-row>*{flex:1}
+.section-note{font-size:11px;color:var(--muted);margin-top:8px}
+@media(max-width:1100px){.grid{grid-template-columns:repeat(2,1fr)}.kpi-row{grid-template-columns:repeat(2,1fr)}.nav{width:190px}}
 @media(max-width:850px){
-
-  header{
-    height:auto;
-    min-height:64px;
-    flex-wrap:wrap;
-    padding:10px;
-  }
-
-  .header-actions{
-    margin-left:auto;
-  }
-
-  .main{
-    display:block;
-    height:auto;
-  }
-
-  .sidebar{
-    height:auto;
-  }
-
-  #map{
-    height:60vh;
-  }
-
+  header{height:auto;min-height:64px;flex-wrap:wrap;padding:10px}.header-actions{margin-left:auto}
+  .app{display:block}.nav{width:100%;display:flex;overflow:auto;padding:7px;gap:4px}.nav-title{display:none}.nav button{white-space:nowrap;width:auto}
+  .content{padding:10px}.inventory-layout{display:block}.sidebar-scroll{max-height:none}#map{height:60vh;min-height:400px}
+  .grid,.grid2,.grid3,.kpi-row{grid-template-columns:1fr}.page-head{align-items:flex-start;flex-direction:column}
 }
-
 </style>
-
 </head>
 
 <body>
-
 <header>
-
-  <div class="logo">
-    MY VISION <span>OOH</span>
-  </div>
-
+  <div class="logo">MY VISION <span>OOH</span></div>
   <div class="header-actions">
-
-    <button
-      class="btn-green"
-      onclick="exportExcel()"
-    >
-      📊 Excel
-    </button>
-
-    <button
-      id="pptButton"
-      class="btn-green"
-      onclick="exportPPT()"
-    >
-      📑 PPT
-    </button>
-
-    <button
-      class="btn-gray"
-      onclick="clearAllSites()"
-    >
-      🗑 Clear All
-    </button>
-
+    <button class="btn-green" onclick="exportExcel()">📊 Excel</button>
+    <button id="pptButton" class="btn-green" onclick="exportPPT()">📑 PPT</button>
   </div>
-
 </header>
 
-<div class="main">
+<div class="app">
+  <nav class="nav">
+    <div class="nav-title">MAIN</div>
+    <button class="active" data-page="dashboard" onclick="showPage('dashboard',this)">🏠 Dashboard</button>
+    <button data-page="inventory" onclick="showPage('inventory',this)">📍 OOH Inventory</button>
+    <button data-page="campaigns" onclick="showPage('campaigns',this)">📢 Campaigns</button>
+    <button data-page="clients" onclick="showPage('clients',this)">👤 Clients</button>
+    <button data-page="sales" onclick="showPage('sales',this)">💰 Sales & Payments</button>
+    <button data-page="reminders" onclick="showPage('reminders',this)">🔔 Reminders</button>
+    <button data-page="reports" onclick="showPage('reports',this)">📈 Reports</button>
+  </nav>
 
-  <div class="sidebar">
+  <main class="content">
 
-    <div class="card">
+    <!-- DASHBOARD -->
+    <section id="page-dashboard" class="page active">
+      <div class="page-head">
+        <div><h2>Dashboard</h2><div class="sub">MY VISION OOH command center</div></div>
+        <button class="btn-blue" onclick="openCampaignModal()">＋ New Campaign</button>
+      </div>
+      <div class="grid">
+        <div class="stat-card"><div class="label">Total Sites</div><div class="value" id="dashSites">0</div><div class="small">Existing inventory</div></div>
+        <div class="stat-card"><div class="label">Active Campaigns</div><div class="value" id="dashActive">0</div><div class="small">Currently running</div></div>
+        <div class="stat-card"><div class="label">Ending This Week</div><div class="value" id="dashEnding">0</div><div class="small">Renewal opportunity</div></div>
+        <div class="stat-card"><div class="label">Total Sales</div><div class="value" id="dashSales">₹0</div><div class="small">Campaign value</div></div>
+      </div>
+      <div class="grid" style="margin-top:12px">
+        <div class="stat-card"><div class="label">Received</div><div class="value" id="dashReceived">₹0</div><div class="small">Payments received</div></div>
+        <div class="stat-card"><div class="label">Pending</div><div class="value" id="dashPending">₹0</div><div class="small">Outstanding</div></div>
+        <div class="stat-card"><div class="label">Clients</div><div class="value" id="dashClients">0</div><div class="small">Saved clients</div></div>
+        <div class="stat-card"><div class="label">Available Sites</div><div class="value" id="dashAvailable">0</div><div class="small">Inventory status</div></div>
+      </div>
+      <div class="grid2" style="margin-top:14px">
+        <div class="card"><h3>🔴 Urgent Campaigns</h3><div id="dashReminders"></div></div>
+        <div class="card"><h3>💰 Recent Payments</h3><div id="dashPayments"></div></div>
+      </div>
+    </section>
 
-      <h3>Campaign</h3>
-
-      <input
-        id="campaign"
-        placeholder="Client / Campaign Name"
-      >
-
-      <div class="stats">
-
-        <div class="stat">
-          Total Sites
-          <strong id="totalSites">0</strong>
+    <!-- INVENTORY -->
+    <section id="page-inventory" class="page">
+      <div class="page-head">
+        <div><h2>OOH Inventory</h2><div class="sub">Your existing saved sites remain in the original <b>sites</b> store.</div></div>
+        <div class="actions">
+          <button class="btn-blue" onclick="focusNewSite()">＋ Add Site</button>
+          <button class="btn-gray" onclick="clearAllSites()">🗑 Clear All Sites</button>
         </div>
-
-        <div class="stat">
-          Selected
-          <strong id="selectedSites">0</strong>
-        </div>
-
       </div>
 
-      <div class="storage-status">
-        💾 Sites are stored securely in browser storage
-      </div>
+      <div class="inventory-layout">
+        <div class="sidebar-scroll">
+          <div class="card">
+            <h3>Campaign / Proposal</h3>
+            <input id="campaign" placeholder="Client / Campaign Name">
+            <div class="kpi-row" style="margin-top:10px">
+              <div class="stat-card"><div class="label">Sites</div><div class="value" id="totalSites">0</div></div>
+              <div class="stat-card"><div class="label">Selected</div><div class="value" id="selectedSites">0</div></div>
+            </div>
+            <div class="storage-status">💾 Existing sites use browser IndexedDB. New records use separate stores.</div>
+          </div>
 
+          <div class="card">
+            <h3>🔎 Search Location</h3>
+            <label>Location Name</label>
+            <input id="locationSearch" placeholder="Bandra West, Mumbai">
+            <button class="btn-blue full" onclick="searchLocation()">SEARCH LOCATION</button>
+            <label>Latitude & Longitude</label>
+            <div class="grid2">
+              <input id="searchLat" type="number" step="any" placeholder="Latitude">
+              <input id="searchLng" type="number" step="any" placeholder="Longitude">
+            </div>
+            <button class="btn-gray full" onclick="searchCoordinates()">GO TO COORDINATES</button>
+            <button class="btn-green full" onclick="useMyLocation()">📍 USE MY LOCATION</button>
+            <div id="locationResult"></div>
+          </div>
+
+          <div class="card" id="siteFormCard">
+            <h3 id="formTitle">➕ Add OOH Site</h3>
+            <input id="editId" type="hidden">
+            <label>Site Name / ID</label><input id="siteName" placeholder="Site-001">
+            <div class="grid2">
+              <div><label>State</label><input id="state" placeholder="Maharashtra"></div>
+              <div><label>City</label><input id="city" placeholder="Mumbai"></div>
+            </div>
+            <label>Location</label><input id="siteLocation" placeholder="Bandra West, Mumbai">
+            <div class="grid2">
+              <div><label>Latitude</label><input id="latitude" type="number" step="any"></div>
+              <div><label>Longitude</label><input id="longitude" type="number" step="any"></div>
+            </div>
+            <div class="grid3">
+              <div><label>Width (ft)</label><input id="width" type="number" value="40" min="0"></div>
+              <div><label>Height (ft)</label><input id="height" type="number" value="40" min="0"></div>
+              <div><label>Units</label><input id="units" type="number" value="1" min="1"></div>
+            </div>
+            <div class="grid2">
+              <div><label>Media Type</label><select id="mediaType"><option>Billboard</option><option>Unipole</option><option>Gantries</option><option>Bus Shelter</option><option>Digital</option><option>Other</option></select></div>
+              <div><label>Illumination</label><select id="illumination"><option>LIT</option><option>N LIT</option><option>DOOH</option><option>F LIT</option></select></div>
+            </div>
+            <div class="grid2">
+              <div><label>Traffic</label><select id="traffic"><option>ET</option><option>MT</option></select></div>
+              <div><label>Monthly Display Charges ₹</label><input id="rate" type="number" value="0" min="0"></div>
+            </div>
+            <div class="grid2">
+              <div><label>Campaign Duration (Days)</label><input id="duration" type="number" value="30" min="1"></div>
+              <div><label>P&M Charges ₹ / sq.ft</label><input id="pmRate" type="number" value="15" min="0"></div>
+            </div>
+            <label>Status</label><select id="status"><option>Available</option><option>Booked</option><option>Hold</option><option>Unavailable</option></select>
+            <div class="calculation">
+              <div>Total Area: <strong id="areaPreview">1,600 sq.ft</strong></div>
+              <div>Display Charges: <strong id="displayPreview">₹0</strong></div>
+              <div>P&M Charges: <strong id="pmPreview">₹24,000</strong></div>
+              <div>Total Cost: <strong id="totalPreview">₹24,000</strong></div>
+            </div>
+            <label>Site Photo</label><input id="photo" type="file" accept="image/*"><img id="photoPreview" class="photo-preview">
+            <label>Remarks</label><textarea id="remarks" placeholder="Facing direction, traffic, visibility etc."></textarea>
+            <button class="btn-blue full" onclick="saveSite()">💾 SAVE SITE</button>
+            <button class="btn-gray full" onclick="clearForm()">CLEAR FORM</button>
+          </div>
+
+          <div class="card">
+            <h3>📌 Saved Sites</h3>
+            <input id="siteSearch" placeholder="Search site, location, status..." oninput="renderSites()">
+            <div id="siteList"></div>
+          </div>
+        </div>
+        <div><div id="map"></div></div>
+      </div>
+    </section>
+
+    <!-- CAMPAIGNS -->
+    <section id="page-campaigns" class="page">
+      <div class="page-head">
+        <div><h2>Campaign Management</h2><div class="sub">Track running campaigns, end dates, value and renewal opportunities.</div></div>
+        <button class="btn-blue" onclick="openCampaignModal()">＋ New Campaign</button>
+      </div>
+      <div class="card">
+        <div class="search-row"><input id="campaignSearch" placeholder="Search client / campaign..." oninput="renderCampaigns()"><select id="campaignStatusFilter" onchange="renderCampaigns()"><option value="">All Status</option><option>Planned</option><option>Running</option><option>Completed</option><option>Cancelled</option></select></div>
+      </div>
+      <div class="card"><div class="table-wrap"><table><thead><tr><th>Campaign</th><th>Client</th><th>Dates</th><th>Sites</th><th>Value</th><th>Received</th><th>Pending</th><th>Status</th><th>Action</th></tr></thead><tbody id="campaignTable"></tbody></table></div></div>
+    </section>
+
+    <!-- CLIENTS -->
+    <section id="page-clients" class="page">
+      <div class="page-head">
+        <div><h2>Clients / CRM</h2><div class="sub">Keep client contact and sales history in a separate store.</div></div>
+        <button class="btn-blue" onclick="openClientModal()">＋ Add Client</button>
+      </div>
+      <div class="card"><input id="clientSearch" placeholder="Search client, company, phone..." oninput="renderClients()"></div>
+      <div class="card"><div class="table-wrap"><table><thead><tr><th>Client</th><th>Company</th><th>Phone</th><th>Email</th><th>City</th><th>Notes</th><th>Action</th></tr></thead><tbody id="clientTable"></tbody></table></div></div>
+    </section>
+
+    <!-- SALES -->
+    <section id="page-sales" class="page">
+      <div class="page-head">
+        <div><h2>Sales & Payments</h2><div class="sub">Track invoices/receipts against campaigns.</div></div>
+        <button class="btn-blue" onclick="openPaymentModal()">＋ Record Payment</button>
+      </div>
+      <div class="grid">
+        <div class="stat-card"><div class="label">Sales</div><div class="value" id="salesTotal">₹0</div></div>
+        <div class="stat-card"><div class="label">Received</div><div class="value" id="salesReceived">₹0</div></div>
+        <div class="stat-card"><div class="label">Pending</div><div class="value" id="salesPending">₹0</div></div>
+        <div class="stat-card"><div class="label">Payments</div><div class="value" id="salesCount">0</div></div>
+      </div>
+      <div class="card" style="margin-top:14px"><div class="table-wrap"><table><thead><tr><th>Date</th><th>Campaign</th><th>Client</th><th>Amount</th><th>Mode</th><th>Reference</th><th>Note</th><th>Action</th></tr></thead><tbody id="paymentTable"></tbody></table></div></div>
+    </section>
+
+    <!-- REMINDERS -->
+    <section id="page-reminders" class="page">
+      <div class="page-head"><div><h2>Reminder Center</h2><div class="sub">Automatic campaign end-date reminders based on today's date.</div></div></div>
+      <div class="grid">
+        <div class="stat-card"><div class="label">Ending Today</div><div class="value" id="rToday">0</div></div>
+        <div class="stat-card"><div class="label">Tomorrow</div><div class="value" id="rTomorrow">0</div></div>
+        <div class="stat-card"><div class="label">Next 7 Days</div><div class="value" id="rWeek">0</div></div>
+        <div class="stat-card"><div class="label">Expired</div><div class="value" id="rExpired">0</div></div>
+      </div>
+      <div class="card" style="margin-top:14px"><div id="reminderList"></div></div>
+    </section>
+
+    <!-- REPORTS -->
+    <section id="page-reports" class="page">
+      <div class="page-head"><div><h2>Reports</h2><div class="sub">Quick business summary from your campaigns, sites and payments.</div></div></div>
+      <div class="grid">
+        <div class="stat-card"><div class="label">Inventory Area</div><div class="value" id="reportArea">0</div><div class="small">sq.ft</div></div>
+        <div class="stat-card"><div class="label">Campaign Value</div><div class="value" id="reportValue">₹0</div></div>
+        <div class="stat-card"><div class="label">Received</div><div class="value" id="reportReceived">₹0</div></div>
+        <div class="stat-card"><div class="label">Outstanding</div><div class="value" id="reportPending">₹0</div></div>
+      </div>
+      <div class="card" style="margin-top:14px">
+        <h3>Inventory Status</h3><div id="inventoryReport"></div>
+      </div>
+    </section>
+  </main>
+</div>
+
+<!-- CAMPAIGN MODAL -->
+<div id="campaignModal" class="modal-backdrop">
+  <div class="modal">
+    <div class="modal-head"><h3 id="campaignModalTitle">New Campaign</h3><button class="close" onclick="closeModal('campaignModal')">✕</button></div>
+    <input id="campaignId" type="hidden">
+    <div class="grid2">
+      <div><label>Campaign Name</label><input id="cName" placeholder="Mumbai Launch Campaign"></div>
+      <div><label>Client</label><input id="cClient" placeholder="ABC Motors"></div>
     </div>
-
-    <div class="card">
-
-      <h3>🔎 Search Location</h3>
-
-      <label>Location Name</label>
-
-      <input
-        id="locationSearch"
-        placeholder="Bandra West, Mumbai"
-      >
-
-      <button
-        class="btn-blue full"
-        onclick="searchLocation()"
-      >
-        SEARCH LOCATION
-      </button>
-
-      <label>Latitude & Longitude</label>
-
-      <div class="row">
-
-        <div>
-
-          <label>Latitude</label>
-
-          <input
-            id="searchLat"
-            type="number"
-            step="any"
-          >
-
-        </div>
-
-        <div>
-
-          <label>Longitude</label>
-
-          <input
-            id="searchLng"
-            type="number"
-            step="any"
-          >
-
-        </div>
-
-      </div>
-
-      <button
-        class="btn-blue full"
-        onclick="searchCoordinates()"
-      >
-        📍 FIND COORDINATES
-      </button>
-
-      <button
-        class="btn-gray full"
-        onclick="useMyLocation()"
-      >
-        📌 USE MY LOCATION
-      </button>
-
-      <div id="locationResult"></div>
-
+    <div class="grid3">
+      <div><label>Start Date</label><input id="cStart" type="date"></div>
+      <div><label>End Date</label><input id="cEnd" type="date"></div>
+      <div><label>Status</label><select id="cStatus"><option>Planned</option><option>Running</option><option>Completed</option><option>Cancelled</option></select></div>
     </div>
-
-    <div class="card">
-
-      <h3 id="formTitle">
-        ➕ Add OOH Site
-      </h3>
-
-      <input
-        id="editId"
-        type="hidden"
-      >
-
-      <label>Site Name / ID</label>
-
-      <input
-        id="siteName"
-        placeholder="MUM-001"
-      >
-
-      <div class="row">
-
-        <div>
-
-          <label>State</label>
-
-          <input
-            id="state"
-            placeholder="Maharashtra"
-          >
-
-        </div>
-
-        <div>
-
-          <label>City</label>
-
-          <input
-            id="city"
-            placeholder="Mumbai"
-          >
-
-        </div>
-
-      </div>
-
-      <label>Location</label>
-
-      <input
-        id="siteLocation"
-        placeholder="Bandra West, Mumbai"
-      >
-
-      <div class="row">
-
-        <div>
-
-          <label>Latitude</label>
-
-          <input
-            id="latitude"
-            type="number"
-            step="any"
-          >
-
-        </div>
-
-        <div>
-
-          <label>Longitude</label>
-
-          <input
-            id="longitude"
-            type="number"
-            step="any"
-          >
-
-        </div>
-
-      </div>
-
-      <div class="row3">
-
-        <div>
-
-          <label>Width (ft)</label>
-
-          <input
-            id="width"
-            type="number"
-            value="40"
-            min="0"
-          >
-
-        </div>
-
-        <div>
-
-          <label>Height (ft)</label>
-
-          <input
-            id="height"
-            type="number"
-            value="40"
-            min="0"
-          >
-
-        </div>
-
-        <div>
-
-          <label>Units</label>
-
-          <input
-            id="units"
-            type="number"
-            value="1"
-            min="1"
-          >
-
-        </div>
-
-      </div>
-
-      <div class="row">
-
-        <div>
-
-          <label>Media</label>
-
-          <select id="mediaType">
-
-            <option>Billboard</option>
-            <option>Unipole</option>
-            <option>Gantries</option>
-            <option>Bus Shelter</option>
-            <option>Digital</option>
-            <option>Other</option>
-
-          </select>
-
-        </div>
-
-        <div>
-
-          <label>Illumination / Type</label>
-
-          <select id="illumination">
-
-            <option>LIT</option>
-            <option>N LIT</option>
-            <option>DOOH</option>
-            <option>F LIT</option>
-
-          </select>
-
-        </div>
-
-      </div>
-
-      <div class="row">
-
-        <div>
-
-          <label>Traffic</label>
-
-          <select id="traffic">
-
-            <option>ET</option>
-            <option>MT</option>
-
-          </select>
-
-        </div>
-
-        <div>
-
-          <label>Monthly Display Charges ₹</label>
-
-          <input
-            id="rate"
-            type="number"
-            value="0"
-            min="0"
-          >
-
-        </div>
-
-      </div>
-
-      <div class="row">
-
-        <div>
-
-          <label>Campaign Duration (Days)</label>
-
-          <input
-            id="duration"
-            type="number"
-            value="30"
-            min="1"
-          >
-
-        </div>
-
-        <div>
-
-          <label>P&M Charges ₹ / sq.ft</label>
-
-          <input
-            id="pmRate"
-            type="number"
-            value="15"
-            min="0"
-          >
-
-        </div>
-
-      </div>
-
-      <label>Status</label>
-
-      <select id="status">
-
-        <option>Available</option>
-        <option>Booked</option>
-        <option>Hold</option>
-        <option>Unavailable</option>
-
-      </select>
-
-      <div class="calculation">
-
-        <div>
-          Total Area:
-          <strong id="areaPreview">1,600 sq.ft</strong>
-        </div>
-
-        <div>
-          Display Charges:
-          <strong id="displayPreview">₹0</strong>
-        </div>
-
-        <div>
-          P&M Charges:
-          <strong id="pmPreview">₹24,000</strong>
-        </div>
-
-        <div>
-          Total Cost:
-          <strong id="totalPreview">₹24,000</strong>
-        </div>
-
-      </div>
-
-      <label>Site Photo</label>
-
-      <input
-        id="photo"
-        type="file"
-        accept="image/*"
-      >
-
-      <img
-        id="photoPreview"
-        class="photo-preview"
-      >
-
-      <label>Remarks</label>
-
-      <textarea
-        id="remarks"
-        placeholder="Facing direction, traffic, visibility etc."
-      ></textarea>
-
-      <button
-        class="btn-blue full"
-        onclick="saveSite()"
-      >
-        💾 SAVE SITE
-      </button>
-
-      <button
-        class="btn-gray full"
-        onclick="clearForm()"
-      >
-        CLEAR FORM
-      </button>
-
+    <label>Sales Person</label><input id="cSalesPerson" placeholder="Sales Manager">
+    <label>Select OOH Sites</label><div id="campaignSitePicker" class="card" style="max-height:240px;overflow:auto;margin:0"></div>
+    <div class="grid3" style="margin-top:10px">
+      <div><label>Total Value ₹</label><input id="cValue" type="number" min="0" value="0"></div>
+      <div><label>Amount Received ₹</label><input id="cReceived" type="number" min="0" value="0"></div>
+      <div><label>Renewal Date</label><input id="cRenewal" type="date"></div>
     </div>
-
-    <div class="card">
-
-      <h3>📌 Saved Sites</h3>
-
-      <input
-        id="siteSearch"
-        placeholder="Search site, location, status..."
-        oninput="renderSites()"
-      >
-
-      <div id="siteList"></div>
-
-    </div>
-
+    <label>Remarks</label><textarea id="cRemarks"></textarea>
+    <button class="btn-blue full" onclick="saveCampaign()">💾 SAVE CAMPAIGN</button>
   </div>
+</div>
 
-  <div class="map-container">
-
-    <div id="map"></div>
-
+<!-- CLIENT MODAL -->
+<div id="clientModal" class="modal-backdrop">
+  <div class="modal">
+    <div class="modal-head"><h3>Client</h3><button class="close" onclick="closeModal('clientModal')">✕</button></div>
+    <input id="clientId" type="hidden">
+    <div class="grid2"><div><label>Client Name</label><input id="clName"></div><div><label>Company</label><input id="clCompany"></div></div>
+    <div class="grid3"><div><label>Phone</label><input id="clPhone"></div><div><label>Email</label><input id="clEmail" type="email"></div><div><label>City</label><input id="clCity"></div></div>
+    <label>Notes</label><textarea id="clNotes"></textarea>
+    <button class="btn-blue full" onclick="saveClient()">💾 SAVE CLIENT</button>
   </div>
+</div>
 
+<!-- PAYMENT MODAL -->
+<div id="paymentModal" class="modal-backdrop">
+  <div class="modal">
+    <div class="modal-head"><h3>Record Payment</h3><button class="close" onclick="closeModal('paymentModal')">✕</button></div>
+    <div class="grid2"><div><label>Campaign</label><select id="pCampaign"></select></div><div><label>Payment Date</label><input id="pDate" type="date"></div></div>
+    <div class="grid3"><div><label>Amount ₹</label><input id="pAmount" type="number" min="0"></div><div><label>Mode</label><select id="pMode"><option>Bank Transfer</option><option>UPI</option><option>Cash</option><option>Cheque</option><option>Other</option></select></div><div><label>Reference</label><input id="pRef"></div></div>
+    <label>Note</label><textarea id="pNote"></textarea>
+    <button class="btn-blue full" onclick="savePayment()">💾 SAVE PAYMENT</button>
+  </div>
 </div>
 
 <div id="message"></div>
 
-<script
-  src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"
-></script>
-
-<script
-  src="https://cdn.jsdelivr.net/npm/xlsx@0.18.5/dist/xlsx.full.min.js"
-></script>
-
-<script
-  src="https://cdn.jsdelivr.net/npm/pptxgenjs@3.12.0/dist/pptxgen.bundle.js"
-></script>
+<script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/xlsx@0.18.5/dist/xlsx.full.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/pptxgenjs@3.12.0/dist/pptxgen.bundle.js"></script>
 
 <script>
-
 /* =========================================================
-   GLOBAL VARIABLES
+   EXISTING OOH STORAGE — DO NOT CHANGE THE SITES STORE
    ========================================================= */
+let sites=[];
+let selectedSites=new Set();
+let map=null,markers=[],searchMarker=null;
+let campaigns=[],clients=[],payments=[],followups=[];
 
-let sites = [];
-let selectedSites = new Set();
-let map = null;
-let markers = [];
-let searchMarker = null;
-
-/* =========================================================
-   STORAGE
-   ========================================================= */
-
-const DB_NAME = "MY_VISION_OOH_DATABASE";
-const DB_VERSION = 1;
-const STORE_NAME = "sites";
-const STORAGE_KEY = "my_vision_ooh_sites";
-const CAMPAIGN_KEY = "my_vision_ooh_campaign";
-
-/* =========================================================
-   MESSAGE
-   ========================================================= */
+const DB_NAME="MY_VISION_OOH_DATABASE";
+const DB_VERSION=2;
+const STORE_NAME="sites";
+const STORAGE_KEY="my_vision_ooh_sites";
+const CAMPAIGN_KEY="my_vision_ooh_campaign";
+const CAMPAIGNS_STORE="campaigns";
+const CLIENTS_STORE="clients";
+const PAYMENTS_STORE="payments";
+const FOLLOWUPS_STORE="followups";
 
 function showMessage(text){
-
-  const box = document.getElementById("message");
-
-  box.innerText = text;
-  box.style.display = "block";
-
+  const box=document.getElementById("message");
+  box.innerText=text;box.style.display="block";
   clearTimeout(window.messageTimer);
-
-  window.messageTimer = setTimeout(function(){
-
-    box.style.display = "none";
-
-  },3000);
-
+  window.messageTimer=setTimeout(()=>box.style.display="none",3200);
+}
+function money(v){return "₹"+Number(v||0).toLocaleString("en-IN")}
+function esc(t){return String(t??"").replace(/[&<>"']/g,c=>({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;","'":"&#039;"}[c]))}
+function attr(t){return esc(t)}
+function generateID(){return Date.now().toString(36)+"-"+Math.random().toString(36).slice(2,10)}
+function isoToday(){return new Date().toISOString().slice(0,10)}
+function daysBetween(a,b){
+  const d1=new Date(a+"T00:00:00"),d2=new Date(b+"T00:00:00");
+  return Math.round((d2-d1)/86400000);
 }
 
 /* =========================================================
-   MONEY
+   DATABASE
+   Version 2 ONLY ADDS STORES. Existing sites are preserved.
    ========================================================= */
-
-function money(value){
-
-  return (
-    "₹" +
-    Number(value || 0).toLocaleString("en-IN")
-  );
-
-}
-
-/* =========================================================
-   INDEXED DB
-   ========================================================= */
-
 function openOOHDatabase(){
-
-  return new Promise(function(resolve,reject){
-
-    if(!window.indexedDB){
-
-      reject(new Error("IndexedDB is not supported."));
-      return;
-
-    }
-
-    const request = indexedDB.open(DB_NAME,DB_VERSION);
-
-    request.onupgradeneeded = function(event){
-
-      const db = event.target.result;
-
-      if(!db.objectStoreNames.contains(STORE_NAME)){
-
-        db.createObjectStore(STORE_NAME,{keyPath:"id"});
-
-      }
-
+  return new Promise((resolve,reject)=>{
+    if(!window.indexedDB){reject(new Error("IndexedDB is not supported."));return}
+    const request=indexedDB.open(DB_NAME,DB_VERSION);
+    request.onupgradeneeded=e=>{
+      const db=e.target.result;
+      if(!db.objectStoreNames.contains(STORE_NAME))db.createObjectStore(STORE_NAME,{keyPath:"id"});
+      if(!db.objectStoreNames.contains(CAMPAIGNS_STORE))db.createObjectStore(CAMPAIGNS_STORE,{keyPath:"id"});
+      if(!db.objectStoreNames.contains(CLIENTS_STORE))db.createObjectStore(CLIENTS_STORE,{keyPath:"id"});
+      if(!db.objectStoreNames.contains(PAYMENTS_STORE))db.createObjectStore(PAYMENTS_STORE,{keyPath:"id"});
+      if(!db.objectStoreNames.contains(FOLLOWUPS_STORE))db.createObjectStore(FOLLOWUPS_STORE,{keyPath:"id"});
     };
-
-    request.onsuccess = function(){
-      resolve(request.result);
-    };
-
-    request.onerror = function(){
-      reject(request.error);
-    };
-
+    request.onsuccess=()=>resolve(request.result);
+    request.onerror=()=>reject(request.error);
   });
-
 }
-
-/* =========================================================
-   SAVE DATABASE
-   ========================================================= */
-
+async function readStore(storeName){
+  const db=await openOOHDatabase();
+  return new Promise((resolve,reject)=>{
+    const tx=db.transaction(storeName,"readonly"),store=tx.objectStore(storeName),req=store.getAll();
+    req.onsuccess=()=>{const data=req.result||[];db.close();resolve(data)}
+    req.onerror=()=>{db.close();reject(req.error)}
+  });
+}
+async function putStore(storeName,obj){
+  const db=await openOOHDatabase();
+  return new Promise((resolve,reject)=>{
+    const tx=db.transaction(storeName,"readwrite");tx.objectStore(storeName).put(obj);
+    tx.oncomplete=()=>{db.close();resolve(true)};tx.onerror=()=>{db.close();reject(tx.error)}
+  });
+}
+async function deleteStoreItem(storeName,id){
+  const db=await openOOHDatabase();
+  return new Promise((resolve,reject)=>{
+    const tx=db.transaction(storeName,"readwrite");tx.objectStore(storeName).delete(id);
+    tx.oncomplete=()=>{db.close();resolve(true)};tx.onerror=()=>{db.close();reject(tx.error)}
+  });
+}
 async function saveLocalData(){
-
   try{
-
-    const db = await openOOHDatabase();
-
-    await new Promise(function(resolve,reject){
-
-      const transaction = db.transaction(STORE_NAME,"readwrite");
-      const store = transaction.objectStore(STORE_NAME);
-
-      store.clear();
-
-      sites.forEach(function(site){
-        store.put(site);
-      });
-
-      transaction.oncomplete = function(){
-        resolve();
-      };
-
-      transaction.onerror = function(){
-        reject(transaction.error);
-      };
-
-      transaction.onabort = function(){
-        reject(
-          transaction.error ||
-          new Error("Transaction aborted.")
-        );
-      };
-
+    const db=await openOOHDatabase();
+    await new Promise((resolve,reject)=>{
+      const tx=db.transaction(STORE_NAME,"readwrite"),store=tx.objectStore(STORE_NAME);
+      store.clear();sites.forEach(s=>store.put(s));
+      tx.oncomplete=resolve;tx.onerror=()=>reject(tx.error);tx.onabort=()=>reject(tx.error);
     });
-
     db.close();
-
-    localStorage.setItem(
-      CAMPAIGN_KEY,
-      document.getElementById("campaign").value.trim()
-    );
-
+    localStorage.setItem(CAMPAIGN_KEY,document.getElementById("campaign").value.trim());
     return true;
-
-  }
-  catch(error){
-
-    console.error("IndexedDB save error:",error);
-
-    showMessage(
-      "Could not save site. Browser storage may be unavailable."
-    );
-
-    return false;
-
-  }
-
+  }catch(e){console.error(e);showMessage("Could not save site.");return false}
 }
-
-/* =========================================================
-   LOAD DATABASE
-   ========================================================= */
-
 async function loadLocalData(){
-
   try{
-
-    const db = await openOOHDatabase();
-
-    const storedSites = await new Promise(function(resolve,reject){
-
-      const transaction = db.transaction(STORE_NAME,"readonly");
-      const store = transaction.objectStore(STORE_NAME);
-      const request = store.getAll();
-
-      request.onsuccess = function(){
-        resolve(request.result || []);
-      };
-
-      request.onerror = function(){
-        reject(request.error);
-      };
-
-    });
-
-    db.close();
-
-    if(Array.isArray(storedSites) && storedSites.length > 0){
-
-      sites = storedSites;
-
-    }
+    const stored=await readStore(STORE_NAME);
+    if(stored.length)sites=stored;
     else{
-
       try{
-
-        const oldData = localStorage.getItem(STORAGE_KEY);
-
-        if(oldData){
-
-          const oldSites = JSON.parse(oldData);
-
-          if(Array.isArray(oldSites) && oldSites.length > 0){
-
-            sites = oldSites;
-
-            const migrated = await saveLocalData();
-
-            if(migrated){
-              localStorage.removeItem(STORAGE_KEY);
-            }
-
-          }
-          else{
-            sites = [];
-          }
-
-        }
-        else{
-          sites = [];
-        }
-
-      }
-      catch(error){
-
-        console.error("Migration failed:",error);
-        sites = [];
-
-      }
-
+        const old=JSON.parse(localStorage.getItem(STORAGE_KEY)||"[]");
+        if(Array.isArray(old)&&old.length){sites=old;await saveLocalData();localStorage.removeItem(STORAGE_KEY)}
+      }catch(e){sites=[]}
     }
-
-    const campaign = localStorage.getItem(CAMPAIGN_KEY);
-
-    if(campaign){
-
-      document.getElementById("campaign").value = campaign;
-
-    }
-
-    selectedSites.clear();
-
-    renderSites();
-    renderMarkers();
-
+    document.getElementById("campaign").value=localStorage.getItem(CAMPAIGN_KEY)||"";
+  }catch(e){
+    try{sites=JSON.parse(localStorage.getItem(STORAGE_KEY)||"[]")}catch(x){sites=[]}
   }
-  catch(error){
-
-    console.error("IndexedDB load error:",error);
-
-    try{
-
-      const oldData = localStorage.getItem(STORAGE_KEY);
-
-      sites = oldData ? JSON.parse(oldData) : [];
-
-      if(!Array.isArray(sites)){
-        sites = [];
-      }
-
-    }
-    catch(fallbackError){
-
-      console.error(fallbackError);
-      sites = [];
-
-    }
-
-    renderSites();
-    renderMarkers();
-
-  }
-
+  selectedSites.clear();renderSites();renderMarkers();
+}
+async function loadBusinessData(){
+  try{campaigns=await readStore(CAMPAIGNS_STORE)}catch(e){campaigns=[]}
+  try{clients=await readStore(CLIENTS_STORE)}catch(e){clients=[]}
+  try{payments=await readStore(PAYMENTS_STORE)}catch(e){payments=[]}
+  try{followups=await readStore(FOLLOWUPS_STORE)}catch(e){followups=[]}
+  renderAllBusiness();
 }
 
 /* =========================================================
-   CLEAR DATABASE
+   NAVIGATION
    ========================================================= */
-
-async function clearOOHDatabase(){
-
-  try{
-
-    const db = await openOOHDatabase();
-
-    await new Promise(function(resolve,reject){
-
-      const transaction = db.transaction(STORE_NAME,"readwrite");
-      const store = transaction.objectStore(STORE_NAME);
-      const request = store.clear();
-
-      request.onsuccess = function(){
-        resolve();
-      };
-
-      request.onerror = function(){
-        reject(request.error);
-      };
-
-    });
-
-    db.close();
-
-    localStorage.removeItem(STORAGE_KEY);
-
-    showMessage("All sites deleted.");
-
-  }
-  catch(error){
-
-    console.error(error);
-
-    showMessage("Could not clear storage.");
-
-  }
-
+function showPage(name,btn){
+  document.querySelectorAll(".page").forEach(p=>p.classList.remove("active"));
+  const page=document.getElementById("page-"+name);if(page)page.classList.add("active");
+  document.querySelectorAll(".nav button").forEach(b=>b.classList.remove("active"));
+  if(btn)btn.classList.add("active");
+  if(name==="inventory"){setTimeout(()=>{initializeMap();map&&map.invalidateSize()},100)}
+  if(name==="dashboard"||name==="reports"||name==="reminders")renderAllBusiness();
 }
-
-/* =========================================================
-   CAMPAIGN
-   ========================================================= */
-
-document
-  .getElementById("campaign")
-  .addEventListener("input",function(){
-
-    try{
-
-      localStorage.setItem(
-        CAMPAIGN_KEY,
-        this.value
-      );
-
-    }
-    catch(error){
-
-      console.error(error);
-
-    }
-
-  });
 
 /* =========================================================
    CALCULATIONS
    ========================================================= */
-
 function calculateValues(){
-
-  const width = Number(
-    document.getElementById("width").value
-  ) || 0;
-
-  const height = Number(
-    document.getElementById("height").value
-  ) || 0;
-
-  const units = Number(
-    document.getElementById("units").value
-  ) || 0;
-
-  const rate = Number(
-    document.getElementById("rate").value
-  ) || 0;
-
-  const duration = Number(
-    document.getElementById("duration").value
-  ) || 0;
-
-  let pmRate = Number(
-    document.getElementById("pmRate").value
-  ) || 0;
-
-  const illumination =
-    document.getElementById("illumination").value;
-
-  if(illumination === "DOOH"){
-
-    pmRate = 0;
-
-    document.getElementById("pmRate").value = 0;
-
-  }
-
-  const area = width * height * units;
-
-  const displayCharges = rate * duration / 30;
-
-  const pmCharges = area * pmRate;
-
-  const totalCost = displayCharges + pmCharges;
-
-  document.getElementById("areaPreview").innerText =
-    area.toLocaleString("en-IN") + " sq.ft";
-
-  document.getElementById("displayPreview").innerText =
-    money(displayCharges);
-
-  document.getElementById("pmPreview").innerText =
-    money(pmCharges);
-
-  document.getElementById("totalPreview").innerText =
-    money(totalCost);
-
+  const w=Number(document.getElementById("width").value)||0,h=Number(document.getElementById("height").value)||0;
+  const u=Number(document.getElementById("units").value)||0,r=Number(document.getElementById("rate").value)||0;
+  const d=Number(document.getElementById("duration").value)||0;
+  let pm=Number(document.getElementById("pmRate").value)||0;
+  if(document.getElementById("illumination").value==="DOOH"){pm=0;document.getElementById("pmRate").value=0}
+  const area=w*h*u,display=r*d/30,pmc=area*pm,total=display+pmc;
+  document.getElementById("areaPreview").innerText=area.toLocaleString("en-IN")+" sq.ft";
+  document.getElementById("displayPreview").innerText=money(display);
+  document.getElementById("pmPreview").innerText=money(pmc);
+  document.getElementById("totalPreview").innerText=money(total);
 }
 
 /* =========================================================
    MAP
    ========================================================= */
-
 function initializeMap(){
-
-  if(map){
-
-    setTimeout(function(){
-      map.invalidateSize();
-    },300);
-
-    return;
-
-  }
-
-  map = L.map("map").setView(
-    [19.0760,72.8777],
-    11
-  );
-
-  L.tileLayer(
-    "https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png",
-    {
-      maxZoom:19,
-      attribution:"© OpenStreetMap contributors"
-    }
-  ).addTo(map);
-
-  map.on("click",function(event){
-
-    const lat = event.latlng.lat;
-    const lng = event.latlng.lng;
-
-    document.getElementById("latitude").value =
-      lat.toFixed(6);
-
-    document.getElementById("longitude").value =
-      lng.toFixed(6);
-
-    document.getElementById("searchLat").value =
-      lat.toFixed(6);
-
-    document.getElementById("searchLng").value =
-      lng.toFixed(6);
-
-    placeSearchMarker(
-      lat,
-      lng,
-      "Selected Location"
-    );
-
+  if(map){setTimeout(()=>map.invalidateSize(),200);return}
+  map=L.map("map").setView([19.0760,72.8777],11);
+  L.tileLayer("https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png",{maxZoom:19,attribution:"© OpenStreetMap contributors"}).addTo(map);
+  map.on("click",e=>{
+    const lat=e.latlng.lat,lng=e.latlng.lng;
+    document.getElementById("latitude").value=lat.toFixed(6);
+    document.getElementById("longitude").value=lng.toFixed(6);
+    document.getElementById("searchLat").value=lat.toFixed(6);
+    document.getElementById("searchLng").value=lng.toFixed(6);
+    placeSearchMarker(lat,lng,"Selected Location");
   });
-
 }
-
-/* =========================================================
-   SEARCH LOCATION
-   ========================================================= */
-
-async function searchLocation(){
-
-  const query =
-    document.getElementById("locationSearch").value.trim();
-
-  if(!query){
-
-    showMessage("Enter a location.");
-    return;
-
-  }
-
-  showMessage("Searching location...");
-
-  try{
-
-    const url =
-      "https://nominatim.openstreetmap.org/search" +
-      "?format=json&limit=1&q=" +
-      encodeURIComponent(query);
-
-    const response = await fetch(
-      url,
-      {
-        headers:{
-          "Accept":"application/json"
-        }
-      }
-    );
-
-    if(!response.ok){
-      throw new Error("Location service unavailable.");
-    }
-
-    const data = await response.json();
-
-    if(!data.length){
-
-      showMessage("Location not found.");
-      return;
-
-    }
-
-    const result = data[0];
-
-    showLocation(
-      parseFloat(result.lat),
-      parseFloat(result.lon),
-      result.display_name
-    );
-
-  }
-  catch(error){
-
-    console.error(error);
-    showMessage("Location search failed.");
-
-  }
-
-}
-
-/* =========================================================
-   COORDINATES
-   ========================================================= */
-
-function searchCoordinates(){
-
-  const lat = parseFloat(
-    document.getElementById("searchLat").value
-  );
-
-  const lng = parseFloat(
-    document.getElementById("searchLng").value
-  );
-
-  if(Number.isNaN(lat) || Number.isNaN(lng)){
-
-    showMessage("Enter valid coordinates.");
-    return;
-
-  }
-
-  if(lat < -90 || lat > 90){
-
-    showMessage("Latitude must be between -90 and 90.");
-    return;
-
-  }
-
-  if(lng < -180 || lng > 180){
-
-    showMessage("Longitude must be between -180 and 180.");
-    return;
-
-  }
-
-  showLocation(
-    lat,
-    lng,
-    "Selected Coordinates"
-  );
-
-}
-
-/* =========================================================
-   SHOW LOCATION
-   ========================================================= */
-
-function showLocation(lat,lng,name){
-
-  if(!map){
-    initializeMap();
-  }
-
-  map.setView([lat,lng],17);
-
-  placeSearchMarker(lat,lng,name);
-
-  document.getElementById("latitude").value =
-    lat.toFixed(6);
-
-  document.getElementById("longitude").value =
-    lng.toFixed(6);
-
-  document.getElementById("searchLat").value =
-    lat.toFixed(6);
-
-  document.getElementById("searchLng").value =
-    lng.toFixed(6);
-
-  if(name !== "Selected Coordinates"){
-
-    document.getElementById("siteLocation").value =
-      name;
-
-  }
-
-  const box =
-    document.getElementById("locationResult");
-
-  box.style.display = "block";
-
-  box.innerHTML =
-    "<b>📍 Location Found</b><br>" +
-    escapeHTML(name) +
-    "<br><br>" +
-    "<b>Lat:</b> " +
-    lat.toFixed(6) +
-    "<br>" +
-    "<b>Long:</b> " +
-    lng.toFixed(6);
-
-}
-
-/* =========================================================
-   SEARCH MARKER
-   ========================================================= */
-
 function placeSearchMarker(lat,lng,name){
-
-  if(searchMarker){
-    searchMarker.remove();
-  }
-
-  searchMarker =
-    L.marker([lat,lng])
-      .addTo(map)
-      .bindPopup(
-        "<b>📍 " +
-        escapeHTML(name) +
-        "</b><br><br>" +
-        lat.toFixed(6) +
-        ", " +
-        lng.toFixed(6)
-      )
-      .openPopup();
-
+  if(searchMarker)searchMarker.remove();
+  searchMarker=L.marker([lat,lng]).addTo(map).bindPopup("<b>📍 "+esc(name)+"</b><br><br>"+lat.toFixed(6)+", "+lng.toFixed(6)).openPopup();
 }
-
-/* =========================================================
-   CURRENT LOCATION
-   ========================================================= */
-
+function showLocation(lat,lng,name){
+  if(!map)initializeMap();map.setView([lat,lng],17);placeSearchMarker(lat,lng,name);
+  document.getElementById("latitude").value=lat.toFixed(6);document.getElementById("longitude").value=lng.toFixed(6);
+  document.getElementById("searchLat").value=lat.toFixed(6);document.getElementById("searchLng").value=lng.toFixed(6);
+  if(name!=="Selected Coordinates")document.getElementById("siteLocation").value=name;
+  const box=document.getElementById("locationResult");box.style.display="block";
+  box.innerHTML="<b>📍 Location Found</b><br>"+esc(name)+"<br><br><b>Lat:</b> "+lat.toFixed(6)+"<br><b>Long:</b> "+lng.toFixed(6);
+}
+async function searchLocation(){
+  const q=document.getElementById("locationSearch").value.trim();if(!q){showMessage("Enter a location.");return}
+  showMessage("Searching location...");
+  try{
+    const res=await fetch("https://nominatim.openstreetmap.org/search?format=json&limit=1&q="+encodeURIComponent(q),{headers:{Accept:"application/json"}});
+    if(!res.ok)throw Error("Location service unavailable");
+    const data=await res.json();if(!data.length){showMessage("Location not found.");return}
+    showLocation(parseFloat(data[0].lat),parseFloat(data[0].lon),data[0].display_name);
+  }catch(e){console.error(e);showMessage("Location search failed.")}
+}
+function searchCoordinates(){
+  const lat=parseFloat(document.getElementById("searchLat").value),lng=parseFloat(document.getElementById("searchLng").value);
+  if(Number.isNaN(lat)||Number.isNaN(lng)){showMessage("Enter valid coordinates.");return}
+  if(lat<-90||lat>90||lng<-180||lng>180){showMessage("Invalid coordinates.");return}
+  showLocation(lat,lng,"Selected Coordinates");
+}
 function useMyLocation(){
-
-  if(!navigator.geolocation){
-
-    showMessage("Geolocation is not supported.");
-    return;
-
-  }
-
-  navigator.geolocation.getCurrentPosition(
-
-    function(position){
-
-      showLocation(
-        position.coords.latitude,
-        position.coords.longitude,
-        "My Current Location"
-      );
-
-    },
-
-    function(error){
-
-      console.error(error);
-      showMessage("Please allow location permission.");
-
-    },
-
-    {
-      enableHighAccuracy:true,
-      timeout:10000,
-      maximumAge:0
-    }
-
-  );
-
+  if(!navigator.geolocation){showMessage("Geolocation is not supported.");return}
+  navigator.geolocation.getCurrentPosition(p=>showLocation(p.coords.latitude,p.coords.longitude,"My Current Location"),()=>showMessage("Please allow location permission."),{enableHighAccuracy:true,timeout:10000,maximumAge:0});
 }
-
-/* =========================================================
-   RESIZE IMAGE
-   ========================================================= */
-
-function resizeImage(file,maxSize,quality){
-
-  return new Promise(function(resolve,reject){
-
-    const reader = new FileReader();
-
-    reader.onload = function(event){
-
-      const image = new Image();
-
-      image.onload = function(){
-
-        let width = image.width;
-        let height = image.height;
-
-        if(width > maxSize || height > maxSize){
-
-          if(width > height){
-
-            height = Math.round(
-              height * maxSize / width
-            );
-
-            width = maxSize;
-
-          }
-          else{
-
-            width = Math.round(
-              width * maxSize / height
-            );
-
-            height = maxSize;
-
-          }
-
-        }
-
-        const canvas =
-          document.createElement("canvas");
-
-        canvas.width = width;
-        canvas.height = height;
-
-        const context =
-          canvas.getContext("2d");
-
-        context.drawImage(
-          image,
-          0,
-          0,
-          width,
-          height
-        );
-
-        resolve(
-          canvas.toDataURL(
-            "image/jpeg",
-            quality
-          )
-        );
-
-      };
-
-      image.onerror = function(){
-
-        reject(
-          new Error("Invalid image.")
-        );
-
-      };
-
-      image.src = event.target.result;
-
-    };
-
-    reader.onerror = function(){
-
-      reject(
-        new Error("Could not read file.")
-      );
-
-    };
-
-    reader.readAsDataURL(file);
-
-  });
-
-}
-
-/* =========================================================
-   GENERATE ID
-   ========================================================= */
-
-function generateID(){
-
-  return (
-    Date.now().toString(36) +
-    "-" +
-    Math.random().toString(36).substring(2,10)
-  );
-
-}
-
-/* =========================================================
-   SAVE SITE
-   ========================================================= */
-
-async function saveSite(){
-
-  const name =
-    document.getElementById("siteName").value.trim();
-
-  const location =
-    document.getElementById("siteLocation").value.trim();
-
-  const state =
-    document.getElementById("state").value.trim();
-
-  const city =
-    document.getElementById("city").value.trim();
-
-  const lat =
-    parseFloat(document.getElementById("latitude").value);
-
-  const lng =
-    parseFloat(document.getElementById("longitude").value);
-
-  if(!name){
-
-    showMessage("Enter Site Name / ID.");
-    return;
-
-  }
-
-  if(Number.isNaN(lat) || Number.isNaN(lng)){
-
-    showMessage("Select a location on the map first.");
-    return;
-
-  }
-
-  if(lat < -90 || lat > 90){
-
-    showMessage("Invalid latitude.");
-    return;
-
-  }
-
-  if(lng < -180 || lng > 180){
-
-    showMessage("Invalid longitude.");
-    return;
-
-  }
-
-  const editId =
-    document.getElementById("editId").value.trim();
-
-  let photoURL =
-    document.getElementById("photoPreview").dataset.url || "";
-
-  const photoFile =
-    document.getElementById("photo").files[0];
-
-  if(photoFile){
-
-    try{
-
-      showMessage("Processing site photo...");
-
-      photoURL =
-        await resizeImage(
-          photoFile,
-          1200,
-          0.82
-        );
-
-    }
-    catch(error){
-
-      console.error(error);
-      showMessage("Could not process photo.");
-      return;
-
-    }
-
-  }
-
-  const width =
-    Number(document.getElementById("width").value) || 0;
-
-  const height =
-    Number(document.getElementById("height").value) || 0;
-
-  const units =
-    Number(document.getElementById("units").value) || 1;
-
-  const rate =
-    Number(document.getElementById("rate").value) || 0;
-
-  const duration =
-    Number(document.getElementById("duration").value) || 1;
-
-  let pmRate =
-    Number(document.getElementById("pmRate").value) || 0;
-
-  const illumination =
-    document.getElementById("illumination").value;
-
-  if(illumination === "DOOH"){
-    pmRate = 0;
-  }
-
-  const area =
-    width * height * units;
-
-  const displayCharges =
-    rate * duration / 30;
-
-  const pmCharges =
-    area * pmRate;
-
-  const totalCost =
-    displayCharges + pmCharges;
-
-  const siteData = {
-
-    id:
-      editId ||
-      generateID(),
-
-    site_name:
-      name,
-
-    state:
-      state,
-
-    city:
-      city,
-
-    location:
-      location,
-
-    latitude:
-      lat,
-
-    longitude:
-      lng,
-
-    width:
-      width,
-
-    height:
-      height,
-
-    units:
-      units,
-
-    total_area:
-      area,
-
-    media_type:
-      document.getElementById("mediaType").value,
-
-    illumination:
-      illumination,
-
-    traffic:
-      document.getElementById("traffic").value,
-
-    monthly_rate:
-      rate,
-
-    duration:
-      duration,
-
-    display_charges:
-      displayCharges,
-
-    pm_rate:
-      pmRate,
-
-    pm_charges:
-      pmCharges,
-
-    total_cost:
-      totalCost,
-
-    status:
-      document.getElementById("status").value,
-
-    photo_url:
-      photoURL,
-
-    remarks:
-      document.getElementById("remarks").value.trim(),
-
-    updated_at:
-      new Date().toISOString()
-
-  };
-
-  if(editId){
-
-    const index =
-      sites.findIndex(
-        site => site.id === editId
-      );
-
-    if(index !== -1){
-
-      siteData.created_at =
-        sites[index].created_at ||
-        new Date().toISOString();
-
-      sites[index] =
-        siteData;
-
-    }
-
-    showMessage("Site updated successfully.");
-
-  }
-  else{
-
-    siteData.created_at =
-      new Date().toISOString();
-
-    sites.unshift(siteData);
-
-    selectedSites.add(siteData.id);
-
-    showMessage("Site saved successfully.");
-
-  }
-
-  const savedSuccessfully =
-    await saveLocalData();
-
-  if(!savedSuccessfully){
-
-    if(editId){
-
-      await loadLocalData();
-
-    }
-    else{
-
-      sites =
-        sites.filter(
-          site => site.id !== siteData.id
-        );
-
-      selectedSites.delete(siteData.id);
-
-    }
-
-    return;
-
-  }
-
-  renderSites();
-  renderMarkers();
-  clearForm();
-
-}
-
-/* =========================================================
-   RENDER MARKERS
-   ========================================================= */
-
 function renderMarkers(){
-
-  if(!map){
-    return;
-  }
-
-  markers.forEach(marker => marker.remove());
-
-  markers = [];
-
-  sites.forEach(function(site){
-
-    const lat = Number(site.latitude);
-    const lng = Number(site.longitude);
-
-    if(Number.isNaN(lat) || Number.isNaN(lng)){
-      return;
+  if(!map)return;markers.forEach(m=>m.remove());markers=[];
+  sites.forEach(site=>{
+    if(Number.isFinite(Number(site.latitude))&&Number.isFinite(Number(site.longitude))){
+      const m=L.marker([site.latitude,site.longitude]).addTo(map).bindPopup(
+        "<b>"+esc(site.site_name)+"</b><br>"+esc(site.location)+"<br>"+esc(site.status||"")+"<br>"+money(site.total_cost)
+      );markers.push(m);
     }
-
-    const marker =
-      L.marker([lat,lng]).addTo(map);
-
-    let popup =
-      "<b>" +
-      escapeHTML(site.site_name) +
-      "</b><br>" +
-
-      escapeHTML(site.location || "") +
-
-      "<br><br>" +
-
-      "Size: " +
-      Number(site.width || 0) +
-      " × " +
-      Number(site.height || 0) +
-      " ft<br>" +
-
-      "Units: " +
-      Number(site.units || 1) +
-
-      "<br>" +
-
-      "Area: " +
-      Number(site.total_area || 0)
-        .toLocaleString("en-IN") +
-      " sq.ft<br>" +
-
-      "Media: " +
-      escapeHTML(site.media_type || "") +
-
-      "<br>" +
-
-      "Type: " +
-      escapeHTML(site.illumination || "") +
-
-      "<br>" +
-
-      "Traffic: " +
-      escapeHTML(site.traffic || "") +
-
-      "<br>" +
-
-      "Rate: " +
-      money(site.monthly_rate) +
-
-      "<br>" +
-
-      "Status: " +
-      escapeHTML(site.status || "");
-
-    if(site.photo_url){
-
-      popup +=
-        "<br><br>" +
-        "<img src='" +
-        escapeAttribute(site.photo_url) +
-        "' style='width:180px;height:120px;object-fit:cover;border-radius:6px'>";
-
-    }
-
-    popup +=
-      "<br><br>" +
-      "<a href='https://www.google.com/maps?q=" +
-      encodeURIComponent(lat + "," + lng) +
-      "' target='_blank'>" +
-      "📍 Open Google Maps" +
-      "</a>";
-
-    marker.bindPopup(popup);
-
-    marker.on("click",function(){
-
-      selectedSites.add(site.id);
-      renderSites();
-
-    });
-
-    markers.push(marker);
-
   });
-
 }
 
 /* =========================================================
-   RENDER SITES
+   SITE CRUD — ORIGINAL DATA SHAPE PRESERVED
    ========================================================= */
-
-function renderSites(){
-
-  const list =
-    document.getElementById("siteList");
-
-  if(!list){
-    return;
-  }
-
-  const searchInput =
-    document.getElementById("siteSearch");
-
-  const search =
-    searchInput
-      ? searchInput.value.toLowerCase().trim()
-      : "";
-
-  const filtered =
-    sites.filter(function(site){
-
-      const text =
-        [
-          site.site_name,
-          site.state,
-          site.city,
-          site.location,
-          site.media_type,
-          site.illumination,
-          site.traffic,
-          site.status,
-          site.width,
-          site.height,
-          site.units,
-          site.remarks
-        ]
-        .join(" ")
-        .toLowerCase();
-
-      return text.includes(search);
-
-    });
-
-  list.innerHTML = "";
-
-  if(!filtered.length){
-
-    list.innerHTML =
-      "<div class='empty'>" +
-      (
-        sites.length
-          ? "No matching sites found."
-          : "No saved sites yet."
-      ) +
-      "</div>";
-
-  }
-
-  filtered.forEach(function(site){
-
-    const div =
-      document.createElement("div");
-
-    div.className = "site";
-
-    const selected =
-      selectedSites.has(site.id);
-
-    let photoHTML;
-
-    if(site.photo_url){
-
-      photoHTML =
-        "<img src='" +
-        escapeAttribute(site.photo_url) +
-        "' class='saved-site-photo' " +
-
-        "onclick=\"viewSite('" +
-        escapeAttribute(site.id) +
-        "')\">";
-
-    }
-    else{
-
-      photoHTML =
-        "<div class='no-site-photo'>📷</div>";
-
-    }
-
-    div.innerHTML =
-
-      "<div class='saved-site-row'>" +
-
-        "<div class='saved-site-image'>" +
-          photoHTML +
-        "</div>" +
-
-        "<div class='saved-site-details'>" +
-
-          "<div class='site-name'>" +
-
-            (
-              selected
-                ? "☑ "
-                : "☐ "
-            ) +
-
-            escapeHTML(site.site_name) +
-
-          "</div>" +
-
-          "<div class='site-info'>" +
-
-            escapeHTML(site.location || "") +
-
-            "<br>" +
-
-            escapeHTML(site.city || "") +
-            ", " +
-            escapeHTML(site.state || "") +
-
-            "<br>" +
-
-            "📐 " +
-
-            Number(site.width || 0) +
-            " × " +
-            Number(site.height || 0) +
-            " ft × " +
-            Number(site.units || 1) +
-            " units" +
-
-            "<br>" +
-
-            "📊 " +
-
-            Number(site.total_area || 0)
-              .toLocaleString("en-IN") +
-            " sq.ft" +
-
-            "<br>" +
-
-            escapeHTML(site.media_type || "") +
-            " | " +
-            escapeHTML(site.illumination || "") +
-
-            "<br>" +
-
-            "🚦 " +
-            escapeHTML(site.traffic || "") +
-
-          "</div>" +
-
-        "</div>" +
-
-      "</div>" +
-
-      "<div class='site-buttons'>" +
-
-        "<button class='btn-blue' " +
-
-        "onclick=\"viewSite('" +
-        escapeAttribute(site.id) +
-        "')\">" +
-
-        "MAP" +
-
-        "</button>" +
-
-        "<button class='btn-gray' " +
-
-        "onclick=\"selectSite('" +
-        escapeAttribute(site.id) +
-        "')\">" +
-
-        (
-          selected
-            ? "UNSELECT"
-            : "SELECT"
-        ) +
-
-        "</button>" +
-
-        "<button class='btn-gray' " +
-
-        "onclick=\"editSite('" +
-        escapeAttribute(site.id) +
-        "')\">" +
-
-        "EDIT" +
-
-        "</button>" +
-
-        "<button class='btn-red' " +
-
-        "onclick=\"deleteSite('" +
-        escapeAttribute(site.id) +
-        "')\">" +
-
-        "DELETE" +
-
-        "</button>" +
-
-      "</div>";
-
-    list.appendChild(div);
-
+function resizeImage(file,maxSize,quality){
+  return new Promise((resolve,reject)=>{
+    const reader=new FileReader();
+    reader.onload=e=>{
+      const img=new Image();
+      img.onload=()=>{
+        let w=img.width,h=img.height;
+        if(w>maxSize||h>maxSize){if(w>h){h=Math.round(h*maxSize/w);w=maxSize}else{w=Math.round(w*maxSize/h);h=maxSize}}
+        const c=document.createElement("canvas");c.width=w;c.height=h;c.getContext("2d").drawImage(img,0,0,w,h);
+        resolve(c.toDataURL("image/jpeg",quality));
+      };img.onerror=()=>reject(Error("Invalid image"));img.src=e.target.result;
+    };reader.onerror=()=>reject(Error("Could not read file"));reader.readAsDataURL(file);
   });
-
-  document.getElementById("totalSites").innerText =
-    sites.length;
-
-  document.getElementById("selectedSites").innerText =
-    selectedSites.size;
-
 }
-
-/* =========================================================
-   SELECT SITE
-   ========================================================= */
-
-function selectSite(id){
-
-  if(selectedSites.has(id)){
-    selectedSites.delete(id);
-  }
-  else{
-    selectedSites.add(id);
-  }
-
-  renderSites();
-
+async function saveSite(){
+  const name=document.getElementById("siteName").value.trim(),location=document.getElementById("siteLocation").value.trim();
+  const state=document.getElementById("state").value.trim(),city=document.getElementById("city").value.trim();
+  const lat=parseFloat(document.getElementById("latitude").value),lng=parseFloat(document.getElementById("longitude").value);
+  if(!name){showMessage("Enter Site Name / ID.");return}
+  if(Number.isNaN(lat)||Number.isNaN(lng)){showMessage("Select a location on the map first.");return}
+  if(lat<-90||lat>90||lng<-180||lng>180){showMessage("Invalid coordinates.");return}
+  const editId=document.getElementById("editId").value.trim();
+  let photoURL=document.getElementById("photoPreview").dataset.url||"";
+  const file=document.getElementById("photo").files[0];
+  if(file){try{photoURL=await resizeImage(file,1200,.82)}catch(e){showMessage("Could not process photo.");return}}
+  const width=Number(document.getElementById("width").value)||0,height=Number(document.getElementById("height").value)||0,units=Number(document.getElementById("units").value)||1;
+  const rate=Number(document.getElementById("rate").value)||0,duration=Number(document.getElementById("duration").value)||1;
+  let pmRate=Number(document.getElementById("pmRate").value)||0;const illumination=document.getElementById("illumination").value;if(illumination==="DOOH")pmRate=0;
+  const area=width*height*units,displayCharges=rate*duration/30,pmCharges=area*pmRate,totalCost=displayCharges+pmCharges;
+  const existing=editId?sites.find(s=>s.id===editId):null;
+  const siteData={
+    id:editId||generateID(),site_name:name,state,city,location,latitude:lat,longitude:lng,width,height,units,total_area:area,
+    media_type:document.getElementById("mediaType").value,illumination,traffic:document.getElementById("traffic").value,
+    monthly_rate:rate,duration,display_charges:displayCharges,pm_rate:pmRate,pm_charges:pmCharges,total_cost:totalCost,
+    status:document.getElementById("status").value,photo_url:photoURL,remarks:document.getElementById("remarks").value.trim(),
+    created_at:existing?.created_at||new Date().toISOString(),updated_at:new Date().toISOString()
+  };
+  if(editId){const i=sites.findIndex(s=>s.id===editId);if(i>=0)sites[i]=siteData;showMessage("Site updated successfully.")}
+  else{sites.unshift(siteData);selectedSites.add(siteData.id);showMessage("Site saved successfully.")}
+  if(!(await saveLocalData()))return;
+  renderSites();renderMarkers();clearForm();refreshDashboard();
 }
-
-/* =========================================================
-   VIEW SITE
-   ========================================================= */
-
-function viewSite(id){
-
-  const site =
-    sites.find(item => item.id === id);
-
-  if(!site){
-    return;
-  }
-
-  const lat = Number(site.latitude);
-  const lng = Number(site.longitude);
-
-  if(Number.isNaN(lat) || Number.isNaN(lng)){
-
-    showMessage("Site has invalid coordinates.");
-    return;
-
-  }
-
-  if(!map){
-    initializeMap();
-  }
-
-  map.setView([lat,lng],17);
-
-  placeSearchMarker(
-    lat,
-    lng,
-    site.site_name
-  );
-
-  selectedSites.add(site.id);
-
-  renderSites();
-
-}
-
-/* =========================================================
-   EDIT SITE
-   ========================================================= */
-
 function editSite(id){
-
-  const site =
-    sites.find(item => item.id === id);
-
-  if(!site){
-    return;
-  }
-
-  document.getElementById("editId").value =
-    site.id;
-
-  document.getElementById("siteName").value =
-    site.site_name || "";
-
-  document.getElementById("state").value =
-    site.state || "";
-
-  document.getElementById("city").value =
-    site.city || "";
-
-  document.getElementById("siteLocation").value =
-    site.location || "";
-
-  document.getElementById("latitude").value =
-    site.latitude ?? "";
-
-  document.getElementById("longitude").value =
-    site.longitude ?? "";
-
-  document.getElementById("width").value =
-    site.width ?? 40;
-
-  document.getElementById("height").value =
-    site.height ?? 40;
-
-  document.getElementById("units").value =
-    site.units ?? 1;
-
-  document.getElementById("mediaType").value =
-    site.media_type || "Billboard";
-
-  document.getElementById("illumination").value =
-    site.illumination || "LIT";
-
-  document.getElementById("traffic").value =
-    site.traffic === "ET" ||
-    site.traffic === "MT"
-      ? site.traffic
-      : "ET";
-
-  document.getElementById("rate").value =
-    site.monthly_rate ?? 0;
-
-  document.getElementById("duration").value =
-    site.duration ?? 30;
-
-  document.getElementById("pmRate").value =
-    site.pm_rate ?? 15;
-
-  document.getElementById("status").value =
-    site.status || "Available";
-
-  document.getElementById("remarks").value =
-    site.remarks || "";
-
-  const preview =
-    document.getElementById("photoPreview");
-
-  preview.dataset.url =
-    site.photo_url || "";
-
-  if(site.photo_url){
-
-    preview.src =
-      site.photo_url;
-
-    preview.style.display =
-      "block";
-
-  }
-  else{
-
-    preview.src = "";
-    preview.style.display = "none";
-
-  }
-
-  document.getElementById("formTitle").innerText =
-    "✏️ Edit OOH Site";
-
-  calculateValues();
-
-  viewSite(id);
-
-  window.scrollTo({
-    top:0,
-    behavior:"smooth"
-  });
-
+  const s=sites.find(x=>x.id===id);if(!s)return;
+  document.getElementById("editId").value=s.id;document.getElementById("siteName").value=s.site_name||"";
+  document.getElementById("state").value=s.state||"";document.getElementById("city").value=s.city||"";document.getElementById("siteLocation").value=s.location||"";
+  document.getElementById("latitude").value=s.latitude??"";document.getElementById("longitude").value=s.longitude??"";
+  document.getElementById("width").value=s.width??40;document.getElementById("height").value=s.height??40;document.getElementById("units").value=s.units??1;
+  document.getElementById("mediaType").value=s.media_type||"Billboard";document.getElementById("illumination").value=s.illumination||"LIT";document.getElementById("traffic").value=s.traffic==="MT"?"MT":"ET";
+  document.getElementById("rate").value=s.monthly_rate??0;document.getElementById("duration").value=s.duration??30;document.getElementById("pmRate").value=s.pm_rate??15;
+  document.getElementById("status").value=s.status||"Available";document.getElementById("remarks").value=s.remarks||"";
+  const p=document.getElementById("photoPreview");p.dataset.url=s.photo_url||"";p.src=s.photo_url||"";p.style.display=s.photo_url?"block":"none";
+  document.getElementById("formTitle").innerText="✏️ Edit OOH Site";calculateValues();showPage("inventory",document.querySelector('[data-page="inventory"]'));showLocation(Number(s.latitude),Number(s.longitude),s.location||s.site_name);window.scrollTo({top:0,behavior:"smooth"});
 }
-
-/* =========================================================
-   DELETE SITE
-   ========================================================= */
-
 async function deleteSite(id){
-
-  const site =
-    sites.find(item => item.id === id);
-
-  if(!site){
-    return;
-  }
-
-  if(!confirm(
-    "Delete " +
-    site.site_name +
-    " permanently?"
-  )){
-    return;
-  }
-
-  sites =
-    sites.filter(
-      item => item.id !== id
-    );
-
-  selectedSites.delete(id);
-
-  const saved =
-    await saveLocalData();
-
-  if(!saved){
-
-    await loadLocalData();
-    return;
-
-  }
-
-  renderSites();
-  renderMarkers();
-
-  showMessage("Site deleted.");
-
+  const s=sites.find(x=>x.id===id);if(!s)return;if(!confirm("Delete "+s.site_name+" permanently?"))return;
+  sites=sites.filter(x=>x.id!==id);selectedSites.delete(id);if(await saveLocalData()){renderSites();renderMarkers();showMessage("Site deleted.")}
 }
-
-/* =========================================================
-   CLEAR ALL
-   ========================================================= */
-
 async function clearAllSites(){
-
-  if(!sites.length){
-
-    showMessage("There are no saved sites.");
-    return;
-
-  }
-
-  if(!confirm(
-    "Delete ALL saved OOH sites? This cannot be undone."
-  )){
-    return;
-  }
-
-  sites = [];
-  selectedSites.clear();
-
-  await clearOOHDatabase();
-
-  renderSites();
-  renderMarkers();
-  clearForm();
-
+  if(!sites.length){showMessage("There are no saved OOH sites.");return}
+  if(!confirm("Delete ALL saved OOH sites? This cannot be undone."))return;
+  sites=[];selectedSites.clear();
+  try{
+    const db=await openOOHDatabase();await new Promise((resolve,reject)=>{
+      const tx=db.transaction(STORE_NAME,"readwrite");tx.objectStore(STORE_NAME).clear();tx.oncomplete=resolve;tx.onerror=()=>reject(tx.error)
+    });db.close();localStorage.removeItem(STORAGE_KEY);
+  }catch(e){console.error(e)}
+  renderSites();renderMarkers();clearForm();showMessage("All sites deleted.");
 }
-
-/* =========================================================
-   CLEAR FORM
-   ========================================================= */
-
 function clearForm(){
-
-  document.getElementById("editId").value = "";
-  document.getElementById("siteName").value = "";
-  document.getElementById("state").value = "";
-  document.getElementById("city").value = "";
-  document.getElementById("siteLocation").value = "";
-  document.getElementById("latitude").value = "";
-  document.getElementById("longitude").value = "";
-  document.getElementById("width").value = "40";
-  document.getElementById("height").value = "40";
-  document.getElementById("units").value = "1";
-  document.getElementById("mediaType").value = "Billboard";
-  document.getElementById("illumination").value = "LIT";
-  document.getElementById("traffic").value = "ET";
-  document.getElementById("rate").value = "0";
-  document.getElementById("duration").value = "30";
-  document.getElementById("pmRate").value = "15";
-  document.getElementById("status").value = "Available";
-  document.getElementById("remarks").value = "";
-  document.getElementById("photo").value = "";
-
-  const preview =
-    document.getElementById("photoPreview");
-
-  preview.src = "";
-  preview.dataset.url = "";
-  preview.style.display = "none";
-
-  document.getElementById("formTitle").innerText =
-    "➕ Add OOH Site";
-
-  calculateValues();
-
+  ["editId","siteName","state","city","siteLocation","latitude","longitude","remarks","photo"].forEach(id=>{const e=document.getElementById(id);if(e)e.value=""});
+  document.getElementById("width").value=40;document.getElementById("height").value=40;document.getElementById("units").value=1;document.getElementById("mediaType").value="Billboard";
+  document.getElementById("illumination").value="LIT";document.getElementById("traffic").value="ET";document.getElementById("rate").value=0;document.getElementById("duration").value=30;document.getElementById("pmRate").value=15;document.getElementById("status").value="Available";
+  const p=document.getElementById("photoPreview");p.src="";p.dataset.url="";p.style.display="none";document.getElementById("formTitle").innerText="➕ Add OOH Site";calculateValues();
 }
+function focusNewSite(){showPage("inventory",document.querySelector('[data-page="inventory"]'));document.getElementById("siteFormCard").scrollIntoView({behavior:"smooth"});clearForm()}
+function renderSites(){
+  const q=document.getElementById("siteSearch").value.trim().toLowerCase(),list=document.getElementById("siteList");
+  document.getElementById("totalSites").innerText=sites.length;document.getElementById("selectedSites").innerText=selectedSites.size;
+  const data=sites.filter(s=>[s.site_name,s.location,s.city,s.state,s.status,s.media_type].join(" ").toLowerCase().includes(q));
+  if(!data.length){list.innerHTML='<div class="empty">No sites found.</div>';return}
+  list.innerHTML=data.map(s=>{
+    const selected=selectedSites.has(s.id);
+    return `<div class="site"><div class="saved-site-row">
+      <div class="saved-site-image">${s.photo_url?`<img class="saved-site-photo" src="${attr(s.photo_url)}" onclick="viewImage('${attr(s.photo_url)}')">`:'<div class="no-site-photo">📍</div>'}</div>
+      <div class="saved-site-details"><div class="site-name">${esc(s.site_name)}</div>
+      <div class="site-info">${esc(s.location||"-")}<br>${esc(s.city||"")} ${esc(s.state||"")} · ${esc(s.media_type||"-")} · ${esc(s.illumination||"-")} · ${esc(s.traffic||"-")}<br>${Number(s.width||0)} × ${Number(s.height||0)} ft · ${Number(s.units||1)} units · ${money(s.total_cost)}</div>
+      <div class="site-buttons">
+        <button class="${selected?'btn-green':'btn-gray'}" onclick="toggleSite('${attr(s.id)}')">${selected?'✓ Selected':'Select'}</button>
+        <button class="btn-blue" onclick="viewSite('${attr(s.id)}')">Map</button><button class="btn-gray" onclick="editSite('${attr(s.id)}')">Edit</button><button class="btn-red" onclick="deleteSite('${attr(s.id)}')">Delete</button>
+      </div></div></div></div>`
+  }).join("");
+}
+function toggleSite(id){selectedSites.has(id)?selectedSites.delete(id):selectedSites.add(id);renderSites()}
+function viewSite(id){const s=sites.find(x=>x.id===id);if(!s)return;showPage("inventory",document.querySelector('[data-page="inventory"]'));if(map){map.setView([s.latitude,s.longitude],17);placeSearchMarker(s.latitude,s.longitude,s.site_name)}}
+function viewImage(src){const w=window.open();if(w)w.document.write(`<img src="${attr(src)}" style="max-width:100%">`)}
 
 /* =========================================================
-   EXCEL EXPORT
-   MERGED SIZE HEADER: W + H
+   BUSINESS CRUD
    ========================================================= */
+async function saveCampaign(){
+  const id=document.getElementById("campaignId").value||generateID();
+  const selected=[...document.querySelectorAll(".campaign-site-check:checked")].map(x=>x.value);
+  const obj={
+    id,name:document.getElementById("cName").value.trim(),client:document.getElementById("cClient").value.trim(),
+    start_date:document.getElementById("cStart").value,end_date:document.getElementById("cEnd").value,status:document.getElementById("cStatus").value,
+    sales_person:document.getElementById("cSalesPerson").value.trim(),site_ids:selected,total_value:Number(document.getElementById("cValue").value)||0,
+    amount_received:Number(document.getElementById("cReceived").value)||0,renewal_date:document.getElementById("cRenewal").value,
+    remarks:document.getElementById("cRemarks").value.trim(),updated_at:new Date().toISOString(),created_at:campaigns.find(c=>c.id===id)?.created_at||new Date().toISOString()
+  };
+  if(!obj.name){showMessage("Enter campaign name.");return}
+  if(!obj.end_date){showMessage("Enter campaign end date.");return}
+  await putStore(CAMPAIGNS_STORE,obj);await loadBusinessData();closeModal("campaignModal");showMessage("Campaign saved.");
+}
+function openCampaignModal(id){
+  const c=id?campaigns.find(x=>x.id===id):null;
+  document.getElementById("campaignId").value=c?.id||"";document.getElementById("campaignModalTitle").innerText=c?"Edit Campaign":"New Campaign";
+  document.getElementById("cName").value=c?.name||"";document.getElementById("cClient").value=c?.client||"";document.getElementById("cStart").value=c?.start_date||isoToday();
+  document.getElementById("cEnd").value=c?.end_date||"";document.getElementById("cStatus").value=c?.status||"Planned";document.getElementById("cSalesPerson").value=c?.sales_person||"";
+  document.getElementById("cValue").value=c?.total_value||0;document.getElementById("cReceived").value=c?.amount_received||0;document.getElementById("cRenewal").value=c?.renewal_date||"";document.getElementById("cRemarks").value=c?.remarks||"";
+  document.getElementById("campaignSitePicker").innerHTML=sites.length?sites.map(s=>`<label style="font-weight:normal"><input class="campaign-site-check" type="checkbox" value="${attr(s.id)}" style="width:auto;margin-right:7px" ${c?.site_ids?.includes(s.id)?"checked":""}>${esc(s.site_name)} — ${esc(s.location||"")} — ${money(s.total_cost)}</label>`).join(""):'<div class="empty">No saved sites.</div>';
+  document.getElementById("campaignModal").classList.add("show");
+}
+async function deleteCampaign(id){if(!confirm("Delete this campaign?"))return;await deleteStoreItem(CAMPAIGNS_STORE,id);payments=payments.filter(p=>p.campaign_id!==id);for(const p of payments)await putStore(PAYMENTS_STORE,p);await loadBusinessData();showMessage("Campaign deleted.")}
+function renderCampaigns(){
+  const q=(document.getElementById("campaignSearch")?.value||"").toLowerCase(),f=document.getElementById("campaignStatusFilter")?.value||"";
+  const data=campaigns.filter(c=>(!q||[c.name,c.client,c.sales_person].join(" ").toLowerCase().includes(q))&&(!f||c.status===f));
+  const tb=document.getElementById("campaignTable");
+  if(!data.length){tb.innerHTML='<tr><td colspan="9" class="empty">No campaigns yet.</td></tr>';return}
+  tb.innerHTML=data.map(c=>{
+    const pending=Math.max(0,Number(c.total_value||0)-Number(c.amount_received||0)),d=daysBetween(isoToday(),c.end_date),cls=d<0?"badge-red":d===0?"badge-red":d<=2?"badge-orange":"badge-blue";
+    return `<tr><td><b>${esc(c.name)}</b><br><span class="sub">${esc(c.sales_person||"")}</span></td><td>${esc(c.client||"-")}</td><td>${esc(c.start_date||"-")} → ${esc(c.end_date||"-")}<br><span class="badge ${cls}">${d<0?"Expired":d===0?"Ends Today":d===1?"Ends Tomorrow":d+" days left"}</span></td><td>${c.site_ids?.length||0}</td><td>${money(c.total_value)}</td><td>${money(c.amount_received)}</td><td>${money(pending)}</td><td><span class="badge ${c.status==="Running"?"badge-green":c.status==="Completed"?"badge-gray":"badge-blue"}">${esc(c.status)}</span></td><td><div class="actions"><button class="btn-blue" onclick="openCampaignModal('${attr(c.id)}')">Edit</button><button class="btn-red" onclick="deleteCampaign('${attr(c.id)}')">Delete</button></div></td></tr>`
+  }).join("");
+}
+async function saveClient(){
+  const id=document.getElementById("clientId").value||generateID(),obj={id,name:document.getElementById("clName").value.trim(),company:document.getElementById("clCompany").value.trim(),phone:document.getElementById("clPhone").value.trim(),email:document.getElementById("clEmail").value.trim(),city:document.getElementById("clCity").value.trim(),notes:document.getElementById("clNotes").value.trim(),updated_at:new Date().toISOString()};
+  if(!obj.name&&!obj.company){showMessage("Enter client name or company.");return}
+  await putStore(CLIENTS_STORE,obj);await loadBusinessData();closeModal("clientModal");showMessage("Client saved.");
+}
+function openClientModal(id){
+  const c=id?clients.find(x=>x.id===id):null;document.getElementById("clientId").value=c?.id||"";
+  document.getElementById("clName").value=c?.name||"";document.getElementById("clCompany").value=c?.company||"";document.getElementById("clPhone").value=c?.phone||"";document.getElementById("clEmail").value=c?.email||"";document.getElementById("clCity").value=c?.city||"";document.getElementById("clNotes").value=c?.notes||"";
+  document.getElementById("clientModal").classList.add("show");
+}
+async function deleteClient(id){if(!confirm("Delete this client?"))return;await deleteStoreItem(CLIENTS_STORE,id);await loadBusinessData();showMessage("Client deleted.")}
+function renderClients(){
+  const q=(document.getElementById("clientSearch")?.value||"").toLowerCase(),data=clients.filter(c=>[c.name,c.company,c.phone,c.email,c.city].join(" ").toLowerCase().includes(q)),tb=document.getElementById("clientTable");
+  if(!data.length){tb.innerHTML='<tr><td colspan="7" class="empty">No clients yet.</td></tr>';return}
+  tb.innerHTML=data.map(c=>`<tr><td><b>${esc(c.name||"-")}</b></td><td>${esc(c.company||"-")}</td><td>${esc(c.phone||"-")}</td><td>${esc(c.email||"-")}</td><td>${esc(c.city||"-")}</td><td>${esc(c.notes||"-")}</td><td><div class="actions"><button class="btn-blue" onclick="openClientModal('${attr(c.id)}')">Edit</button><button class="btn-red" onclick="deleteClient('${attr(c.id)}')">Delete</button></div></td></tr>`).join("");
+}
+function openPaymentModal(){
+  const sel=document.getElementById("pCampaign");sel.innerHTML=campaigns.length?campaigns.map(c=>`<option value="${attr(c.id)}">${esc(c.name)} — ${esc(c.client||"")}</option>`).join(""):'<option value="">Create a campaign first</option>';
+  document.getElementById("pDate").value=isoToday();document.getElementById("pAmount").value="";document.getElementById("pRef").value="";document.getElementById("pNote").value="";
+  document.getElementById("paymentModal").classList.add("show");
+}
+async function savePayment(){
+  const campaignId=document.getElementById("pCampaign").value,amount=Number(document.getElementById("pAmount").value)||0;
+  if(!campaignId||amount<=0){showMessage("Select campaign and enter payment amount.");return}
+  const p={id:generateID(),campaign_id:campaignId,date:document.getElementById("pDate").value||isoToday(),amount,mode:document.getElementById("pMode").value,reference:document.getElementById("pRef").value.trim(),note:document.getElementById("pNote").value.trim(),created_at:new Date().toISOString()};
+  await putStore(PAYMENTS_STORE,p);
+  const c=campaigns.find(x=>x.id===campaignId);if(c){c.amount_received=Number(c.amount_received||0)+amount;await putStore(CAMPAIGNS_STORE,c)}
+  await loadBusinessData();closeModal("paymentModal");showMessage("Payment recorded.");
+}
+async function deletePayment(id){
+  const p=payments.find(x=>x.id===id);if(!p)return;if(!confirm("Delete this payment?"))return;
+  await deleteStoreItem(PAYMENTS_STORE,id);const c=campaigns.find(x=>x.id===p.campaign_id);if(c){c.amount_received=Math.max(0,Number(c.amount_received||0)-Number(p.amount||0));await putStore(CAMPAIGNS_STORE,c)}
+  await loadBusinessData();showMessage("Payment deleted.");
+}
+function renderPayments(){
+  const tb=document.getElementById("paymentTable");
+  if(!payments.length){tb.innerHTML='<tr><td colspan="8" class="empty">No payments yet.</td></tr>';return}
+  const data=[...payments].sort((a,b)=>String(b.date).localeCompare(String(a.date)));
+  tb.innerHTML=data.map(p=>{const c=campaigns.find(x=>x.id===p.campaign_id);return `<tr><td>${esc(p.date||"-")}</td><td>${esc(c?.name||"Deleted Campaign")}</td><td>${esc(c?.client||"-")}</td><td><b>${money(p.amount)}</b></td><td>${esc(p.mode||"-")}</td><td>${esc(p.reference||"-")}</td><td>${esc(p.note||"-")}</td><td><button class="btn-red" onclick="deletePayment('${attr(p.id)}')">Delete</button></td></tr>`}).join("");
+}
+function closeModal(id){document.getElementById(id).classList.remove("show")}
 
+/* =========================================================
+   REMINDERS / DASHBOARD / REPORTS
+   ========================================================= */
+function getReminderType(c){
+  if(!c.end_date)return {days:999,label:"No date",cls:"badge-gray"};
+  const d=daysBetween(isoToday(),c.end_date);
+  if(d<0)return {days:d,label:"Expired",cls:"badge-red"};
+  if(d===0)return {days:d,label:"Ends Today",cls:"badge-red"};
+  if(d===1)return {days:d,label:"Tomorrow",cls:"badge-orange"};
+  if(d<=7)return {days:d,label:d+" days left",cls:"badge-blue"};
+  return {days:d,label:d+" days left",cls:"badge-green"};
+}
+function renderReminders(){
+  const active=campaigns.filter(c=>c.status!=="Completed"&&c.status!=="Cancelled");
+  const today=active.filter(c=>getReminderType(c).days===0),tom=active.filter(c=>getReminderType(c).days===1),week=active.filter(c=>getReminderType(c).days>=0&&getReminderType(c).days<=7),expired=active.filter(c=>getReminderType(c).days<0);
+  document.getElementById("rToday").innerText=today.length;document.getElementById("rTomorrow").innerText=tom.length;document.getElementById("rWeek").innerText=week.length;document.getElementById("rExpired").innerText=expired.length;
+  const list=[...active].sort((a,b)=>getReminderType(a).days-getReminderType(b).days);const box=document.getElementById("reminderList");
+  if(!list.length){box.innerHTML='<div class="empty">No campaign reminders.</div>';return}
+  box.innerHTML=list.map(c=>{const r=getReminderType(c);return `<div class="reminder ${r.days===0?"today":r.days===1?"tomorrow":""}"><b>${r.days===0?"🔴":r.days===1?"🟠":"🔔"} ${esc(c.name)}</b> — ${esc(c.client||"-")}<br><span class="badge ${r.cls}">${r.label}</span> <span class="sub">End date: ${esc(c.end_date)}</span><div class="actions" style="margin-top:7px"><button class="btn-blue" onclick="openCampaignModal('${attr(c.id)}')">View / Edit</button></div></div>`}).join("");
+}
+function renderDashboard(){
+  const active=campaigns.filter(c=>c.status==="Running"),ending=campaigns.filter(c=>{const d=getReminderType(c).days;return d>=0&&d<=7&&c.status!=="Completed"&&c.status!=="Cancelled"});
+  const sales=campaigns.reduce((a,c)=>a+Number(c.total_value||0),0),received=campaigns.reduce((a,c)=>a+Number(c.amount_received||0),0);
+  document.getElementById("dashSites").innerText=sites.length;document.getElementById("dashActive").innerText=active.length;document.getElementById("dashEnding").innerText=ending.length;document.getElementById("dashSales").innerText=money(sales);
+  document.getElementById("dashReceived").innerText=money(received);document.getElementById("dashPending").innerText=money(Math.max(0,sales-received));document.getElementById("dashClients").innerText=clients.length;document.getElementById("dashAvailable").innerText=sites.filter(s=>s.status==="Available").length;
+  const rr=ending.slice(0,6);document.getElementById("dashReminders").innerHTML=rr.length?rr.map(c=>{const r=getReminderType(c);return `<div class="reminder ${r.days===0?"today":""}"><b>${esc(c.name)}</b><br>${esc(c.client||"-")} · <span class="badge ${r.cls}">${r.label}</span></div>`}).join(""):'<div class="empty">No urgent campaigns.</div>';
+  const pp=[...payments].sort((a,b)=>String(b.date).localeCompare(String(a.date))).slice(0,6);document.getElementById("dashPayments").innerHTML=pp.length?pp.map(p=>{const c=campaigns.find(x=>x.id===p.campaign_id);return `<div class="reminder"><b>${money(p.amount)}</b> · ${esc(c?.name||"-")}<br><span class="sub">${esc(p.date||"")} · ${esc(p.mode||"")}</span></div>`}).join(""):'<div class="empty">No payments.</div>';
+}
+function renderReports(){
+  const area=sites.reduce((a,s)=>a+Number(s.total_area||0),0),value=campaigns.reduce((a,c)=>a+Number(c.total_value||0),0),received=campaigns.reduce((a,c)=>a+Number(c.amount_received||0),0);
+  document.getElementById("reportArea").innerText=area.toLocaleString("en-IN");document.getElementById("reportValue").innerText=money(value);document.getElementById("reportReceived").innerText=money(received);document.getElementById("reportPending").innerText=money(Math.max(0,value-received));
+  const counts={};sites.forEach(s=>counts[s.status||"Unknown"]=(counts[s.status||"Unknown"]||0)+1);
+  document.getElementById("inventoryReport").innerHTML=Object.entries(counts).map(([k,v])=>`<span class="badge badge-blue" style="margin:4px">${esc(k)}: ${v}</span>`).join("")||'<div class="empty">No sites.</div>';
+}
+function renderAllBusiness(){renderCampaigns();renderClients();renderPayments();renderReminders();renderDashboard();renderReports();refreshDashboard()}
+function refreshDashboard(){if(document.getElementById("dashSites")){document.getElementById("dashSites").innerText=sites.length;document.getElementById("totalSites").innerText=sites.length;document.getElementById("selectedSites").innerText=selectedSites.size}}
+
+/* =========================================================
+   EXCEL EXPORT — EXISTING FORMAT
+   ========================================================= */
 function exportExcel(){
-
-  if(typeof XLSX === "undefined"){
-
-    showMessage(
-      "Excel library not loaded. Please refresh."
-    );
-
-    return;
-
-  }
-
-  const data =
-    sites.filter(
-      site =>
-        selectedSites.size === 0 ||
-        selectedSites.has(site.id)
-    );
-
-  if(!data.length){
-
-    showMessage("No sites to export.");
-    return;
-
-  }
-
+  if(typeof XLSX==="undefined"){showMessage("Excel library not loaded. Please refresh.");return}
+  const data=sites.filter(s=>selectedSites.size===0||selectedSites.has(s.id));if(!data.length){showMessage("No sites to export.");return}
   try{
-
-    const rows = [];
-
-    rows.push([
-      "Sr.",
-      "State",
-      "City",
-      "Location",
-      "Media",
-      "Type",
-      "Size (W/H)",
-      "",
-      "Traffic",
-      "Units",
-      "Total area of display (sq.ft)",
-      "Display Charges PM",
-      "Duration of Campaign (days)",
-      "Display Charges as per duration",
-      "P&M Charges",
-      "Total Cost",
-      "Remark"
-    ]);
-
-    rows.push([
-      "",
-      "",
-      "",
-      "",
-      "",
-      "",
-      "W",
-      "H",
-      "",
-      "",
-      "",
-      "",
-      "",
-      "",
-      "",
-      "",
-      ""
-    ]);
-
-    data.forEach(function(site,index){
-
-      const width = Number(site.width || 0);
-      const height = Number(site.height || 0);
-      const units = Number(site.units || 1);
-
-      const area =
-        Number(
-          site.total_area ||
-          (width * height * units)
-        );
-
-      const monthlyRate =
-        Number(site.monthly_rate || 0);
-
-      const duration =
-        Number(site.duration || 30);
-
-      const displayCharges =
-        Number(
-          site.display_charges ||
-          (monthlyRate * duration / 30)
-        );
-
-      const pmCharges =
-        Number(site.pm_charges || 0);
-
-      const totalCost =
-        Number(
-          site.total_cost ||
-          (displayCharges + pmCharges)
-        );
-
-      rows.push([
-        index + 1,
-        site.state || "",
-        site.city || "",
-        site.location || "",
-        site.media_type || "",
-        site.illumination || "",
-        width,
-        height,
-        site.traffic || "",
-        units,
-        area,
-        monthlyRate,
-        duration,
-        displayCharges,
-        pmCharges,
-        totalCost,
-        site.remarks || ""
-      ]);
-
-    });
-
-    const worksheet =
-      XLSX.utils.aoa_to_sheet(rows);
-
-    worksheet["!merges"] = [
-      {
-        s:{r:0,c:6},
-        e:{r:0,c:7}
-      }
-    ];
-
-    worksheet["!cols"] = [
-      {wch:7},
-      {wch:16},
-      {wch:16},
-      {wch:35},
-      {wch:18},
-      {wch:14},
-      {wch:10},
-      {wch:10},
-      {wch:14},
-      {wch:10},
-      {wch:25},
-      {wch:20},
-      {wch:25},
-      {wch:30},
-      {wch:18},
-      {wch:18},
-      {wch:40}
-    ];
-
-    worksheet["!rows"] = [
-      {hpt:30},
-      {hpt:22}
-    ];
-
-    const headerCells = [
-      "A1","B1","C1","D1","E1","F1",
-      "G1","H1","I1","J1","K1","L1",
-      "M1","N1","O1","P1","Q1"
-    ];
-
-    headerCells.forEach(function(address){
-
-      if(worksheet[address]){
-
-        worksheet[address].s = {
-
-          font:{
-            bold:true,
-            color:{rgb:"FFFFFF"}
-          },
-
-          fill:{
-            fgColor:{rgb:"101827"}
-          },
-
-          alignment:{
-            horizontal:"center",
-            vertical:"center",
-            wrapText:true
-          },
-
-          border:{
-            top:{
-              style:"thin",
-              color:{rgb:"FFFFFF"}
-            },
-            bottom:{
-              style:"thin",
-              color:{rgb:"FFFFFF"}
-            },
-            left:{
-              style:"thin",
-              color:{rgb:"FFFFFF"}
-            },
-            right:{
-              style:"thin",
-              color:{rgb:"FFFFFF"}
-            }
-          }
-
-        };
-
-      }
-
-    });
-
-    ["G2","H2"].forEach(function(address){
-
-      if(worksheet[address]){
-
-        worksheet[address].s = {
-
-          font:{
-            bold:true,
-            color:{rgb:"FFFFFF"}
-          },
-
-          fill:{
-            fgColor:{rgb:"0787C8"}
-          },
-
-          alignment:{
-            horizontal:"center",
-            vertical:"center"
-          }
-
-        };
-
-      }
-
-    });
-
-    const workbook =
-      XLSX.utils.book_new();
-
-    XLSX.utils.book_append_sheet(
-      workbook,
-      worksheet,
-      "OOH Sites"
-    );
-
-    const totalArea =
-      data.reduce(
-        (sum,site) =>
-          sum + Number(site.total_area || 0),
-        0
-      );
-
-    const totalDisplay =
-      data.reduce(
-        (sum,site) =>
-          sum + Number(site.display_charges || 0),
-        0
-      );
-
-    const totalPM =
-      data.reduce(
-        (sum,site) =>
-          sum + Number(site.pm_charges || 0),
-        0
-      );
-
-    const grandTotal =
-      data.reduce(
-        (sum,site) =>
-          sum + Number(site.total_cost || 0),
-        0
-      );
-
-    const summaryRows = [
-      ["Particulars","Value"],
-      [
-        "Campaign",
-        document.getElementById("campaign").value.trim()
-      ],
-      ["Total Sites",data.length],
-      ["Total Display Area (sq.ft)",totalArea],
-      ["Total Display Charges",totalDisplay],
-      ["Total P&M Charges",totalPM],
-      ["Grand Total",grandTotal]
-    ];
-
-    const summarySheet =
-      XLSX.utils.aoa_to_sheet(summaryRows);
-
-    summarySheet["!cols"] = [
-      {wch:35},
-      {wch:25}
-    ];
-
-    if(summarySheet["A1"]){
-
-      summarySheet["A1"].s = {
-        font:{
-          bold:true,
-          color:{rgb:"FFFFFF"}
-        },
-        fill:{
-          fgColor:{rgb:"101827"}
-        }
-      };
-
-    }
-
-    if(summarySheet["B1"]){
-
-      summarySheet["B1"].s = {
-        font:{
-          bold:true,
-          color:{rgb:"FFFFFF"}
-        },
-        fill:{
-          fgColor:{rgb:"101827"}
-        }
-      };
-
-    }
-
-    XLSX.utils.book_append_sheet(
-      workbook,
-      summarySheet,
-      "Summary"
-    );
-
-    const campaign =
-      document.getElementById("campaign").value.trim();
-
-    const safeName =
-      (
-        campaign ||
-        "My_Vision_OOH_Sites"
-      )
-      .replace(/[^a-z0-9_\- ]/gi,"")
-      .trim()
-      .replace(/\s+/g,"_");
-
-    XLSX.writeFile(
-      workbook,
-      safeName + ".xlsx"
-    );
-
-    showMessage(
-      "Excel downloaded successfully."
-    );
-
-  }
-  catch(error){
-
-    console.error(
-      "EXCEL EXPORT ERROR:",
-      error
-    );
-
-    alert(
-      "Excel export failed.\n\n" +
-      error.message
-    );
-
-  }
-
+    const rows=[["Sr.","State","City","Location","Media","Type","Size (W/H)","","Traffic","Units","Total area of display (sq.ft)","Display Charges PM","Duration of Campaign (days)","Display Charges as per duration","P&M Charges","Total Cost","Remark"],
+    ["","","","","","","W","H","","","","","","","","",""]];
+    data.forEach((s,i)=>rows.push([i+1,s.state||"",s.city||"",s.location||"",s.media_type||"",s.illumination||"",Number(s.width||0),Number(s.height||0),s.traffic||"",Number(s.units||1),Number(s.total_area||0),Number(s.monthly_rate||0),Number(s.duration||30),Number(s.display_charges||0),Number(s.pm_charges||0),Number(s.total_cost||0),s.remarks||""]));
+    const ws=XLSX.utils.aoa_to_sheet(rows);ws["!merges"]=[{s:{r:0,c:6},e:{r:0,c:7}}];ws["!cols"]=[{wch:7},{wch:16},{wch:16},{wch:35},{wch:18},{wch:14},{wch:10},{wch:10},{wch:14},{wch:10},{wch:25},{wch:20},{wch:25},{wch:30},{wch:18},{wch:18},{wch:40}];
+    const wb=XLSX.utils.book_new();XLSX.utils.book_append_sheet(wb,ws,"OOH Sites");
+    const totalArea=data.reduce((a,s)=>a+Number(s.total_area||0),0),totalDisplay=data.reduce((a,s)=>a+Number(s.display_charges||0),0),totalPM=data.reduce((a,s)=>a+Number(s.pm_charges||0),0),grand=data.reduce((a,s)=>a+Number(s.total_cost||0),0);
+    XLSX.utils.book_append_sheet(wb,XLSX.utils.aoa_to_sheet([["Particulars","Value"],["Campaign",document.getElementById("campaign").value.trim()],["Total Sites",data.length],["Total Display Area (sq.ft)",totalArea],["Total Display Charges",totalDisplay],["Total P&M Charges",totalPM],["Grand Total",grand]]),"Summary");
+    const safe=(document.getElementById("campaign").value.trim()||"My_Vision_OOH_Sites").replace(/[^a-z0-9_\- ]/gi,"").trim().replace(/\s+/g,"_");
+    XLSX.writeFile(wb,safe+".xlsx");showMessage("Excel downloaded successfully.");
+  }catch(e){console.error(e);alert("Excel export failed.\n\n"+e.message)}
 }
 
 /* =========================================================
-   IMAGE TO DATA URL
+   PPT EXPORT — PREMIUM PROPOSAL STYLE
    ========================================================= */
-
 async function imageUrlToDataUrl(url){
-
-  if(!url){
-    return null;
-  }
-
-  if(
-    String(url).startsWith("data:image/")
-  ){
-    return url;
-  }
-
-  try{
-
-    const response =
-      await fetch(
-        url,
-        {
-          mode:"cors",
-          cache:"no-cache"
-        }
-      );
-
-    if(!response.ok){
-      throw new Error(
-        "Image HTTP " +
-        response.status
-      );
-    }
-
-    const blob =
-      await response.blob();
-
-    return await new Promise(
-      function(resolve,reject){
-
-        const reader =
-          new FileReader();
-
-        reader.onloadend =
-          function(){
-            resolve(reader.result);
-          };
-
-        reader.onerror =
-          function(){
-            reject(
-              new Error(
-                "Could not read image."
-              )
-            );
-          };
-
-        reader.readAsDataURL(blob);
-
-      }
-    );
-
-  }
-  catch(error){
-
-    console.error(
-      "Could not convert image:",
-      error
-    );
-
-    return null;
-
-  }
-
+  if(!url)return null;if(String(url).startsWith("data:image/"))return url;
+  try{const r=await fetch(url,{mode:"cors",cache:"no-cache"});if(!r.ok)throw Error("Image HTTP "+r.status);const b=await r.blob();return await new Promise((res,rej)=>{const rd=new FileReader();rd.onloadend=()=>res(rd.result);rd.onerror=()=>rej(Error("Could not read image"));rd.readAsDataURL(b)})}catch(e){console.warn(e);return null}
 }
-
-/* =========================================================
-   PPT EXPORT
-   REFERENCE-BASED PREMIUM PROPOSAL DESIGN
-   ========================================================= */
-
-/* =========================================================
-   LOCATION MAP IMAGE FOR PPT
-   ========================================================= */
-
-async function createLocationMapDataUrl(lat, lng, width, height){
-
-  const canvas =
-    document.createElement("canvas");
-
-  const mapWidth =
-    Math.max(600, Math.round(width || 900));
-
-  const mapHeight =
-    Math.max(350, Math.round(height || 520));
-
-  canvas.width = mapWidth;
-  canvas.height = mapHeight;
-
-  const ctx =
-    canvas.getContext("2d");
-
-  /* ---------------------------------------------------------
-     FALLBACK MAP
-     --------------------------------------------------------- */
-
-  function drawFallbackMap(){
-
-    ctx.fillStyle = "#eef2f6";
-    ctx.fillRect(0, 0, mapWidth, mapHeight);
-
-    ctx.strokeStyle = "#d2d8df";
-    ctx.lineWidth = 18;
-
-    const roads = [
-      [0, mapHeight * .25, mapWidth, mapHeight * .68],
-      [mapWidth * .15, mapHeight, mapWidth * .82, 0],
-      [0, mapHeight * .72, mapWidth, mapHeight * .42],
-      [mapWidth * .62, mapHeight, mapWidth * .35, 0]
-    ];
-
-    roads.forEach(function(r){
-
-      ctx.beginPath();
-      ctx.moveTo(r[0], r[1]);
-      ctx.lineTo(r[2], r[3]);
-      ctx.stroke();
-
-    });
-
-    ctx.strokeStyle = "#ffffff";
-    ctx.lineWidth = 11;
-
-    roads.forEach(function(r){
-
-      ctx.beginPath();
-      ctx.moveTo(r[0], r[1]);
-      ctx.lineTo(r[2], r[3]);
-      ctx.stroke();
-
-    });
-
-    ctx.strokeStyle = "#e0a94b";
-    ctx.lineWidth = 9;
-
-    ctx.beginPath();
-    ctx.moveTo(0, mapHeight * .47);
-    ctx.lineTo(mapWidth, mapHeight * .58);
-    ctx.stroke();
-
-    ctx.strokeStyle = "#ffffff";
-    ctx.lineWidth = 5;
-
-    ctx.beginPath();
-    ctx.moveTo(0, mapHeight * .47);
-    ctx.lineTo(mapWidth, mapHeight * .58);
-    ctx.stroke();
-
-    ctx.fillStyle = "#dfe8d7";
-
-    [
-      [.08,.08,.24,.18],
-      [.68,.10,.25,.18],
-      [.10,.73,.20,.18],
-      [.70,.70,.22,.18]
-    ].forEach(function(a){
-
-      ctx.fillRect(
-        mapWidth * a[0],
-        mapHeight * a[1],
-        mapWidth * a[2],
-        mapHeight * a[3]
-      );
-
-    });
-
-    /* Pin */
-
-    const px = mapWidth / 2;
-    const py = mapHeight / 2;
-
-    ctx.beginPath();
-    ctx.fillStyle = "#0b78c9";
-    ctx.arc(px, py - 18, 24, 0, Math.PI * 2);
-    ctx.fill();
-
-    ctx.beginPath();
-    ctx.moveTo(px - 18, py - 2);
-    ctx.lineTo(px, py + 34);
-    ctx.lineTo(px + 18, py - 2);
-    ctx.closePath();
-    ctx.fill();
-
-    ctx.beginPath();
-    ctx.fillStyle = "#ffffff";
-    ctx.arc(px, py - 18, 9, 0, Math.PI * 2);
-    ctx.fill();
-
-    ctx.fillStyle = "#64748b";
-    ctx.font = "bold 22px Arial";
-    ctx.fillText(
-      Number(lat).toFixed(5) + ", " + Number(lng).toFixed(5),
-      18,
-      mapHeight - 20
-    );
-
-  }
-
-  if(
-    Number.isNaN(Number(lat)) ||
-    Number.isNaN(Number(lng))
-  ){
-
-    drawFallbackMap();
-
-    return canvas.toDataURL("image/png");
-
-  }
-
-  try{
-
-    const zoom = 15;
-    const tileSize = 256;
-
-    const latRad =
-      Number(lat) * Math.PI / 180;
-
-    const n =
-      Math.pow(2, zoom);
-
-    const centerX =
-      (Number(lng) + 180) / 360 * n;
-
-    const centerY =
-      (
-        1 -
-        Math.asinh(Math.tan(latRad)) / Math.PI
-      ) / 2 * n;
-
-    const tilesAcross = 3;
-    const tilesDown = 3;
-
-    const startX =
-      Math.floor(centerX) - 1;
-
-    const startY =
-      Math.floor(centerY) - 1;
-
-    const canvasMap =
-      document.createElement("canvas");
-
-    canvasMap.width =
-      tileSize * tilesAcross;
-
-    canvasMap.height =
-      tileSize * tilesDown;
-
-    const mapCtx =
-      canvasMap.getContext("2d");
-
-    mapCtx.fillStyle = "#eef2f6";
-    mapCtx.fillRect(
-      0,
-      0,
-      canvasMap.width,
-      canvasMap.height
-    );
-
-    async function loadTile(x, y){
-
-      const wrappedX =
-        ((x % n) + n) % n;
-
-      if(
-        y < 0 ||
-        y >= n
-      ){
-
-        return;
-
-      }
-
-      const tileUrl =
-        "https://tile.openstreetmap.org/" +
-        zoom + "/" +
-        wrappedX + "/" +
-        y + ".png";
-
-      const response =
-        await fetch(
-          tileUrl,
-          {
-            mode:"cors",
-            cache:"force-cache"
-          }
-        );
-
-      if(!response.ok){
-
-        throw new Error(
-          "Map tile HTTP " + response.status
-        );
-
-      }
-
-      const blob =
-        await response.blob();
-
-      const bitmap =
-        await createImageBitmap(blob);
-
-      mapCtx.drawImage(
-        bitmap,
-        (x - startX) * tileSize,
-        (y - startY) * tileSize,
-        tileSize,
-        tileSize
-      );
-
-      if(bitmap.close){
-
-        bitmap.close();
-
-      }
-
-    }
-
-    const tilePromises = [];
-
-    for(
-      let ty = startY;
-      ty < startY + tilesDown;
-      ty++
-    ){
-
-      for(
-        let tx = startX;
-        tx < startX + tilesAcross;
-        tx++
-      ){
-
-        tilePromises.push(
-          loadTile(tx, ty)
-        );
-
-      }
-
-    }
-
-    await Promise.all(tilePromises);
-
-    const localPixelX =
-      (centerX - startX) * tileSize;
-
-    const localPixelY =
-      (centerY - startY) * tileSize;
-
-    /* Crop around the exact center */
-
-    const cropW = mapWidth;
-    const cropH = mapHeight;
-
-    canvas.width = cropW;
-    canvas.height = cropH;
-
-    const sourceX =
-      Math.max(
-        0,
-        Math.min(
-          canvasMap.width - cropW,
-          localPixelX - cropW / 2
-        )
-      );
-
-    const sourceY =
-      Math.max(
-        0,
-        Math.min(
-          canvasMap.height - cropH,
-          localPixelY - cropH / 2
-        )
-      );
-
-    ctx.drawImage(
-      canvasMap,
-      sourceX,
-      sourceY,
-      Math.min(cropW, canvasMap.width),
-      Math.min(cropH, canvasMap.height),
-      0,
-      0,
-      cropW,
-      cropH
-    );
-
-    /* Blue location pin */
-
-    const px = cropW / 2;
-    const py = cropH / 2;
-
-    ctx.beginPath();
-    ctx.fillStyle = "#0b78c9";
-    ctx.arc(px, py - 18, 23, 0, Math.PI * 2);
-    ctx.fill();
-
-    ctx.beginPath();
-    ctx.moveTo(px - 17, py - 2);
-    ctx.lineTo(px, py + 31);
-    ctx.lineTo(px + 17, py - 2);
-    ctx.closePath();
-    ctx.fill();
-
-    ctx.beginPath();
-    ctx.fillStyle = "#ffffff";
-    ctx.arc(px, py - 18, 8, 0, Math.PI * 2);
-    ctx.fill();
-
-    return canvas.toDataURL("image/png");
-
-  }
-  catch(error){
-
-    console.warn(
-      "Static map generation failed. Using fallback map.",
-      error
-    );
-
-    drawFallbackMap();
-
-    return canvas.toDataURL("image/png");
-
-  }
-
+async function createLocationMapDataUrl(lat,lng,width,height){
+  const canvas=document.createElement("canvas"),mw=Math.max(600,Math.round(width||900)),mh=Math.max(350,Math.round(height||520));canvas.width=mw;canvas.height=mh;const ctx=canvas.getContext("2d");
+  ctx.fillStyle="#eef2f6";ctx.fillRect(0,0,mw,mh);ctx.strokeStyle="#d2d8df";ctx.lineWidth=18;
+  [[0,mh*.25,mw,mh*.68],[mw*.15,mh,mw*.82,0],[0,mh*.72,mw,mh*.42],[mw*.62,mh,mw*.35,0]].forEach(r=>{ctx.beginPath();ctx.moveTo(r[0],r[1]);ctx.lineTo(r[2],r[3]);ctx.stroke()});
+  ctx.strokeStyle="#fff";ctx.lineWidth=11;[[0,mh*.25,mw,mh*.68],[mw*.15,mh,mw*.82,0],[0,mh*.72,mw,mh*.42],[mw*.62,mh,mw*.35,0]].forEach(r=>{ctx.beginPath();ctx.moveTo(r[0],r[1]);ctx.lineTo(r[2],r[3]);ctx.stroke()});
+  const px=mw/2,py=mh/2;ctx.beginPath();ctx.fillStyle="#0b78c9";ctx.arc(px,py-18,24,0,Math.PI*2);ctx.fill();ctx.beginPath();ctx.moveTo(px-18,py-2);ctx.lineTo(px,py+34);ctx.lineTo(px+18,py-2);ctx.closePath();ctx.fill();ctx.beginPath();ctx.fillStyle="#fff";ctx.arc(px,py-18,9,0,Math.PI*2);ctx.fill();
+  ctx.fillStyle="#64748b";ctx.font="bold 22px Arial";ctx.fillText(Number(lat).toFixed(5)+", "+Number(lng).toFixed(5),18,mh-20);return canvas.toDataURL("image/png");
 }
-
-
-/* =========================================================
-   PPT EXPORT
-   PREMIUM PROPOSAL STYLE — REFERENCE IMAGE FORMAT
-   ========================================================= */
-
 async function exportPPT(){
-
-  const PptxConstructor =
-    window.pptxgen ||
-    window.PptxGenJS;
-
-  if(!PptxConstructor){
-
-    showMessage(
-      "PPT library not loaded. Please refresh."
-    );
-
-    return;
-
-  }
-
-  /*
-    IMPORTANT:
-    This uses the existing `sites` array and `selectedSites`
-    exactly as the website already does. Nothing is deleted
-    from IndexedDB/local storage by PPT export.
-  */
-
-  const data =
-    sites.filter(
-      site =>
-        selectedSites.size === 0 ||
-        selectedSites.has(site.id)
-    );
-
-  if(!data.length){
-
-    showMessage(
-      "No sites to export."
-    );
-
-    return;
-
-  }
-
-  const button =
-    document.getElementById("pptButton");
-
-  button.disabled = true;
-  button.innerText = "⏳ Creating PPT...";
-
+  const C=window.pptxgen||window.PptxGenJS;if(!C){showMessage("PPT library not loaded. Please refresh.");return}
+  const data=sites.filter(s=>selectedSites.size===0||selectedSites.has(s.id));if(!data.length){showMessage("No sites to export.");return}
+  const btn=document.getElementById("pptButton");btn.disabled=true;btn.innerText="⏳ Creating PPT...";
   try{
-
-    const ppt =
-      new PptxConstructor();
-
-    ppt.layout = "LAYOUT_WIDE";
-
-    ppt.author = "MY VISION OOH";
-    ppt.company = "MY VISION OOH";
-    ppt.subject = "OOH Site Proposal";
-    ppt.title =
-      document.getElementById("campaign").value.trim() ||
-      "OOH Site Proposal";
-    ppt.lang = "en-US";
-
-    const W = 13.333;
-    const H = 7.5;
-
-    const NAVY = "061A3A";
-    const NAVY2 = "0B2D5C";
-    const BLUE = "0B78C9";
-    const BLUE2 = "0E5FAE";
-    const LIGHTBLUE = "EAF3FB";
-    const TEXT = "10203A";
-    const MUTED = "5F6F84";
-    const BORDER = "CBD7E5";
-    const LIGHT = "F5F8FC";
-    const WHITE = "FFFFFF";
-    const GREEN = "35A853";
-
-    function addLabelValue(
-      slide,
-      label,
-      value,
-      x,
-      y,
-      labelW,
-      valueW,
-      options
-    ){
-
-      options = options || {};
-
-      slide.addText(
-        String(label || "").toUpperCase(),
-        {
-          x:x,
-          y:y,
-          w:labelW,
-          h:.19,
-          fontFace:"Arial",
-          fontSize:options.labelSize || 7.1,
-          bold:true,
-          color:options.labelColor || TEXT,
-          margin:0,
-          fit:"shrink"
-        }
-      );
-
-      slide.addText(
-        String(
-          value === undefined ||
-          value === null ||
-          value === ""
-            ? "-"
-            : value
-        ),
-        {
-          x:x + labelW,
-          y:y - .01,
-          w:valueW,
-          h:.23,
-          fontFace:"Arial",
-          fontSize:options.valueSize || 8.8,
-          bold:options.valueBold !== false,
-          color:options.valueColor || TEXT,
-          margin:0,
-          fit:"shrink"
-        }
-      );
-
+    const ppt=new C();ppt.layout="LAYOUT_WIDE";ppt.author="MY VISION OOH";ppt.company="MY VISION OOH";ppt.subject="OOH Site Proposal";ppt.title=document.getElementById("campaign").value.trim()||"OOH Site Proposal";ppt.lang="en-US";
+    const W=13.333,H=7.5,NAVY="061A3A",NAVY2="0B2D5C",BLUE="0B78C9",BLUE2="0E5FAE",LIGHT="F5F8FC",BORDER="CBD7E5",WHITE="FFFFFF",TEXT="10203A",MUTED="5F6F84";
+    const moneyP=v=>"₹"+Number(v||0).toLocaleString("en-IN");
+    const addLV=(sl,l,v,x,y,lw,vw,opts={})=>{sl.addText(String(l).toUpperCase(),{x,y,w:lw,h:.19,fontFace:"Arial",fontSize:opts.ls||7.1,bold:true,color:TEXT,margin:0,fit:"shrink"});sl.addText(String(v==null||v===""?"-":v),{x:x+lw,y:y-.01,w:vw,h:.23,fontFace:"Arial",fontSize:opts.vs||8.8,bold:true,color:opts.vc||TEXT,margin:0,fit:"shrink"})};
+    const addSH=(sl,icon,title,x,y,w)=>{sl.addShape(ppt.ShapeType.ellipse,{x,y,w:.31,h:.31,fill:{color:BLUE},line:{color:BLUE}});sl.addText(icon,{x,y:y+.045,w:.31,h:.16,fontFace:"Arial",fontSize:9,bold:true,color:WHITE,align:"center",margin:0});sl.addText(title.toUpperCase(),{x:x+.42,y:y+.045,w:w-.42,h:.2,fontFace:"Arial",fontSize:9.2,bold:true,color:BLUE2,margin:0,fit:"shrink"})};
+    const totalArea=data.reduce((a,s)=>a+Number(s.total_area||0),0),totalCost=data.reduce((a,s)=>a+Number(s.total_cost||0),0);
+    const cover=ppt.addSlide();cover.background={color:NAVY};cover.addShape(ppt.ShapeType.rect,{x:0,y:0,w:W,h:.09,fill:{color:BLUE},line:{color:BLUE}});
+    cover.addText("MY VISION",{x:.72,y:.72,w:2.65,h:.43,fontFace:"Arial",fontSize:25,bold:true,color:WHITE,margin:0});cover.addText("OOH",{x:3.35,y:.72,w:1.05,h:.43,fontFace:"Arial",fontSize:25,bold:true,color:BLUE,margin:0});
+    cover.addText("PREMIUM OUTDOOR ADVERTISING SOLUTIONS",{x:.75,y:1.33,w:5.6,h:.25,fontFace:"Arial",fontSize:9.5,bold:true,color:"B9C8DB",charSpacing:1.1,margin:0});
+    cover.addShape(ppt.ShapeType.line,{x:.76,y:1.78,w:2.5,h:0,line:{color:BLUE,width:2}});
+    cover.addText("OOH MEDIA SITE PROPOSAL",{x:.76,y:2.22,w:5.2,h:.25,fontFace:"Arial",fontSize:11,bold:true,color:BLUE,charSpacing:2,margin:0});
+    cover.addText(document.getElementById("campaign").value.trim()||"OOH Site Proposal",{x:.76,y:2.66,w:9.9,h:.9,fontFace:"Arial",fontSize:32,bold:true,color:WHITE,margin:0,fit:"shrink"});
+    [[.76,4.55,2.55,String(data.length),"SELECTED SITES"],[3.57,4.55,2.85,totalArea.toLocaleString("en-IN"),"TOTAL DISPLAY AREA SQ.FT"]].forEach(a=>{cover.addShape(ppt.ShapeType.roundRect,{x:a[0],y:a[1],w:a[2],h:1.18,rectRadius:.04,fill:{color:NAVY2},line:{color:"27446C",width:1}});cover.addText(String(a[3]),{x:a[0]+.22,y:4.76,w:a[2]-.44,h:.37,fontFace:"Arial",fontSize:22,bold:true,color:a[3]===String(data.length)?BLUE:WHITE,align:"center",margin:0,fit:"shrink"});cover.addText(a[4],{x:a[0]+.22,y:5.26,w:a[2]-.44,h:.18,fontFace:"Arial",fontSize:7.5,bold:true,color:"C8D4E3",align:"center",charSpacing:.8,margin:0})});
+    cover.addText(moneyP(totalCost),{x:8.7,y:4.55,w:3.75,h:.55,fontFace:"Arial",fontSize:28,bold:true,color:WHITE,align:"right",margin:0,fit:"shrink"});cover.addText("TOTAL CAMPAIGN VALUE",{x:9.35,y:5.18,w:3.1,h:.2,fontFace:"Arial",fontSize:8,bold:true,color:BLUE,align:"right",charSpacing:1,margin:0});
+    cover.addText(new Date().toLocaleDateString("en-IN"),{x:.77,y:6.78,w:2.5,h:.2,fontFace:"Arial",fontSize:8.5,color:"8FA5C0",margin:0});cover.addText("CONFIDENTIAL PROPOSAL",{x:9,y:6.78,w:3.55,h:.2,fontFace:"Arial",fontSize:8,bold:true,color:"8FA5C0",align:"right",charSpacing:1,margin:0});
+    for(let i=0;i<data.length;i++){
+      const s=data[i],sl=ppt.addSlide();sl.background={color:WHITE};
+      sl.addShape(ppt.ShapeType.rect,{x:0,y:0,w:W,h:.95,fill:{color:NAVY},line:{color:NAVY}});sl.addShape(ppt.ShapeType.rect,{x:0,y:0,w:1.28,h:.95,fill:{color:NAVY2},line:{color:NAVY2}});
+      sl.addText((i+1)+".",{x:.28,y:.17,w:.72,h:.54,fontFace:"Arial",fontSize:31,bold:true,color:WHITE,margin:0,align:"center"});
+      sl.addShape(ppt.ShapeType.roundRect,{x:1.18,y:.03,w:8.35,h:.86,rectRadius:.04,fill:{color:WHITE},line:{color:WHITE}});
+      sl.addText(s.site_name||"OOH SITE",{x:1.78,y:.17,w:4.2,h:.3,fontFace:"Arial",fontSize:21,bold:true,color:NAVY,margin:0,fit:"shrink"});
+      sl.addText("●  "+(s.location||"Location not specified"),{x:1.78,y:.53,w:7.25,h:.21,fontFace:"Arial",fontSize:9.3,bold:true,color:NAVY,margin:0,fit:"shrink"});
+      sl.addText("MY VISION",{x:10.15,y:.19,w:1.75,h:.25,fontFace:"Arial",fontSize:17,bold:true,color:WHITE,margin:0});sl.addText("OOH",{x:11.84,y:.19,w:.75,h:.25,fontFace:"Arial",fontSize:17,bold:true,color:BLUE,margin:0});
+      sl.addShape(ppt.ShapeType.roundRect,{x:.03,y:1.03,w:7.63,h:5.98,rectRadius:.04,fill:{color:"E8EEF5"},line:{color:BORDER,width:1}});
+      const img=await imageUrlToDataUrl(s.photo_url);if(img)sl.addImage({data:img,x:.10,y:1.10,w:7.49,h:5.84});
+      else sl.addText("OOH SITE",{x:2.3,y:3.4,w:3,h:.4,fontFace:"Arial",fontSize:25,bold:true,color:MUTED,align:"center",margin:0});
+      sl.addShape(ppt.ShapeType.roundRect,{x:7.82,y:1.03,w:1.96,h:5.98,rectRadius:.04,fill:{color:LIGHT},line:{color:BORDER,width:1}});
+      addSH(sl,"↔","Size & Units",7.99,1.28,1.55);addLV(sl,"SIZE",Number(s.width||0)+" × "+Number(s.height||0)+" FT",7.99,1.83,.55,1.25);addLV(sl,"UNITS",Number(s.units||1),7.99,2.17,.55,1.25);
+      addSH(sl,"▣","Media Details",7.99,2.72,1.55);addLV(sl,"MEDIA",s.media_type||"-",7.99,3.25,.55,1.25,{vs:7.8});addLV(sl,"TYPE",s.illumination||"-",7.99,3.55,.55,1.25,{vs:7.8});addLV(sl,"TRAFFIC",s.traffic||"-",7.99,3.85,.63,1.17,{vs:7.8});
+      sl.addShape(ppt.ShapeType.roundRect,{x:10.08,y:1.03,w:3.22,h:3.34,rectRadius:.04,fill:{color:WHITE},line:{color:BORDER,width:1}});sl.addShape(ppt.ShapeType.roundRect,{x:10.17,y:1.12,w:3.04,h:.49,rectRadius:.03,fill:{color:NAVY},line:{color:NAVY}});
+      sl.addText("₹",{x:10.28,y:1.235,w:.32,h:.16,fontFace:"Arial",fontSize:11,bold:true,color:WHITE,align:"center",margin:0});sl.addText("PRICING DETAILS",{x:10.70,y:1.27,w:2.1,h:.18,fontFace:"Arial",fontSize:9.4,bold:true,color:WHITE,margin:0});
+      addLV(sl,"MONTHLY RATE",moneyP(s.monthly_rate),10.35,1.91,1.25,1.45,{vs:8.8});addLV(sl,"DURATION",Number(s.duration||30)+" DAYS",10.35,2.27,1.25,1.45,{vs:9.2});addLV(sl,"DISPLAY CHARGES",moneyP(s.display_charges),10.35,2.91,1.45,1.25,{vs:8.8});addLV(sl,"P&M CHARGES",moneyP(s.pm_charges),10.35,3.29,1.45,1.25,{vs:8.8});
+      sl.addShape(ppt.ShapeType.roundRect,{x:10.25,y:3.70,w:2.88,h:.54,rectRadius:.03,fill:{color:NAVY2},line:{color:NAVY2}});sl.addText("TOTAL COST",{x:10.43,y:3.86,w:1.25,h:.17,fontFace:"Arial",fontSize:7.8,bold:true,color:WHITE,margin:0});sl.addText(moneyP(s.total_cost),{x:11.55,y:3.78,w:1.38,h:.25,fontFace:"Arial",fontSize:13.2,bold:true,color:WHITE,align:"right",margin:0,fit:"shrink"});
+      sl.addShape(ppt.ShapeType.roundRect,{x:10.08,y:4.53,w:3.22,h:2.48,rectRadius:.04,fill:{color:WHITE},line:{color:BORDER,width:1}});addSH(sl,"●","Location Map",10.28,4.72,2.65);const mapImg=await createLocationMapDataUrl(s.latitude,s.longitude,760,420);sl.addImage({data:mapImg,x:10.17,y:5.13,w:3.04,h:1.67});
+      sl.addShape(ppt.ShapeType.rect,{x:0,y:7.02,w:W,h:.48,fill:{color:NAVY},line:{color:NAVY}});sl.addText((s.status||"-"),{x:11.58,y:7.15,w:.86,h:.15,fontFace:"Arial",fontSize:7,bold:true,color:s.status==="Available"?"63D17B":WHITE,align:"center",margin:0});sl.addText((i+1)+" / "+data.length,{x:12.52,y:7.15,w:.58,h:.15,fontFace:"Arial",fontSize:7,bold:true,color:WHITE,align:"right",margin:0});
+      if(s.remarks)sl.addText("REMARKS  "+String(s.remarks),{x:1.5,y:7.14,w:8,h:.16,fontFace:"Arial",fontSize:6.5,color:"C8D4E3",margin:0,fit:"shrink"});
     }
-
-    function addSectionHeader(
-      slide,
-      iconText,
-      title,
-      x,
-      y,
-      w
-    ){
-
-      slide.addShape(
-        ppt.ShapeType.ellipse,
-        {
-          x:x,
-          y:y,
-          w:.31,
-          h:.31,
-          fill:{
-            color:BLUE
-          },
-          line:{
-            color:BLUE
-          }
-        }
-      );
-
-      slide.addText(
-        iconText,
-        {
-          x:x,
-          y:y + .045,
-          w:.31,
-          h:.16,
-          fontFace:"Arial",
-          fontSize:9,
-          bold:true,
-          color:WHITE,
-          align:"center",
-          margin:0,
-          fit:"shrink"
-        }
-      );
-
-      slide.addText(
-        title.toUpperCase(),
-        {
-          x:x + .42,
-          y:y + .045,
-          w:w - .42,
-          h:.2,
-          fontFace:"Arial",
-          fontSize:9.2,
-          bold:true,
-          color:BLUE2,
-          margin:0,
-          fit:"shrink"
-        }
-      );
-
-    }
-
-    /* =====================================================
-       COVER SLIDE
-       ===================================================== */
-
-    const cover =
-      ppt.addSlide();
-
-    cover.background = {
-      color:NAVY
-    };
-
-    cover.addShape(
-      ppt.ShapeType.rect,
-      {
-        x:0,
-        y:0,
-        w:W,
-        h:.09,
-        fill:{color:BLUE},
-        line:{color:BLUE}
-      }
-    );
-
-    cover.addText(
-      "MY VISION",
-      {
-        x:.72,
-        y:.72,
-        w:2.65,
-        h:.43,
-        fontFace:"Arial",
-        fontSize:25,
-        bold:true,
-        color:WHITE,
-        margin:0
-      }
-    );
-
-    cover.addText(
-      "OOH",
-      {
-        x:3.35,
-        y:.72,
-        w:1.05,
-        h:.43,
-        fontFace:"Arial",
-        fontSize:25,
-        bold:true,
-        color:BLUE,
-        margin:0
-      }
-    );
-
-    cover.addText(
-      "PREMIUM OUTDOOR ADVERTISING SOLUTIONS",
-      {
-        x:.75,
-        y:1.33,
-        w:5.6,
-        h:.25,
-        fontFace:"Arial",
-        fontSize:9.5,
-        bold:true,
-        color:"B9C8DB",
-        charSpacing:1.1,
-        margin:0
-      }
-    );
-
-    cover.addShape(
-      ppt.ShapeType.line,
-      {
-        x:.76,
-        y:1.78,
-        w:2.5,
-        h:0,
-        line:{
-          color:BLUE,
-          width:2
-        }
-      }
-    );
-
-    cover.addText(
-      "OOH MEDIA SITE PROPOSAL",
-      {
-        x:.76,
-        y:2.22,
-        w:5.2,
-        h:.25,
-        fontFace:"Arial",
-        fontSize:11,
-        bold:true,
-        color:BLUE,
-        charSpacing:2,
-        margin:0
-      }
-    );
-
-    cover.addText(
-      document.getElementById("campaign").value.trim() ||
-      "OOH Site Proposal",
-      {
-        x:.76,
-        y:2.66,
-        w:9.9,
-        h:.9,
-        fontFace:"Arial",
-        fontSize:32,
-        bold:true,
-        color:WHITE,
-        margin:0,
-        fit:"shrink"
-      }
-    );
-
-    const totalArea =
-      data.reduce(
-        function(sum, site){
-
-          return (
-            sum +
-            Number(site.total_area || 0)
-          );
-
-        },
-        0
-      );
-
-    const totalCost =
-      data.reduce(
-        function(sum, site){
-
-          return (
-            sum +
-            Number(site.total_cost || 0)
-          );
-
-        },
-        0
-      );
-
-    cover.addShape(
-      ppt.ShapeType.roundRect,
-      {
-        x:.76,
-        y:4.55,
-        w:2.55,
-        h:1.18,
-        rectRadius:.04,
-        fill:{
-          color:NAVY2
-        },
-        line:{
-          color:"27446C",
-          width:1
-        }
-      }
-    );
-
-    cover.addText(
-      String(data.length),
-      {
-        x:.98,
-        y:4.76,
-        w:2.1,
-        h:.37,
-        fontFace:"Arial",
-        fontSize:25,
-        bold:true,
-        color:BLUE,
-        align:"center",
-        margin:0
-      }
-    );
-
-    cover.addText(
-      "SELECTED SITES",
-      {
-        x:.98,
-        y:5.26,
-        w:2.1,
-        h:.18,
-        fontFace:"Arial",
-        fontSize:7.5,
-        bold:true,
-        color:"C8D4E3",
-        align:"center",
-        charSpacing:1,
-        margin:0
-      }
-    );
-
-    cover.addShape(
-      ppt.ShapeType.roundRect,
-      {
-        x:3.57,
-        y:4.55,
-        w:2.85,
-        h:1.18,
-        rectRadius:.04,
-        fill:{
-          color:NAVY2
-        },
-        line:{
-          color:"27446C",
-          width:1
-        }
-      }
-    );
-
-    cover.addText(
-      totalArea.toLocaleString("en-IN"),
-      {
-        x:3.78,
-        y:4.76,
-        w:2.42,
-        h:.37,
-        fontFace:"Arial",
-        fontSize:22,
-        bold:true,
-        color:WHITE,
-        align:"center",
-        margin:0,
-        fit:"shrink"
-      }
-    );
-
-    cover.addText(
-      "TOTAL DISPLAY AREA SQ.FT",
-      {
-        x:3.78,
-        y:5.26,
-        w:2.42,
-        h:.18,
-        fontFace:"Arial",
-        fontSize:7.5,
-        bold:true,
-        color:"C8D4E3",
-        align:"center",
-        charSpacing:.8,
-        margin:0
-      }
-    );
-
-    cover.addText(
-      new Date().toLocaleDateString("en-IN"),
-      {
-        x:.77,
-        y:6.78,
-        w:2.5,
-        h:.2,
-        fontFace:"Arial",
-        fontSize:8.5,
-        color:"8FA5C0",
-        margin:0
-      }
-    );
-
-    cover.addText(
-      "CONFIDENTIAL PROPOSAL",
-      {
-        x:9.0,
-        y:6.78,
-        w:3.55,
-        h:.2,
-        fontFace:"Arial",
-        fontSize:8,
-        bold:true,
-        color:"8FA5C0",
-        align:"right",
-        charSpacing:1,
-        margin:0
-      }
-    );
-
-    cover.addText(
-      money(totalCost),
-      {
-        x:8.7,
-        y:4.55,
-        w:3.75,
-        h:.55,
-        fontFace:"Arial",
-        fontSize:28,
-        bold:true,
-        color:WHITE,
-        align:"right",
-        margin:0,
-        fit:"shrink"
-      }
-    );
-
-    cover.addText(
-      "TOTAL CAMPAIGN VALUE",
-      {
-        x:9.35,
-        y:5.18,
-        w:3.1,
-        h:.2,
-        fontFace:"Arial",
-        fontSize:8,
-        bold:true,
-        color:BLUE,
-        align:"right",
-        charSpacing:1,
-        margin:0
-      }
-    );
-
-    /* =====================================================
-       SITE SLIDES
-       ===================================================== */
-
-    for(
-      let index = 0;
-      index < data.length;
-      index++
-    ){
-
-      const site =
-        data[index];
-
-      const slide =
-        ppt.addSlide();
-
-      slide.background = {
-        color:WHITE
-      };
-
-      const siteNumber =
-        index + 1;
-
-      /* ---------------------------------------------------
-         TOP HEADER — REFERENCE STYLE
-         --------------------------------------------------- */
-
-      slide.addShape(
-        ppt.ShapeType.rect,
-        {
-          x:0,
-          y:0,
-          w:W,
-          h:.95,
-          fill:{
-            color:NAVY
-          },
-          line:{
-            color:NAVY
-          }
-        }
-      );
-
-      /* Number block */
-
-      slide.addShape(
-        ppt.ShapeType.rect,
-        {
-          x:0,
-          y:0,
-          w:1.28,
-          h:.95,
-          fill:{
-            color:NAVY2
-          },
-          line:{
-            color:NAVY2
-          }
-        }
-      );
-
-      slide.addText(
-        String(siteNumber) + ".",
-        {
-          x:.28,
-          y:.17,
-          w:.72,
-          h:.54,
-          fontFace:"Arial",
-          fontSize:31,
-          bold:true,
-          color:WHITE,
-          margin:0,
-          align:"center"
-        }
-      );
-
-      /* White title panel */
-
-      slide.addShape(
-        ppt.ShapeType.roundRect,
-        {
-          x:1.18,
-          y:.03,
-          w:8.35,
-          h:.86,
-          rectRadius:.04,
-          fill:{
-            color:WHITE
-          },
-          line:{
-            color:WHITE
-          }
-        }
-      );
-
-      slide.addText(
-        site.site_name ||
-        "OOH SITE",
-        {
-          x:1.78,
-          y:.17,
-          w:4.2,
-          h:.3,
-          fontFace:"Arial",
-          fontSize:21,
-          bold:true,
-          color:NAVY,
-          margin:0,
-          fit:"shrink"
-        }
-      );
-
-      slide.addText(
-        "●  " +
-        (
-          site.location ||
-          "Location not specified"
-        ),
-        {
-          x:1.78,
-          y:.53,
-          w:7.25,
-          h:.21,
-          fontFace:"Arial",
-          fontSize:9.3,
-          bold:true,
-          color:NAVY,
-          margin:0,
-          fit:"shrink"
-        }
-      );
-
-      /* Branding */
-
-      slide.addText(
-        "MY VISION",
-        {
-          x:10.15,
-          y:.19,
-          w:1.75,
-          h:.25,
-          fontFace:"Arial",
-          fontSize:17,
-          bold:true,
-          color:WHITE,
-          margin:0
-        }
-      );
-
-      slide.addText(
-        "OOH",
-        {
-          x:11.84,
-          y:.19,
-          w:.75,
-          h:.25,
-          fontFace:"Arial",
-          fontSize:17,
-          bold:true,
-          color:BLUE,
-          margin:0
-        }
-      );
-
-      slide.addText(
-        "— Premium Outdoor Advertising Solutions —",
-        {
-          x:9.72,
-          y:.51,
-          w:2.95,
-          h:.17,
-          fontFace:"Arial",
-          fontSize:6.8,
-          color:"D6E0EC",
-          align:"center",
-          margin:0,
-          fit:"shrink"
-        }
-      );
-
-      /* ---------------------------------------------------
-         LEFT PHOTO
-         --------------------------------------------------- */
-
-      slide.addShape(
-        ppt.ShapeType.roundRect,
-        {
-          x:.03,
-          y:1.03,
-          w:7.63,
-          h:5.98,
-          rectRadius:.04,
-          fill:{
-            color:"E8EEF5"
-          },
-          line:{
-            color:BORDER,
-            width:1
-          }
-        }
-      );
-
-      let imageAdded = false;
-
-      if(site.photo_url){
-
-        try{
-
-          const imageData =
-            await imageUrlToDataUrl(
-              site.photo_url
-            );
-
-          if(imageData){
-
-            slide.addImage({
-              data:imageData,
-              x:.05,
-              y:1.05,
-              w:7.59,
-              h:5.94
-            });
-
-            imageAdded = true;
-
-          }
-
-        }
-        catch(imageError){
-
-          console.error(
-            "PPT photo error:",
-            imageError
-          );
-
-        }
-
-      }
-
-      if(!imageAdded){
-
-        slide.addText(
-          "SITE PHOTO",
-          {
-            x:.55,
-            y:3.52,
-            w:6.55,
-            h:.35,
-            fontFace:"Arial",
-            fontSize:21,
-            bold:true,
-            color:"94A3B8",
-            align:"center",
-            margin:0
-          }
-        );
-
-        slide.addText(
-          "No site photo available",
-          {
-            x:.65,
-            y:4.05,
-            w:6.35,
-            h:.25,
-            fontFace:"Arial",
-            fontSize:10,
-            color:MUTED,
-            align:"center",
-            margin:0
-          }
-        );
-
-      }
-
-      /* ---------------------------------------------------
-         RIGHT COLUMN — SITE DETAILS
-         --------------------------------------------------- */
-
-      slide.addShape(
-        ppt.ShapeType.roundRect,
-        {
-          x:7.79,
-          y:1.03,
-          w:2.16,
-          h:4.92,
-          rectRadius:.04,
-          fill:{
-            color:WHITE
-          },
-          line:{
-            color:BORDER,
-            width:1
-          }
-        }
-      );
-
-      addSectionHeader(
-        slide,
-        "●",
-        "Site Details",
-        7.99,
-        1.23,
-        1.75
-      );
-
-      addLabelValue(
-        slide,
-        "STATE:",
-        site.state || "-",
-        7.99,
-        1.76,
-        .63,
-        1.45
-      );
-
-      addLabelValue(
-        slide,
-        "CITY:",
-        site.city || "-",
-        7.99,
-        2.08,
-        .63,
-        1.45
-      );
-
-      slide.addShape(
-        ppt.ShapeType.line,
-        {
-          x:7.98,
-          y:2.42,
-          w:1.77,
-          h:0,
-          line:{
-            color:BORDER,
-            width:1,
-            dash:"dash"
-          }
-        }
-      );
-
-      addLabelValue(
-        slide,
-        "LATITUDE:",
-        Number(site.latitude || 0).toFixed(5),
-        7.99,
-        2.63,
-        .78,
-        1.3,
-        {
-          valueSize:8.2
-        }
-      );
-
-      addLabelValue(
-        slide,
-        "LONGITUDE:",
-        Number(site.longitude || 0).toFixed(5),
-        7.99,
-        2.96,
-        .78,
-        1.3,
-        {
-          valueSize:8.2
-        }
-      );
-
-      slide.addShape(
-        ppt.ShapeType.line,
-        {
-          x:7.98,
-          y:3.31,
-          w:1.77,
-          h:0,
-          line:{
-            color:BORDER,
-            width:1
-          }
-        }
-      );
-
-      addSectionHeader(
-        slide,
-        "↔",
-        "Size & Units",
-        7.99,
-        3.51,
-        1.75
-      );
-
-      addLabelValue(
-        slide,
-        "SIZE:",
-        Number(site.width || 0) +
-          " × " +
-          Number(site.height || 0) +
-          " FT",
-        7.99,
-        4.03,
-        .55,
-        1.48
-      );
-
-      addLabelValue(
-        slide,
-        "UNITS:",
-        Number(site.units || 1),
-        7.99,
-        4.36,
-        .55,
-        1.48
-      );
-
-      slide.addShape(
-        ppt.ShapeType.roundRect,
-        {
-          x:7.96,
-          y:4.70,
-          w:1.80,
-          h:.34,
-          rectRadius:.03,
-          fill:{
-            color:LIGHTBLUE
-          },
-          line:{
-            color:LIGHTBLUE
-          }
-        }
-      );
-
-      slide.addText(
-        "TOTAL AREA: " +
-        Number(site.total_area || 0).toLocaleString("en-IN") +
-        " SQ.FT",
-        {
-          x:8.02,
-          y:4.79,
-          w:1.67,
-          h:.15,
-          fontFace:"Arial",
-          fontSize:7.1,
-          bold:true,
-          color:NAVY2,
-          align:"center",
-          margin:0,
-          fit:"shrink"
-        }
-      );
-
-      slide.addShape(
-        ppt.ShapeType.line,
-        {
-          x:7.98,
-          y:5.18,
-          w:1.77,
-          h:0,
-          line:{
-            color:BORDER,
-            width:1
-          }
-        }
-      );
-
-      addSectionHeader(
-        slide,
-        "▣",
-        "Media Details",
-        7.99,
-        5.37,
-        1.75
-      );
-
-      addLabelValue(
-        slide,
-        "MEDIA:",
-        site.media_type || "-",
-        7.99,
-        5.84,
-        .55,
-        1.48,
-        {
-          valueSize:7.8
-        }
-      );
-
-      addLabelValue(
-        slide,
-        "TYPE:",
-        site.illumination || "-",
-        7.99,
-        6.13,
-        .55,
-        1.48,
-        {
-          valueSize:7.8
-        }
-      );
-
-      addLabelValue(
-        slide,
-        "TRAFFIC:",
-        site.traffic || "-",
-        7.99,
-        6.42,
-        .63,
-        1.40,
-        {
-          valueSize:7.8
-        }
-      );
-
-      /* ---------------------------------------------------
-         PRICING DETAILS
-         --------------------------------------------------- */
-
-      slide.addShape(
-        ppt.ShapeType.roundRect,
-        {
-          x:10.08,
-          y:1.03,
-          w:3.22,
-          h:3.34,
-          rectRadius:.04,
-          fill:{
-            color:WHITE
-          },
-          line:{
-            color:BORDER,
-            width:1
-          }
-        }
-      );
-
-      slide.addShape(
-        ppt.ShapeType.roundRect,
-        {
-          x:10.17,
-          y:1.12,
-          w:3.04,
-          h:.49,
-          rectRadius:.03,
-          fill:{
-            color:NAVY
-          },
-          line:{
-            color:NAVY
-          }
-        }
-      );
-
-      slide.addShape(
-        ppt.ShapeType.ellipse,
-        {
-          x:10.28,
-          y:1.19,
-          w:.32,
-          h:.32,
-          fill:{
-            color:BLUE
-          },
-          line:{
-            color:BLUE
-          }
-        }
-      );
-
-      slide.addText(
-        "₹",
-        {
-          x:10.28,
-          y:1.235,
-          w:.32,
-          h:.16,
-          fontFace:"Arial",
-          fontSize:11,
-          bold:true,
-          color:WHITE,
-          align:"center",
-          margin:0
-        }
-      );
-
-      slide.addText(
-        "PRICING DETAILS",
-        {
-          x:10.70,
-          y:1.27,
-          w:2.1,
-          h:.18,
-          fontFace:"Arial",
-          fontSize:9.4,
-          bold:true,
-          color:WHITE,
-          margin:0
-        }
-      );
-
-      addLabelValue(
-        slide,
-        "MONTHLY RATE:",
-        money(site.monthly_rate),
-        10.35,
-        1.91,
-        1.25,
-        1.45,
-        {
-          valueSize:9.2
-        }
-      );
-
-      addLabelValue(
-        slide,
-        "DURATION:",
-        Number(site.duration || 30) + " DAYS",
-        10.35,
-        2.27,
-        1.25,
-        1.45,
-        {
-          valueSize:9.2
-        }
-      );
-
-      slide.addShape(
-        ppt.ShapeType.line,
-        {
-          x:10.34,
-          y:2.63,
-          w:2.68,
-          h:0,
-          line:{
-            color:BORDER,
-            width:1,
-            dash:"dash"
-          }
-        }
-      );
-
-      addLabelValue(
-        slide,
-        "DISPLAY CHARGES:",
-        money(site.display_charges),
-        10.35,
-        2.91,
-        1.45,
-        1.25,
-        {
-          valueSize:8.8
-        }
-      );
-
-      addLabelValue(
-        slide,
-        "P&M CHARGES:",
-        money(site.pm_charges),
-        10.35,
-        3.29,
-        1.45,
-        1.25,
-        {
-          valueSize:8.8
-        }
-      );
-
-      slide.addShape(
-        ppt.ShapeType.roundRect,
-        {
-          x:10.25,
-          y:3.70,
-          w:2.88,
-          h:.54,
-          rectRadius:.03,
-          fill:{
-            color:NAVY2
-          },
-          line:{
-            color:NAVY2
-          }
-        }
-      );
-
-      slide.addText(
-        "TOTAL COST",
-        {
-          x:10.43,
-          y:3.86,
-          w:1.25,
-          h:.17,
-          fontFace:"Arial",
-          fontSize:7.8,
-          bold:true,
-          color:WHITE,
-          margin:0
-        }
-      );
-
-      slide.addText(
-        money(site.total_cost),
-        {
-          x:11.55,
-          y:3.78,
-          w:1.38,
-          h:.25,
-          fontFace:"Arial",
-          fontSize:13.2,
-          bold:true,
-          color:WHITE,
-          align:"right",
-          margin:0,
-          fit:"shrink"
-        }
-      );
-
-      /* ---------------------------------------------------
-         LOCATION MAP
-         --------------------------------------------------- */
-
-      slide.addShape(
-        ppt.ShapeType.roundRect,
-        {
-          x:10.08,
-          y:4.53,
-          w:3.22,
-          h:2.48,
-          rectRadius:.04,
-          fill:{
-            color:WHITE
-          },
-          line:{
-            color:BORDER,
-            width:1
-          }
-        }
-      );
-
-      addSectionHeader(
-        slide,
-        "●",
-        "Location Map",
-        10.28,
-        4.72,
-        2.65
-      );
-
-      let mapImage = null;
-
-      try{
-
-        mapImage =
-          await createLocationMapDataUrl(
-            Number(site.latitude),
-            Number(site.longitude),
-            760,
-            420
-          );
-
-      }
-      catch(mapError){
-
-        console.error(
-          "PPT map error:",
-          mapError
-        );
-
-      }
-
-      if(mapImage){
-
-        slide.addImage({
-          data:mapImage,
-          x:10.17,
-          y:5.13,
-          w:3.04,
-          h:1.54
-        });
-
-      }
-      else{
-
-        slide.addShape(
-          ppt.ShapeType.rect,
-          {
-            x:10.17,
-            y:5.13,
-            w:3.04,
-            h:1.54,
-            fill:{
-              color:"EEF2F6"
-            },
-            line:{
-              color:BORDER
-            }
-          }
-        );
-
-        slide.addText(
-          Number(site.latitude || 0).toFixed(5) +
-          ", " +
-          Number(site.longitude || 0).toFixed(5),
-          {
-            x:10.35,
-            y:5.77,
-            w:2.7,
-            h:.2,
-            fontFace:"Arial",
-            fontSize:9,
-            bold:true,
-            color:MUTED,
-            align:"center",
-            margin:0
-          }
-        );
-
-      }
-
-      const mapsURL =
-        "https://www.google.com/maps?q=" +
-        encodeURIComponent(
-          String(site.latitude) +
-          "," +
-          String(site.longitude)
-        );
-
-      slide.addShape(
-        ppt.ShapeType.roundRect,
-        {
-          x:10.17,
-          y:6.77,
-          w:3.04,
-          h:.28,
-          rectRadius:.02,
-          fill:{
-            color:BLUE
-          },
-          line:{
-            color:BLUE
-          }
-        }
-      );
-
-      slide.addText(
-        "OPEN LOCATION IN GOOGLE MAPS",
-        {
-          x:10.35,
-          y:6.84,
-          w:2.68,
-          h:.13,
-          fontFace:"Arial",
-          fontSize:6.7,
-          bold:true,
-          color:WHITE,
-          align:"center",
-          margin:0,
-          hyperlink:{
-            url:mapsURL
-          }
-        }
-      );
-
-      /* ---------------------------------------------------
-         BOTTOM INFORMATION STRIP
-         --------------------------------------------------- */
-
-      slide.addShape(
-        ppt.ShapeType.rect,
-        {
-          x:0,
-          y:7.08,
-          w:W,
-          h:.42,
-          fill:{
-            color:NAVY
-          },
-          line:{
-            color:NAVY
-          }
-        }
-      );
-
-      /* Visibility */
-
-      slide.addShape(
-        ppt.ShapeType.ellipse,
-        {
-          x:.38,
-          y:7.135,
-          w:.25,
-          h:.25,
-          fill:{
-            color:BLUE
-          },
-          line:{
-            color:BLUE
-          }
-        }
-      );
-
-      slide.addText(
-        "●",
-        {
-          x:.38,
-          y:7.185,
-          w:.25,
-          h:.10,
-          fontFace:"Arial",
-          fontSize:5,
-          color:WHITE,
-          align:"center",
-          margin:0
-        }
-      );
-
-      slide.addText(
-        "HIGH VISIBILITY",
-        {
-          x:.74,
-          y:7.14,
-          w:1.18,
-          h:.13,
-          fontFace:"Arial",
-          fontSize:6.6,
-          bold:true,
-          color:WHITE,
-          margin:0
-        }
-      );
-
-      slide.addText(
-        "Prime Location",
-        {
-          x:.74,
-          y:7.30,
-          w:1.25,
-          h:.11,
-          fontFace:"Arial",
-          fontSize:5.8,
-          color:"C8D4E3",
-          margin:0
-        }
-      );
-
-      /* Traffic */
-
-      slide.addShape(
-        ppt.ShapeType.ellipse,
-        {
-          x:2.32,
-          y:7.135,
-          w:.25,
-          h:.25,
-          fill:{
-            color:BLUE
-          },
-          line:{
-            color:BLUE
-          }
-        }
-      );
-
-      slide.addText(
-        "●",
-        {
-          x:2.32,
-          y:7.185,
-          w:.25,
-          h:.10,
-          fontFace:"Arial",
-          fontSize:5,
-          color:WHITE,
-          align:"center",
-          margin:0
-        }
-      );
-
-      slide.addText(
-        "HEAVY TRAFFIC",
-        {
-          x:2.68,
-          y:7.14,
-          w:1.28,
-          h:.13,
-          fontFace:"Arial",
-          fontSize:6.6,
-          bold:true,
-          color:WHITE,
-          margin:0
-        }
-      );
-
-      slide.addText(
-        "High Impact",
-        {
-          x:2.68,
-          y:7.30,
-          w:1.18,
-          h:.11,
-          fontFace:"Arial",
-          fontSize:5.8,
-          color:"C8D4E3",
-          margin:0
-        }
-      );
-
-      /* Premium location */
-
-      slide.addShape(
-        ppt.ShapeType.ellipse,
-        {
-          x:4.27,
-          y:7.135,
-          w:.25,
-          h:.25,
-          fill:{
-            color:BLUE
-          },
-          line:{
-            color:BLUE
-          }
-        }
-      );
-
-      slide.addText(
-        "●",
-        {
-          x:4.27,
-          y:7.185,
-          w:.25,
-          h:.10,
-          fontFace:"Arial",
-          fontSize:5,
-          color:WHITE,
-          align:"center",
-          margin:0
-        }
-      );
-
-      slide.addText(
-        "PREMIUM LOCATION",
-        {
-          x:4.63,
-          y:7.14,
-          w:1.42,
-          h:.13,
-          fontFace:"Arial",
-          fontSize:6.6,
-          bold:true,
-          color:WHITE,
-          margin:0
-        }
-      );
-
-      slide.addText(
-        site.location ||
-        "Prime Area",
-        {
-          x:4.63,
-          y:7.30,
-          w:1.65,
-          h:.11,
-          fontFace:"Arial",
-          fontSize:5.8,
-          color:"C8D4E3",
-          margin:0,
-          fit:"shrink"
-        }
-      );
-
-      /* Ideal for brands */
-
-      slide.addShape(
-        ppt.ShapeType.ellipse,
-        {
-          x:6.52,
-          y:7.135,
-          w:.25,
-          h:.25,
-          fill:{
-            color:BLUE
-          },
-          line:{
-            color:BLUE
-          }
-        }
-      );
-
-      slide.addText(
-        "●",
-        {
-          x:6.52,
-          y:7.185,
-          w:.25,
-          h:.10,
-          fontFace:"Arial",
-          fontSize:5,
-          color:WHITE,
-          align:"center",
-          margin:0
-        }
-      );
-
-      slide.addText(
-        "IDEAL FOR BRANDS",
-        {
-          x:6.88,
-          y:7.14,
-          w:1.30,
-          h:.13,
-          fontFace:"Arial",
-          fontSize:6.6,
-          bold:true,
-          color:WHITE,
-          margin:0
-        }
-      );
-
-      slide.addText(
-        "Maximum Reach",
-        {
-          x:6.88,
-          y:7.30,
-          w:1.25,
-          h:.11,
-          fontFace:"Arial",
-          fontSize:5.8,
-          color:"C8D4E3",
-          margin:0
-        }
-      );
-
-      /* Remarks */
-
-      if(
-        site.remarks &&
-        String(site.remarks).trim()
-      ){
-
-        slide.addText(
-          "REMARKS",
-          {
-            x:8.58,
-            y:7.15,
-            w:.7,
-            h:.13,
-            fontFace:"Arial",
-            fontSize:6.3,
-            bold:true,
-            color:WHITE,
-            margin:0
-          }
-        );
-
-        slide.addText(
-          String(site.remarks),
-          {
-            x:9.30,
-            y:7.13,
-            w:2.65,
-            h:.19,
-            fontFace:"Arial",
-            fontSize:5.9,
-            color:"C8D4E3",
-            margin:0,
-            fit:"shrink"
-          }
-        );
-
-      }
-
-      /* Status */
-
-      slide.addText(
-        site.status || "-",
-        {
-          x:11.58,
-          y:7.15,
-          w:.86,
-          h:.15,
-          fontFace:"Arial",
-          fontSize:7,
-          bold:true,
-          color:
-            site.status === "Available"
-              ? "63D17B"
-              : WHITE,
-          align:"center",
-          margin:0,
-          fit:"shrink"
-        }
-      );
-
-      /* Page */
-
-      slide.addText(
-        siteNumber + " / " + data.length,
-        {
-          x:12.52,
-          y:7.15,
-          w:.58,
-          h:.15,
-          fontFace:"Arial",
-          fontSize:7,
-          bold:true,
-          color:WHITE,
-          align:"right",
-          margin:0
-        }
-      );
-
-    }
-
-    /* =====================================================
-       FILE NAME
-       ===================================================== */
-
-    const campaignName =
-      document.getElementById("campaign").value.trim();
-
-    const safeName =
-      (
-        campaignName ||
-        "My_Vision_OOH_Proposal"
-      )
-      .replace(
-        /[^a-z0-9_\- ]/gi,
-        ""
-      )
-      .trim()
-      .replace(
-        /\s+/g,
-        "_"
-      );
-
-    await ppt.writeFile({
-      fileName:
-        safeName + ".pptx"
-    });
-
-    showMessage(
-      "PPT downloaded successfully."
-    );
-
-  }
-  catch(error){
-
-    console.error(
-      "PPT EXPORT ERROR:",
-      error
-    );
-
-    alert(
-      "PPT export failed.\n\n" +
-      (
-        error.message ||
-        error
-      )
-    );
-
-  }
-  finally{
-
-    button.disabled = false;
-    button.innerText = "📑 PPT";
-
-  }
-
-}
-
-function escapeHTML(text){
-
-  return String(text ?? "")
-    .replace(
-      /[&<>"']/g,
-      function(character){
-
-        return {
-          "&":"&amp;",
-          "<":"&lt;",
-          ">":"&gt;",
-          '"':"&quot;",
-          "'":"&#039;"
-        }[character];
-
-      }
-    );
-
+    const safe=(document.getElementById("campaign").value.trim()||"My_Vision_OOH_Proposal").replace(/[^a-z0-9_\- ]/gi,"").trim().replace(/\s+/g,"_");
+    await ppt.writeFile({fileName:safe+".pptx"});showMessage("PPT downloaded successfully.");
+  }catch(e){console.error(e);alert("PPT export failed.\n\n"+(e.message||e))}finally{btn.disabled=false;btn.innerText="📑 PPT"}
 }
 
 /* =========================================================
-   ESCAPE ATTRIBUTE
+   EVENTS / START
    ========================================================= */
-
-function escapeAttribute(text){
-
-  return String(text ?? "")
-    .replace(/&/g,"&amp;")
-    .replace(/"/g,"&quot;")
-    .replace(/'/g,"&#039;")
-    .replace(/</g,"&lt;")
-    .replace(/>/g,"&gt;");
-
-}
-
-/* =========================================================
-   PHOTO PREVIEW
-   ========================================================= */
-
-document
-  .getElementById("photo")
-  .addEventListener(
-    "change",
-    async function(){
-
-      const file = this.files[0];
-
-      const preview =
-        document.getElementById("photoPreview");
-
-      if(!file){
-
-        preview.src = "";
-        preview.style.display = "none";
-        return;
-
-      }
-
-      try{
-
-        const dataURL =
-          await resizeImage(
-            file,
-            1200,
-            0.82
-          );
-
-        preview.src = dataURL;
-
-        preview.dataset.url = "";
-
-        preview.style.display = "block";
-
-      }
-      catch(error){
-
-        console.error(error);
-
-        showMessage(
-          "Could not preview image."
-        );
-
-      }
-
-    }
-  );
-
-/* =========================================================
-   CALCULATION EVENTS
-   ========================================================= */
-
-[
-  "width",
-  "height",
-  "units",
-  "rate",
-  "duration",
-  "pmRate"
-].forEach(function(id){
-
-  document
-    .getElementById(id)
-    .addEventListener(
-      "input",
-      calculateValues
-    );
-
-});
-
-/* =========================================================
-   ILLUMINATION EVENT
-   ========================================================= */
-
-document
-  .getElementById("illumination")
-  .addEventListener(
-    "change",
-    function(){
-
-      if(this.value === "DOOH"){
-
-        document.getElementById("pmRate").value = 0;
-
-      }
-      else if(
-        Number(
-          document.getElementById("pmRate").value
-        ) === 0
-      ){
-
-        document.getElementById("pmRate").value = 15;
-
-      }
-
-      calculateValues();
-
-    }
-  );
-
-/* =========================================================
-   LOCATION ENTER KEY
-   ========================================================= */
-
-document
-  .getElementById("locationSearch")
-  .addEventListener(
-    "keydown",
-    function(event){
-
-      if(event.key === "Enter"){
-
-        event.preventDefault();
-        searchLocation();
-
-      }
-
-    }
-  );
-
-/* =========================================================
-   START APP
-   ========================================================= */
+document.getElementById("campaign").addEventListener("input",e=>localStorage.setItem(CAMPAIGN_KEY,e.target.value));
+["width","height","units","rate","duration","pmRate"].forEach(id=>document.getElementById(id).addEventListener("input",calculateValues));
+document.getElementById("illumination").addEventListener("change",()=>{if(document.getElementById("illumination").value==="DOOH")document.getElementById("pmRate").value=0;else if(Number(document.getElementById("pmRate").value)===0)document.getElementById("pmRate").value=15;calculateValues()});
+document.getElementById("locationSearch").addEventListener("keydown",e=>{if(e.key==="Enter"){e.preventDefault();searchLocation()}});
+document.getElementById("photo").addEventListener("change",async function(){const f=this.files[0],p=document.getElementById("photoPreview");if(!f){p.style.display="none";return}try{const u=await resizeImage(f,1200,.82);p.src=u;p.dataset.url="";p.style.display="block"}catch(e){showMessage("Could not preview image.")}});
+document.addEventListener("keydown",e=>{if(e.key==="Escape")document.querySelectorAll(".modal-backdrop.show").forEach(m=>m.classList.remove("show"))});
 
 async function startApp(){
-
   initializeMap();
-
   await loadLocalData();
-
+  await loadBusinessData();
   calculateValues();
-
-  showMessage(
-    "MY VISION OOH ready."
-  );
-
+  renderAllBusiness();
+  showMessage("MY VISION OOH ready.");
 }
-
 startApp();
-
 </script>
-
 </body>
 </html>
