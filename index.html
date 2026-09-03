@@ -732,8 +732,7 @@ function renderCampaignSitePicker(){
   picker.innerHTML=`
     <div class="campaign-site-tools">
       <div class="campaign-site-search">
-        <input id="campaignSiteSearch" placeholder="🔎 Search saved site, location, city..." value="${attr(search)}"
-          oninput="renderCampaignSitePicker()">
+        <input id="campaignSiteSearch" class="campaign-site-search" type="search" autocomplete="off" spellcheck="false" placeholder="🔎 Search saved site, location, city...">
         <span class="campaign-site-count">${totalSelected} selected</span>
       </div>
       <div class="section-note">Select the exact site using its photo + name. ${selectedVisible}${data.length?" visible":" matching"} site(s) shown.</div>
@@ -758,6 +757,28 @@ function getCampaignSelectedSiteIds(){
   return [...document.querySelectorAll("#campaignSitePicker .campaign-site-check:checked")].map(x=>x.value);
 }
 
+
+function initCampaignSiteSearch(){
+  const input = document.getElementById("campaignSiteSearch");
+  if(!input || input.dataset.bound === "1") return;
+  input.dataset.bound = "1";
+
+  let timer = null;
+  input.addEventListener("input", function(){
+    clearTimeout(timer);
+    timer = setTimeout(function(){
+      renderCampaignSitePicker();
+      // Keep the cursor/focus in the search box after the list is rebuilt.
+      const fresh = document.getElementById("campaignSiteSearch");
+      if(fresh){
+        fresh.focus({preventScroll:true});
+        const pos = fresh.value.length;
+        try { fresh.setSelectionRange(pos, pos); } catch(e){}
+      }
+    }, 0);
+  });
+}
+
 function openCampaignModal(id){
   const c=id?campaigns.find(x=>x.id===id):null;
   document.getElementById("campaignId").value=c?.id||"";
@@ -779,6 +800,7 @@ function openCampaignModal(id){
   renderCampaignSitePicker();
 
   document.getElementById("campaignModal").classList.add("show");
+  initCampaignSiteSearch();
 }
 async function deleteCampaign(id){if(!confirm("Delete this campaign?"))return;await deleteStoreItem(CAMPAIGNS_STORE,id);payments=payments.filter(p=>p.campaign_id!==id);for(const p of payments)await putStore(PAYMENTS_STORE,p);await loadBusinessData();showMessage("Campaign deleted.")}
 function renderCampaigns(){
